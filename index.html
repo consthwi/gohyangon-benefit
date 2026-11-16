@@ -6,7 +6,7 @@
 <title>고향ON 추가혜택 프로토타입</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
-:root{--amber:#FFA300;--amber-d:#E08E00;--amber-bg:#FFF6E5;--ink:#1A1A1A;--ink2:#555;--ink3:#8A8A8A;--line:#ECECEC;--bg:#F4F4F2}
+:root{--amber:#FFA300;--amber-d:#E08E00;--amber-bg:#FFF6E5;--hot:#FF4D1A;--ink:#1A1A1A;--ink2:#555;--ink3:#8A8A8A;--line:#ECECEC;--bg:#F4F4F2;--c-welfare:#2F7CF6;--c-onnuri:#FF7A00;--c-npay:#12B76A}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
 button,input,select{font-family:inherit;color:inherit}
@@ -23,16 +23,16 @@ button{cursor:pointer;border:0;background:none}
 .seg button{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:#fafafa}
 .seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .seg button:disabled{opacity:.35;cursor:not-allowed}
+.replay{font-size:12px;padding:6px 10px;border-radius:8px;border:1px dashed #C9A24D;background:#FFF9EC;color:#8A5A00;margin-top:6px}
 .promo{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 .promo .pr{display:grid;grid-template-columns:1fr 78px 72px;gap:6px;align-items:center;padding:5px 0;font-size:11.5px}
 .promo .pr+.pr{border-top:1px solid #F2F2F2}
 .promo select,.promo input{font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:4px 5px;background:#fff;width:100%}
 .promo .pr.dis{opacity:.35;pointer-events:none}
-.promo .hint{font-size:10.5px;color:var(--ink3);margin-top:4px;line-height:1.5}
 .note{font-size:11.5px;color:var(--ink2);line-height:1.6;background:#FAFAF7;border-radius:8px;padding:10px;margin-top:4px}
 .note b{color:var(--ink)}
 .bind-on .bind{outline:1.5px dashed #2F7CF6;outline-offset:2px}
-.bind-on .bind:not(.chip){position:relative}
+.bind-on .bind:not(.chip):not(.tix){position:relative}
 .bind-on .bind::after{content:attr(data-bo);position:absolute;left:0;top:-15px;font-size:9px;color:#2F7CF6;background:#EAF2FF;padding:0 4px;border-radius:3px;white-space:nowrap;z-index:5;font-weight:600}
 
 /* ── 기기 프레임 ── */
@@ -65,6 +65,16 @@ button{cursor:pointer;border:0;background:none}
 .pc .card .nm{font-size:15px;height:auto}
 .pc .card .pr{font-size:13px}.pc .card .pr b{font-size:16px}
 
+/* v0.3 카드 티켓 리본 */
+.tix{position:absolute;left:0;top:10px;z-index:2;color:#fff;text-align:left;padding:5px 12px 6px 9px;border-radius:0 10px 10px 0;background:linear-gradient(100deg,#FF4D1A,#FF7A00 55%,#FFA300);box-shadow:0 3px 10px rgba(255,77,26,.45);line-height:1.05;overflow:hidden;animation:tixIn .6s cubic-bezier(.3,1.7,.5,1) both;
+  -webkit-mask:radial-gradient(circle at 100% 50%,transparent 4px,#000 4.5px);mask:radial-gradient(circle at 100% 50%,transparent 4px,#000 4.5px)}
+.tix small{display:block;font-size:9.5px;font-weight:700;opacity:.95;letter-spacing:.2px}
+.tix b{font-size:16px;font-weight:900;letter-spacing:-.4px}
+.tix::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg);animation:shineLoop 3.8s ease-in-out 1s infinite}
+@keyframes tixIn{from{transform:translateX(-105%)}to{transform:none}}
+@keyframes shineLoop{0%{left:-70%}22%,100%{left:140%}}
+.pc .tix{top:14px;padding:7px 16px 8px 12px}.pc .tix small{font-size:11.5px}.pc .tix b{font-size:21px}
+
 /* MO 레이아웃 */
 .mo .hdr{position:sticky;top:0;z-index:20;background:#fff;padding:12px 16px 10px;border-bottom:1px solid var(--line)}
 .mo .hdr .row{display:flex;align-items:center;justify-content:space-between}
@@ -84,6 +94,16 @@ button{cursor:pointer;border:0;background:none}
 .tabbar div.on{color:var(--ink)}.tabbar div.on i{background:var(--ink)}
 .topbtn{position:absolute;right:14px;bottom:68px;width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:25;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink2)}
 
+/* v0.3 상단 띠 배너 */
+.tick{background:linear-gradient(90deg,#FF4D1A,#FF8A00 50%,#FFA300);color:#fff;font-size:12.5px;font-weight:800;height:32px;overflow:hidden;display:flex;align-items:center;cursor:pointer}
+.trk{display:flex;white-space:nowrap;animation:mq 24s linear infinite;will-change:transform}
+.trk span{padding:0 16px;display:inline-flex;align-items:center;gap:8px}
+.trk span::before{content:"";width:5px;height:5px;border-radius:50%;background:#fff;opacity:.75}
+.trk em{font-style:normal;background:#fff;color:var(--hot);border-radius:5px;padding:1px 6px;font-weight:900}
+@keyframes mq{to{transform:translateX(-50%)}}
+.mo .tick{margin:10px -16px -10px}
+.pc .tick{height:40px;font-size:14.5px}
+
 /* PC 레이아웃 */
 .pc .in{width:1200px;margin:0 auto}
 .pc .hdr{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
@@ -92,7 +112,6 @@ button{cursor:pointer;border:0;background:none}
 .pc .search{flex:1;max-width:460px;border:2px solid var(--ink);border-radius:24px;padding:10px 18px;font-size:14px;color:var(--ink3)}
 .pc .util{margin-left:auto;font-size:13px;color:var(--ink2);display:flex;gap:18px}
 .pc .gnb{display:flex;gap:36px;height:48px;align-items:center;font-size:15px;font-weight:700}
-.pc .gnb span:first-child{color:var(--ink)}
 .pc .gnb span{color:#333}
 .pc .hero{height:300px;border-radius:16px;margin-top:24px;background:linear-gradient(135deg,#2E4A3A,#4E7A5E);color:#fff;padding:40px;display:flex;flex-direction:column;justify-content:flex-end}
 .pc .hero b{font-size:28px}.pc .hero p{font-size:15px}
@@ -101,7 +120,7 @@ button{cursor:pointer;border:0;background:none}
 .pc .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px 20px}
 .pc .foot{margin-top:60px;height:180px;background:#F7F7F5;border-top:1px solid var(--line);font-size:12px;color:var(--ink3);padding:30px 0}
 
-/* ── 플로팅 ── */
+/* ── 플로팅 v0.2 (차분) ── */
 .fab{position:absolute;z-index:26;height:48px;border-radius:24px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:8px;padding:0 16px 0 6px;box-shadow:0 6px 18px rgba(0,0,0,.28);animation:pop .55s cubic-bezier(.3,1.6,.5,1) both, bob 2.4s ease-in-out .6s infinite;white-space:nowrap;overflow:visible}
 .mo .fab{left:14px;bottom:68px}
 .pc .fab{right:32px;bottom:32px;height:56px;border-radius:28px;padding:0 20px 0 8px;gap:10px}
@@ -121,9 +140,44 @@ button{cursor:pointer;border:0;background:none}
 .pc .fab.mini:hover{padding:0 20px 0 8px}
 .pc .fab.mini:hover .tx,.pc .fab.mini:hover .x{display:flex}
 .pc .fab.mini:hover .bdg{opacity:0}
-.fab.hide{display:none}
+.fab.hide,.fab2.hide{display:none}
 @keyframes pop{from{transform:translateY(30px) scale(.6);opacity:0}to{transform:none;opacity:1}}
 @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -3px}}
+
+/* ── 플로팅 v0.3 (봉투 · 말랑) ── */
+.fab2{position:absolute;z-index:26;display:flex;align-items:center;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22));animation:pop .6s cubic-bezier(.3,1.6,.5,1) both}
+.mo .fab2{left:12px;bottom:66px}
+.pc .fab2{right:28px;bottom:28px;flex-direction:row-reverse}
+.fab2 .ball{width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFC75A,#FFA300 55%,#F08A00);display:flex;align-items:center;justify-content:center;position:relative;flex:none;animation:jellyLoop 4s ease-in-out 1.2s infinite;transform-origin:50% 90%}
+.pc .fab2 .ball{width:76px;height:76px}
+.fab2 .ring{position:absolute;inset:0;border-radius:50%;border:3px solid var(--amber);animation:ring 2s ease-out infinite;pointer-events:none}
+@keyframes ring{from{transform:scale(1);opacity:.75}to{transform:scale(1.65);opacity:0}}
+.fab2 .env{width:46px;height:46px;overflow:visible}
+.pc .fab2 .env{width:56px;height:56px}
+.env .t{animation:tkpop 4s ease-in-out 1.2s infinite}
+.env .t2{animation-delay:1.28s}.env .t3{animation-delay:1.36s}
+@keyframes tkpop{0%,14%,100%{transform:translateY(0)}4%{transform:translateY(-9px)}8%{transform:translateY(1px)}11%{transform:translateY(-2px)}}
+@keyframes jellyLoop{0%,22%,100%{transform:scale(1)}4%{transform:scale(1.17,.85)}8%{transform:scale(.9,1.1)}12%{transform:scale(1.06,.95)}17%{transform:scale(.98,1.02)}}
+.fab2 .bdg{position:absolute;top:-5px;right:-9px;background:var(--hot);color:#fff;font-size:10.5px;font-weight:900;border-radius:10px;padding:2px 6px;border:2px solid #fff;white-space:nowrap}
+.fab2 .bubble{position:relative;background:#fff;border-radius:16px;padding:8px 26px 9px 14px;text-align:left;white-space:nowrap;animation:bubIn .55s cubic-bezier(.3,1.7,.5,1) .35s both}
+.mo .fab2 .bubble{margin-left:12px}
+.pc .fab2 .bubble{margin-right:14px;padding:10px 30px 11px 18px}
+.fab2 .bubble::before{content:"";position:absolute;top:50%;width:12px;height:12px;background:#fff;transform:translateY(-50%) rotate(45deg);border-radius:2px}
+.mo .fab2 .bubble::before{left:-5px}
+.pc .fab2 .bubble::before{right:-5px}
+.fab2 .bubble small{display:block;font-size:10.5px;color:#A86800;font-weight:800}
+.fab2 .bubble b{display:block;font-size:15px;font-weight:900;color:var(--ink);margin-top:1px}
+.fab2 .bubble b em{font-style:normal;color:var(--hot)}
+.pc .fab2 .bubble small{font-size:12px}.pc .fab2 .bubble b{font-size:18px}
+.fab2 .bubble .rot{display:inline-block;animation:rotIn .35s ease-out both}
+@keyframes rotIn{from{transform:translateY(7px)}to{transform:none}}
+.fab2 .x{position:absolute;top:6px;right:7px;width:16px;height:16px;border-radius:50%;background:#EEE;color:#777;font-size:9px;display:flex;align-items:center;justify-content:center}
+@keyframes bubIn{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+.mo .fab2 .bubble{transform-origin:left center}.pc .fab2 .bubble{transform-origin:right center}
+.fab2.mini .bubble{display:none}
+.pc .fab2.mini:hover .bubble{display:block}
+.fab2.boing .ball{animation:boing .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes boing{0%{transform:scale(1)}30%{transform:scale(1.35,.75)}55%{transform:scale(.85,1.2)}75%{transform:scale(1.08,.94)}100%{transform:scale(1)}}
 
 /* ── 미니 패널: MO 바텀시트 / PC 팝오버 ── */
 .dim{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s}
@@ -132,7 +186,7 @@ button{cursor:pointer;border:0;background:none}
 .sheet{position:absolute;z-index:41;background:#fff;overflow-y:auto}
 .mo .sheet{left:0;right:0;bottom:0;border-radius:20px 20px 0 0;padding:10px 18px 18px;transform:translateY(105%);transition:transform .38s cubic-bezier(.2,1.25,.4,1);max-height:88%}
 .mo .sheet.on{transform:none}
-.pc .sheet{right:32px;bottom:100px;width:380px;max-height:620px;border-radius:18px;padding:20px 20px 18px;box-shadow:0 16px 48px rgba(0,0,0,.22);border:1px solid #EEE;opacity:0;transform:translateY(12px) scale(.97);transform-origin:bottom right;pointer-events:none;transition:opacity .2s,transform .28s cubic-bezier(.2,1.3,.4,1)}
+.pc .sheet{right:32px;bottom:116px;width:390px;max-height:620px;border-radius:18px;padding:20px 20px 18px;box-shadow:0 16px 48px rgba(0,0,0,.22);border:1px solid #EEE;opacity:0;transform:translateY(12px) scale(.97);transform-origin:bottom right;pointer-events:none;transition:opacity .2s,transform .28s cubic-bezier(.2,1.3,.4,1)}
 .pc .sheet.on{opacity:1;transform:none;pointer-events:auto}
 .pc .sheet .grab{display:none}
 .sheet .grab{width:38px;height:4px;border-radius:2px;background:#DDD;margin:0 auto 14px}
@@ -140,9 +194,12 @@ button{cursor:pointer;border:0;background:none}
 .pc .sheet .close{display:block}
 .eyebrow{font-size:11px;font-weight:700;color:var(--amber-d);letter-spacing:.3px}
 .sheet h3{font-size:18px;font-weight:800;margin:4px 0 14px;line-height:1.35}
+.sheet h3 em{font-style:normal;color:var(--hot)}
 .rcpt{background:#FAFAF7;border-radius:12px;padding:14px 14px 12px;font-size:13px}
 .rcpt .r{display:flex;justify-content:space-between;padding:5px 0;color:var(--ink2)}
 .rcpt .r.plus{color:var(--ink);font-weight:700}.rcpt .r.plus b{color:var(--amber-d)}
+.fx-bold .rcpt .r.plus{background:#FFEDE5;margin:2px -8px;padding:6px 8px;border-radius:8px}
+.fx-bold .rcpt .r.plus b{color:var(--hot)}
 .rcpt .sum{border-top:1.5px dashed #D6D6D0;margin-top:6px;padding-top:9px;display:flex;justify-content:space-between;align-items:baseline;font-weight:800}
 .rcpt .sum b{font-size:20px}
 .rcpt .fine{font-size:10.5px;color:var(--ink3);margin-top:6px;line-height:1.5}
@@ -155,13 +212,62 @@ button{cursor:pointer;border:0;background:none}
 .btns{display:flex;gap:8px;margin-top:14px}
 .btns button{flex:1;height:46px;border-radius:10px;font-size:14px;font-weight:700}
 .b1{background:var(--ink);color:#fff}.b2{background:#F1F1EF;color:var(--ink)}
+.fx-bold .b1{background:linear-gradient(100deg,#FF4D1A,#FF8A00);color:#fff}
 .govrow{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:8px;cursor:pointer}
 .govrow .g{font-size:14px;font-weight:700}.govrow .s{font-size:11.5px;color:var(--ink3);margin-top:2px}
 .govrow .a{font-size:15px;font-weight:800;color:var(--amber-d);text-align:right}
+.fx-bold .govrow .a{color:var(--hot);font-size:17px;font-weight:900}
 .govrow .a small{display:block;font-size:11px;color:var(--ink3);font-weight:500}
 .govrow.closed{background:#FAFAFA;cursor:default}.govrow.closed .g{color:var(--ink3)}
 .govrow.closed .a{color:var(--ink3);font-size:13px}
 .sfine{font-size:11px;color:var(--ink3);margin-top:4px;line-height:1.5}
+
+/* v0.3 티켓 (참고 이미지: 봉투 + 수단별 색 티켓) */
+.tkrow{display:flex;gap:8px;margin:2px 0 12px}
+.tk2{flex:1;min-width:0;border-radius:10px;color:#fff;padding:13px 8px 10px;text-align:center;background:var(--c);position:relative;box-shadow:0 4px 10px rgba(0,0,0,.12);animation:tkIn .55s cubic-bezier(.3,1.7,.5,1) both;
+  -webkit-mask:radial-gradient(circle at 50% 0,transparent 7px,#000 7.5px);mask:radial-gradient(circle at 50% 0,transparent 7px,#000 7.5px)}
+.tk2:nth-child(2){animation-delay:.08s}.tk2:nth-child(3){animation-delay:.16s}
+.tk2 small{display:block;font-size:11px;font-weight:700;opacity:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk2 b{display:block;font-size:17px;font-weight:900;margin-top:3px;letter-spacing:-.4px}
+.tk2 i{position:absolute;top:5px;right:6px;font-style:normal;font-size:9px;background:rgba(255,255,255,.25);border-radius:4px;padding:0 4px}
+@keyframes tkIn{from{transform:translateY(16px) scale(.85);opacity:0}to{transform:none;opacity:1}}
+.tkhint{font-size:11px;color:var(--ink3);margin:-6px 0 12px;text-align:center}
+
+/* v0.3 봉투 일러스트 (웰컴·혜택 페이지) */
+.wenv{position:relative;width:250px;height:150px;margin:6px auto 2px;perspective:500px}
+.wenv .bk{position:absolute;left:12px;right:12px;bottom:0;height:96px;background:#E8DCC6;border-radius:9px}
+.wenv .fr{position:absolute;left:12px;right:12px;bottom:0;height:96px;background:#F8F1E4;border-radius:9px;z-index:3;clip-path:polygon(0 16%,50% 60%,100% 16%,100% 100%,0 100%)}
+.wenv .fl{position:absolute;left:12px;right:12px;top:54px;height:50px;background:#E0D2B8;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;z-index:4;animation:flap .45s ease-in .15s forwards}
+@keyframes flap{0%{transform:rotateX(0);z-index:4}99%{z-index:4}100%{transform:rotateX(180deg);z-index:0}}
+.wenv .tk{position:absolute;bottom:24px;width:76px;height:98px;margin-left:-38px;border-radius:10px;color:#fff;padding:13px 4px 0;text-align:center;font-weight:900;z-index:2;opacity:0;background:var(--c);box-shadow:0 4px 10px rgba(0,0,0,.15);animation:tkUp .7s cubic-bezier(.3,1.6,.5,1) forwards;
+  -webkit-mask:radial-gradient(circle at 50% 0,transparent 8px,#000 8.5px);mask:radial-gradient(circle at 50% 0,transparent 8px,#000 8.5px)}
+.wenv .tk small{display:block;font-size:10.5px;font-weight:700;white-space:nowrap}
+.wenv .tk b{display:block;font-size:16px;letter-spacing:-.5px;margin-top:3px}
+@keyframes tkUp{from{opacity:1;transform:translateY(70px) rotate(0)}to{opacity:1;transform:translateY(0) rotate(var(--r))}}
+.wenv.still .fl{animation:none;transform:rotateX(180deg);z-index:0}
+.wenv.still .tk{animation-duration:.01s;animation-delay:0s!important}
+
+/* v0.3 링크 유입 웰컴 */
+.wel{position:absolute;inset:0;z-index:50;background:rgba(10,10,10,.62);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.wel.on{opacity:1;pointer-events:auto}
+.wel.out{background:transparent;transition:background .3s}
+.wcard{width:100%;max-width:335px;background:linear-gradient(180deg,#FFF1D6,#fff 58%);border-radius:24px;padding:20px 20px 18px;text-align:center;position:relative;overflow:hidden;animation:wIn .5s cubic-bezier(.3,1.5,.5,1) both}
+.pc .wcard{max-width:440px;padding:28px 32px 24px}
+@keyframes wIn{from{transform:scale(.7) translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.wcard.fly{transition:transform .5s cubic-bezier(.6,0,.8,.4),opacity .45s;transform:translate(var(--fx),var(--fy)) scale(.06)!important;opacity:.2;animation:none}
+.wcard .wx{position:absolute;right:14px;top:14px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);font-size:13px;z-index:6}
+.wk{font-size:12px;font-weight:800;color:#B86E00}
+.wcard h3{font-size:22px;font-weight:900;line-height:1.3;margin-top:2px;word-break:keep-all}
+.pc .wcard h3{font-size:26px}
+.wcard h3 em{font-style:normal;color:var(--hot)}
+.wsum{margin-top:10px;font-size:13px;font-weight:700;color:var(--ink2)}
+.wsum b{font-size:34px;font-weight:900;color:var(--ink);letter-spacing:-1px;margin:0 2px;font-variant-numeric:tabular-nums}
+.wsub{font-size:11.5px;color:var(--ink2);margin-top:4px;line-height:1.5}
+.wsub b{color:var(--hot)}
+.wfine{font-size:10.5px;color:var(--ink3);margin-top:10px;line-height:1.5}
+.wcard .btns button{height:48px}
+.cf{position:absolute;top:-12px;width:7px;height:12px;border-radius:2px;z-index:7;animation:fall 1.7s ease-in var(--d) forwards;opacity:0}
+@keyframes fall{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--x),460px) rotate(560deg)}}
 
 /* ── 혜택 페이지 ── */
 .bhdr{position:sticky;top:0;z-index:20;background:#fff;display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:15px}
@@ -173,17 +279,22 @@ button{cursor:pointer;border:0;background:none}
 .gtabs button.on{background:var(--ink);color:#fff}
 .gtabs button small{font-size:10.5px;font-weight:600;margin-left:4px;opacity:.75}
 .bhero{border-radius:16px;background:linear-gradient(160deg,#FFF3DB,#FFE3A8);padding:22px 18px 18px}
+.fx-bold .bhero{background:linear-gradient(165deg,#FFE9C2,#FFD27A 70%,#FFC453)}
 .mo .bhero{margin:14px 16px 0}
 .bhero .k{font-size:13px;font-weight:700;color:#8A5A00}
 .bhero h2{font-size:22px;font-weight:800;line-height:1.3;margin:6px 0 14px;word-break:keep-all}
 .bhero h2 em{font-style:normal;color:#C77700}
-.bhero .rcpt{background:rgba(255,255,255,.75)}
+.fx-bold .bhero h2{font-weight:900}
+.fx-bold .bhero h2 em{color:var(--hot);font-variant-numeric:tabular-nums}
+.bhero .rcpt{background:rgba(255,255,255,.8)}
 .bhero.closed{background:#F3F3F1}.bhero.closed h2 em{color:var(--ink2)}
 .blk{padding:22px 16px 0}
 .blk h3{font-size:16px;font-weight:800;margin-bottom:10px}
 .opt{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:8px}
+.fx-bold .opt{border-left:5px solid var(--c,#DDD)}
 .opt .t{display:flex;justify-content:space-between;font-size:14px;font-weight:700}
 .opt .t b{color:var(--amber-d)}
+.fx-bold .opt .t b{color:var(--hot);font-size:16px;font-weight:900}
 .opt .d{font-size:11.5px;color:var(--ink2);margin-top:6px;line-height:1.6}
 .steps{counter-reset:s}
 .step{display:flex;gap:12px;padding:10px 0}
@@ -195,8 +306,8 @@ button{cursor:pointer;border:0;background:none}
 .cta{padding:12px 16px 14px;margin-top:18px}
 .mo .cta{position:sticky;bottom:0;background:linear-gradient(transparent,#fff 30%)}
 .cta button{width:100%;height:50px;border-radius:12px;background:var(--amber);font-size:15px;font-weight:800;color:#1A1A1A}
+.fx-bold .cta button{background:linear-gradient(100deg,#FF4D1A,#FF8A00);color:#fff;box-shadow:0 6px 16px rgba(255,77,26,.35)}
 .closedmsg{background:#fff;border-radius:12px;padding:14px;font-size:13px;line-height:1.6;color:var(--ink2)}
-/* PC 혜택 페이지 */
 .pc .bp .crumb{font-size:12.5px;color:var(--ink3);padding-top:24px}
 .pc .bp .ttl{font-size:30px;font-weight:800;margin:8px 0 4px}
 .pc .bp .ttl em{font-style:normal;color:var(--amber-d)}
@@ -216,21 +327,26 @@ button{cursor:pointer;border:0;background:none}
 .pc .cta button{width:380px;height:56px;font-size:16px}
 .toast{position:absolute;left:50%;top:70px;transform:translateX(-50%);background:rgba(20,20,20,.88);color:#fff;font-size:12px;padding:8px 12px;border-radius:8px;z-index:60;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
 .toast.on{opacity:1}
-@media (prefers-reduced-motion: reduce){.fab{animation:none}.chip.shine::before{animation:none}.sheet{transition:none}}
+@media (prefers-reduced-motion: reduce){
+  .fab,.fab2,.fab2 .ball,.fab2 .ring,.env .t,.tix,.tix::after,.trk,.tk2,.wenv .fl,.wenv .tk,.wcard,.cf{animation:none!important}
+  .wenv .tk{opacity:1;transform:rotate(var(--r))}.wenv .fl{transform:rotateX(180deg);z-index:0}
+  .chip.shine::before{animation:none}.sheet{transition:none}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="ctrl">
-    <h1>고향ON 추가혜택 프로토타입 v0.2</h1>
-    <p class="sub">상무 지시(11/12) · 내부 논의용<br>⚠️ 상품명·이미지·양주/영주 수단은 <b>예시</b>입니다. 기본 금액은 볼트 기록 기준.</p>
+    <h1>고향ON 추가혜택 프로토타입 v0.3</h1>
+    <p class="sub">상무 지시(11/12) · 내부 논의용 · 강조 강화판<br>⚠️ 상품명·이미지·양주/영주 수단은 <b>예시</b>입니다. 기본 금액은 볼트 기록 기준.</p>
+    <div class="grp"><div class="lab">⓪ 강조 강도</div><div class="seg" id="sFx"><button data-v="bold" class="on">강하게 (v0.3)</button><button data-v="calm">차분하게 (v0.2)</button></div></div>
     <div class="grp"><div class="lab">① 기기</div><div class="seg" id="sDev"><button data-v="mo" class="on">MO</button><button data-v="pc">PC</button></div></div>
     <div class="grp"><div class="lab">② 몰</div><div class="seg" id="sMall"><button data-v="seogu" class="on">독립몰 (서구)</button><button data-v="hub">허브</button></div></div>
     <div class="grp"><div class="lab">③ 회원 상태</div><div class="seg" id="sMem"><button data-v="guest">비로그인</button><button data-v="normal" class="on">일반 회원</button><button data-v="welfare">복지관 회원</button></div></div>
-    <div class="grp"><div class="lab">④ 유입 (허브만)</div><div class="seg" id="sIn"><button data-v="none" class="on">직접 방문</button><button data-v="yeongju">경북 영주 문자 링크</button><button data-v="yangju">경기 양주 문자 링크</button></div></div>
+    <div class="grp"><div class="lab">④ 유입 경로</div><div class="seg" id="sIn"></div><button class="replay" id="replay">▶ 링크 유입 첫 화면 다시 보기</button></div>
     <div class="grp"><div class="lab">⑤ 프로모션 상태 (BO 값 바꿔보기)</div>
       <div class="promo" id="promo"></div>
-      <div class="hint" style="font-size:10.5px;color:#8A8A8A;margin-top:5px;line-height:1.5">진행 = 정상 노출 · 인원 마감 = 칩·플로팅에서 빠지고 혜택 페이지에 「마감」 표시 · 종료 = 모든 화면에서 사라짐</div></div>
+      <div style="font-size:10.5px;color:#8A8A8A;margin-top:5px;line-height:1.5">진행 = 정상 노출 · 인원 마감 = 칩·플로팅에서 빠지고 혜택 페이지에 「마감」 표시 · 종료 = 모든 화면에서 사라짐</div></div>
     <div class="grp"><div class="lab">⑥ BO 연동 칸 표시</div><div class="seg" id="sBind"><button data-v="off" class="on">끄기</button><button data-v="on">켜기</button></div></div>
     <div class="note" id="note"></div>
   </div>
@@ -243,13 +359,21 @@ button{cursor:pointer;border:0;background:none}
       <div class="tabbar" id="tabbar"><div class="on"><i></i>홈</div><div><i></i>답례품</div><div><i></i>기부사업</div><div><i></i>마이</div></div>
       <div class="dim" id="dim"></div>
       <div class="sheet" id="sheet"></div>
+      <div class="wel" id="wel"></div>
       <div class="toast" id="toast"></div>
     </div>
   </div>
 </div>
 <script>
 const COUPON='<svg viewBox="0 0 24 24" fill="none"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a2.5 2.5 0 0 0 0 5V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a2.5 2.5 0 0 0 0-5V8Z" fill="#1A1A1A"/><path d="M9.5 9.5v5M14.5 9.5v5" stroke="#FFA300" stroke-width="1.6" stroke-dasharray="1.6 1.6"/></svg>';
-/* 지자체 = BO 프로모션 1위 건이 있다고 가정한 시뮬레이션 데이터. 수단/지급 문구는 연계 경품 행에서 온다고 가정 */
+/* 플로팅용 봉투 아이콘: 티켓 3장이 주기적으로 톡 튀어나온다 */
+const ENV=`<svg class="env" viewBox="0 0 64 64" aria-hidden="true">
+<g class="t t1"><rect x="11" y="15" width="15" height="24" rx="3" fill="#2F7CF6" transform="rotate(-14 18 27)"/></g>
+<g class="t t2"><rect x="24.5" y="9" width="15" height="26" rx="3" fill="#FF7A00"/></g>
+<g class="t t3"><rect x="38" y="15" width="15" height="24" rx="3" fill="#12B76A" transform="rotate(14 46 27)"/></g>
+<path d="M6 31 Q6 28 9 28 H55 Q58 28 58 31 V55 Q58 58 55 58 H9 Q6 58 6 55 Z" fill="#EFE4CF"/>
+<path d="M6 33 L32 48 L58 33 V55 Q58 58 55 58 H9 Q6 58 6 55 Z" fill="#FCF7EE"/></svg>`;
+/* 지자체 = BO 프로모션 1위 건이 있다고 가정한 시뮬레이션 데이터 */
 const GOV={
   seogu:{label:'전남광주통합특별시 서구',amt:25000,status:'on',
     opts:a=>({normal:[['온누리 적립금',a,'자동 지급 · 사용처 온누리시장'],['네이버페이 포인트',Math.min(a,20000),'매월 15일·말일 지급']],
@@ -263,39 +387,54 @@ const GOV={
     limit:'1인 최대 1만원',items:[['영주 사과 5kg (예시)','#9E2A2A'],['영주 한우 세트 (예시)','#6B2B2B']]}
 };
 const ORDER=['seogu','yangju','yeongju'];
-const S={dev:'mo',mall:'seogu',mem:'normal',inflow:'none',bind:'off',view:'list',tab:null};
+const S={fx:'bold',dev:'mo',mall:'seogu',mem:'normal',inflow:'link',bind:'off',view:'list',tab:null,welSeen:false};
 const $=id=>document.getElementById(id);
 const won=n=>Number(n).toLocaleString('ko-KR');
 const man=n=>{const v=n/10000; return (Number.isInteger(v)?v:v.toFixed(1).replace(/\.0$/,''))+'만'};
-const isPC=()=>S.dev==='pc';
+const isPC=()=>S.dev==='pc', bold=()=>S.fx==='bold';
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* 수단 → 티켓 색·짧은 이름 */
+const tcol=n=>n.includes('복지')?'var(--c-welfare)':n.includes('네이버')?'var(--c-npay)':'var(--c-onnuri)';
+const tname=n=>n.includes('복지')?'복지 적립금':n.includes('네이버')?'네이버페이':'온누리 적립금';
 /* 상태 판정 */
 const pool=()=>S.mall==='seogu'?['seogu']:ORDER;
-const shown=()=>pool().filter(g=>GOV[g].status!=='end');      // 페이지 탭·패널 목록에 보일 지자체
-const live=()=>pool().filter(g=>GOV[g].status==='on');         // 칩·플로팅 대상
-function ctxGov(){                                             // 플로팅이 고정될 한 지자체 (null=목록형)
-  const L=live(); if(!L.length) return undefined;              // undefined = 플로팅 숨김
+const shown=()=>pool().filter(g=>GOV[g].status!=='end');
+const live=()=>pool().filter(g=>GOV[g].status==='on');
+function ctxGov(){
+  const L=live(); if(!L.length) return undefined;
   if(S.mall==='seogu') return 'seogu';
-  if(S.inflow!=='none' && GOV[S.inflow].status==='on') return S.inflow;
+  if(GOV[S.inflow] && GOV[S.inflow].status==='on') return S.inflow;
   if(L.length===1) return L[0];
   return null;
 }
+function welGov(){ if(S.inflow==='none') return null; if(S.mall==='seogu') return GOV.seogu.status==='on'?'seogu':null; return GOV[S.inflow]&&GOV[S.inflow].status==='on'?S.inflow:null; }
 function chip(g){ if(GOV[g].status!=='on') return '';
+  if(bold()) return `<span class="tix bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션"><small>고향ON 추가혜택</small><b>+${won(GOV[g].amt)}원</b></span>`;
   return `<span class="chip shine bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션">${COUPON}+${man(GOV[g].amt)} 추가혜택</span>`;}
 function card(g,it){
   return `<div class="card"><div class="thumb" style="background:${it[1]}">${it[0]}${chip(g)}</div>
   ${S.mall==='hub'?`<div class="gov">${GOV[g].label}</div>`:''}<div class="nm">${it[0]}</div><div class="pr">기부금 <b>100,000원</b></div></div>`;}
-function allCards(){ let c=''; (S.mall==='seogu'?['seogu']:ORDER).forEach(g=>GOV[g].items.forEach(it=>c+=card(g,it))); return c; }
+function allCards(){ let c=''; pool().forEach(g=>GOV[g].items.forEach(it=>c+=card(g,it))); return c; }
+function ticker(){
+  if(!bold()) return ''; const L=live(); if(!L.length) return '';
+  let items;
+  if(S.mall==='seogu'){ const a=GOV.seogu.amt;
+    items=[`고향ON 추가혜택 진행 중`,`10만원 기부하면 적립금·포인트 <em>+${won(a)}원</em> 더`,`세액공제 10만원 + 답례품 3만원 + 추가혜택 ${man(a)}원`]; }
+  else { items=L.map(g=>`${GOV[g].label} 기부하면 <em>+${won(GOV[g].amt)}원</em>${GOV[g].limit.startsWith('선착순')?' · '+GOV[g].limit.split(' · ')[0]:''}`).concat(['지자체마다 1번씩 받을 수 있어요']); }
+  const one=items.map(t=>`<span>${t}</span>`).join('');
+  return `<div class="tick bind" data-bo="띠 배너 · 진행 중 1위 프로모션" onclick="tapCtx()"><div class="trk">${one}${one}</div></div>`;
+}
 function listView(){
   const logo=S.mall==='seogu'?'<div class="logo">고향<i>ON</i><small>서구</small></div>':'<div class="logo">고향<i>ON</i></div>';
   const heroT=S.mall==='seogu'?['서구가 전하는 이야기','메인 비주얼 배너 영역 (기존)']:['고향사랑기부, 고향ON에서','허브 메인 비주얼 배너 영역 (기존)'];
   const c=allCards();
-  if(!isPC()) return `<div class="hdr"><div class="row">${logo}<span style="font-size:12px;color:#8A8A8A">${S.mem==='guest'?'로그인':'마이'}</span></div><div class="search">답례품을 검색해 보세요</div></div>
+  if(!isPC()) return `<div class="hdr"><div class="row">${logo}<span style="font-size:12px;color:#8A8A8A">${S.mem==='guest'?'로그인':'마이'}</span></div><div class="search">답례품을 검색해 보세요</div>${ticker()}</div>
     <div class="hero"><b>${heroT[0]}</b><p>${heroT[1]}</p></div>
     <div class="sec"><h2>인기 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div>
     <div class="sec"><h2>추천 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div>`;
   const gnb=S.mall==='seogu'?['서구 이야기','답례품','기부사업','고향사랑 안내','이벤트']:['지자체','답례품','지정기부','고향사랑 안내','혜택·이벤트'];
   return `<div class="hdr"><div class="in"><div class="top">${logo}<div class="search">답례품을 검색해 보세요</div><div class="util"><span>${S.mem==='guest'?'로그인':'마이페이지'}</span><span>고객센터</span></div></div>
-    <div class="gnb">${gnb.map(x=>`<span>${x}</span>`).join('')}</div></div></div>
+    <div class="gnb">${gnb.map(x=>`<span>${x}</span>`).join('')}</div></div>${ticker()}</div>
     <div class="in"><div class="hero"><b>${heroT[0]}</b><p>${heroT[1]}</p></div>
     <div class="sec"><h2>인기 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div>
     <div class="sec"><h2>추천 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div></div>
@@ -305,34 +444,45 @@ function rcpt(g){ const p=GOV[g].amt;
   return `<div class="rcpt"><div class="r"><span>세액공제 (10만원 기부 시)</span><span>100,000원</span></div>
   <div class="r"><span>답례품 (기부금의 30%)</span><span>30,000원</span></div>
   <div class="r plus bind" data-bo="연계 경품 최대 금액"><span>고향ON 추가혜택</span><b>+${won(p)}원</b></div>
-  <div class="sum"><span>받는 혜택 합계</span><b>${won(130000+p)}원</b></div>
+  <div class="sum"><span>받는 혜택 합계</span><b data-from="130000" data-to="${130000+p}">${won(130000+p)}원</b></div>
   <div class="fine">세액공제는 연말정산·종합소득세 신고 시 적용 · 추가혜택은 결제 화면에서 1개 선택</div></div>`;}
 function optList(g){ const o=GOV[g].opts(GOV[g].amt); return S.mem==='guest'?o.normal:o[S.mem]; }
+function tickets(g,cls){ return optList(g).map(o=>`<div class="${cls}" style="--c:${tcol(o[0])}"><small>${tname(o[0])}</small><b>${won(o[1])}원</b></div>`).join(''); }
 function picks(g){
+  if(bold()) return `<div class="picks"><div class="lab">${S.mem==='guest'?'이런 혜택 중 1개를 골라요 <span style="color:#8A8A8A;font-weight:500">(일반 회원 기준)</span>':'내가 고를 수 있는 고향ON 추가혜택 <span style="color:#8A8A8A;font-weight:500">(택1)</span>'}</div>
+    <div class="tkrow bind" data-bo="연계 경품 · FO 표시명/금액">${tickets(g,'tk2')}</div>${S.mem==='welfare'?'<div class="tkhint">파란 티켓 = 우리 회사 복지 적립금</div>':''}</div>`;
   if(S.mem==='guest') return `<div class="picks"><div class="lab">내가 받을 수 있는 고향ON 추가혜택</div><div class="login">로그인하면 <b>내가 고를 수 있는 혜택</b>을 바로 보여드려요.<br><span style="color:#8A8A8A;font-size:11.5px">적립금 또는 포인트 중 1개 · 최대 ${won(GOV[g].amt)}원</span></div></div>`;
   return `<div class="picks"><div class="lab">내가 고를 수 있는 고향ON 추가혜택 <span style="color:#8A8A8A;font-weight:500">(택1)</span></div>
   ${optList(g).map((o,i)=>`<div class="pick bind" data-bo="연계 경품 · FO 표시명/금액"><span>${o[0]}${S.mem==='welfare'&&i===0?'<span class="tag">우리 회사</span>':''}</span><b>${won(o[1])}원</b></div>`).join('')}</div>`;}
 function sheetOne(g){
+  const h=bold()?`10만원 기부하면<br><em>+${won(GOV[g].amt)}원</em> 더 받아요`:'10만원 기부하면<br>혜택이 하나 더 있어요';
+  const body=bold()?picks(g)+rcpt(g):rcpt(g)+picks(g);
   return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON 추가혜택 · ${GOV[g].label}</div>
-  <h3>10만원 기부하면<br>혜택이 하나 더 있어요</h3>${rcpt(g)}${picks(g)}
+  <h3>${h}</h3>${body}
   <div class="btns"><button class="b2" onclick="toast('${GOV[g].label} 답례품 목록으로 이동')">답례품 보러가기</button><button class="b1" onclick="openPage('${g}')">자세히 보기 ›</button></div>`;}
 function sheetList(){
   const rows=shown().map(g=>{const G=GOV[g]; if(G.status==='full') return `<div class="govrow closed"><div><div class="g">${G.label}</div><div class="s">추가혜택 인원 마감</div></div><div class="a">마감</div></div>`;
     return `<div class="govrow" onclick="openSheet('${g}')"><div><div class="g">${G.label}</div><div class="s">${G.limit}</div></div><div class="a bind" data-bo="${G.label} 1위 프로모션">+${won(G.amt)}원<small>자세히 ›</small></div></div>`;}).join('');
-  return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON에서만</div><h3>고향ON 추가혜택</h3>${rows}
+  return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON에서만</div><h3>${bold()?`지금 <em>${live().length}곳</em>에서<br>추가혜택을 드려요`:'고향ON 추가혜택'}</h3>${rows}
   <div class="sfine">기부하는 지자체마다 1번씩 받을 수 있어요 · 금액과 혜택은 지자체마다 달라요</div>
   <div class="btns"><button class="b1" onclick="openPage(shown()[0])">혜택 한눈에 보기 ›</button></div>`;}
+function envBig(g,still){
+  const L=optList(g).slice(0,3), n=L.length;
+  const pos=n===1?[[50,0]]:n===2?[[36,-8],[64,8]]:[[24,-12],[50,0],[76,12]];
+  const tks=L.map((o,i)=>`<div class="tk" style="--c:${tcol(o[0])};--r:${pos[i][1]}deg;left:${pos[i][0]}%;animation-delay:${.45+i*.12}s"><small>${tname(o[0])}</small><b>${won(o[1])}</b></div>`).join('');
+  return `<div class="wenv${still?' still':''}"><div class="bk"></div>${tks}<div class="fl"></div><div class="fr"></div></div>`;
+}
 function tabsHtml(g){ if(S.mall!=='hub') return '';
   return `<div class="gtabs">${shown().map(k=>`<button class="${k===g?'on':''}" onclick="openPage('${k}')">${GOV[k].label}${GOV[k].status==='full'?'<small>마감</small>':''}</button>`).join('')}</div>`;}
 function pageParts(g){
   const G=GOV[g]; const closed=G.status==='full';
   const hero=closed?`<div class="bhero closed"><div class="k">고향ON 추가혜택 · ${G.label}</div><h2>추가혜택이<br><em>마감</em>되었어요</h2><div class="closedmsg">준비된 인원이 모두 찼어요. 답례품 기부와 세액공제는 그대로 받을 수 있어요.</div></div>`
-    :`<div class="bhero"><div class="k">고향ON 추가혜택 · ${G.label}</div><h2>10만원 기부하면<br><em>${won(130000+G.amt)}원</em> 혜택</h2>${rcpt(g)}</div>`;
-  const opts=closed?'':`<div class="blk"><h3>추가혜택 고르기 <span style="font-size:12px;color:#8A8A8A;font-weight:500">결제 화면에서 1개</span></h3>${S.mem==='guest'?'<div class="login" style="margin-bottom:8px">아래는 일반 회원 기준이에요. 로그인하면 내 혜택으로 바뀌어요.</div>':''}${optList(g).map(o=>`<div class="opt bind" data-bo="연계 경품 행"><div class="t"><span>${o[0]}</span><b>${won(o[1])}원</b></div><div class="d">${o[2]}</div></div>`).join('')}</div>`;
+    :`<div class="bhero"><div class="k">고향ON 추가혜택 · ${G.label}</div>${bold()?envBig(g,false):''}<h2>10만원 기부하면<br><em data-from="130000" data-to="${130000+G.amt}">${won(130000+G.amt)}원</em> 혜택</h2>${rcpt(g)}</div>`;
+  const opts=closed?'':`<div class="blk"><h3>추가혜택 고르기 <span style="font-size:12px;color:#8A8A8A;font-weight:500">결제 화면에서 1개</span></h3>${S.mem==='guest'?'<div class="login" style="margin-bottom:8px">아래는 일반 회원 기준이에요. 로그인하면 내 혜택으로 바뀌어요.</div>':''}${optList(g).map(o=>`<div class="opt bind" style="--c:${tcol(o[0])}" data-bo="연계 경품 행"><div class="t"><span>${o[0]}</span><b>${won(o[1])}원</b></div><div class="d">${o[2]}</div></div>`).join('')}</div>`;
   const steps=closed?'':`<div class="blk"><h3>받는 방법</h3><div class="steps"><div class="step"><div><b>답례품 고르고 10만원 이상 기부</b><span>일반기부로 진행돼요</span></div></div><div class="step"><div><b>결제 화면에서 추가혜택 선택</b><span>적립금·포인트 중 1개를 골라요</span></div></div><div class="step"><div><b>지급 후 사용</b><span class="bind" data-bo="연계 경품 · 지급 시점/사용처/유효기간">수단별 지급 시점·사용처는 위 안내를 따라요</span></div></div></div></div>`;
   const prods=`<div class="blk"><h3>${G.label} 답례품</h3><div class="hs">${G.items.map(it=>card(g,it)).join('')}</div></div>`;
   const warn=`<div class="blk"><h3>꼭 확인하세요</h3><div class="warn bind" data-bo="지급 조건 · 참여 제한 그룹">· 10만원 이상 기부 시 받을 수 있어요<br>· ${G.limit} · 지자체 프로모션마다 1인 1회<br>· 이미 받으신 분은 결제 화면에 혜택 선택이 나타나지 않아요 (기부는 그대로 가능)<br>· 혜택을 선택하지 않으면 지급되지 않아요<br>· 프로모션 내용은 지자체 사정에 따라 바뀌거나 일찍 끝날 수 있어요</div></div>`;
-  const cta=`<div class="cta"><button onclick="toast('${G.label} 답례품 목록으로 이동')">${G.label} 답례품 보러가기</button></div>`;
+  const cta=`<div class="cta"><button onclick="toast('${G.label} 답례품 목록으로 이동')">${bold()&&!closed?`답례품 고르고 +${man(G.amt)}원 받기`:`${G.label} 답례품 보러가기`}</button></div>`;
   return {hero,opts,steps,prods,warn,cta};
 }
 function pageView(g){
@@ -345,13 +495,70 @@ function pageView(g){
   <div class="two"><div>${P.hero}</div><div>${P.opts}${P.steps}</div></div>${P.prods.replace('class="blk"','class="blk" style="padding-top:30px"')}${P.warn}${P.cta}</div>
   <div class="foot"><div class="in">푸터 영역 (기존)</div></div>`;
 }
+/* ── 플로팅 ── */
+let rotT=null;
 function renderFab(){
-  const f=$('fab'); const g=ctxGov();
-  if(S.view==='page'||g===undefined||f.dataset.hidden==='1'){f.classList.add('hide');return} f.classList.remove('hide','mini');
-  const txt=g?`고향ON 추가혜택 <em>+${man(GOV[g].amt)}</em>`:'고향ON 추가혜택';
-  const bdg=g?`+${man(GOV[g].amt)}`:`${live().length}곳`;
-  f.innerHTML=`<span class="ic">${COUPON}<span class="bdg">${bdg}</span></span><span class="tx bind" data-bo="${g?'카드 문구 (플로팅 공용)':'진행 중 지자체 수'}">${txt}</span>${!g?`<span class="bdg2" style="font-size:11px;font-weight:800;background:var(--amber);color:#1A1A1A;border-radius:9px;padding:1px 7px">${live().length}곳</span>`:''}<span class="x" onclick="event.stopPropagation();hideFab()">✕</span>`;
+  const f=$('fab'); const g=ctxGov(); clearInterval(rotT);
+  if(S.view==='page'||g===undefined||f.dataset.hidden==='1'){f.className='fab hide';return}
+  if(bold()){
+    f.className='fab2';
+    const bdg=g?`+${man(GOV[g].amt)}`:`${live().length}곳`;
+    const line=g?`<em>+${won(GOV[g].amt)}원</em> 더 받기`:`<span class="rot" id="rot"></span>`;
+    f.innerHTML=`<span class="ball"><span class="ring"></span>${ENV}<span class="bdg">${bdg}</span></span><span class="bubble bind" data-bo="${g?'1위 프로모션 금액':'진행 중 지자체 순환'}"><small>고향ON 추가혜택</small><b>${line}</b><span class="x" onclick="event.stopPropagation();hideFab()">✕</span></span>`;
+    if(!g){ const L=live(); let i=0; const put=()=>{const el=$('rot'); if(!el)return; const k=L[i%L.length]; el.outerHTML=`<span class="rot" id="rot">${GOV[k].label.replace('전남광주통합특별시 ','')} <em>+${man(GOV[k].amt)}원</em></span>`; i++;};
+      put(); if(!reduce) rotT=setInterval(put,2200); }
+  } else {
+    f.className='fab';
+    const txt=g?`고향ON 추가혜택 <em>+${man(GOV[g].amt)}</em>`:'고향ON 추가혜택';
+    const bdg=g?`+${man(GOV[g].amt)}`:`${live().length}곳`;
+    f.innerHTML=`<span class="ic">${COUPON}<span class="bdg">${bdg}</span></span><span class="tx bind" data-bo="${g?'카드 문구 (플로팅 공용)':'진행 중 지자체 수'}">${txt}</span>${!g?`<span class="bdg2" style="font-size:11px;font-weight:800;background:var(--amber);color:#1A1A1A;border-radius:9px;padding:1px 7px">${live().length}곳</span>`:''}<span class="x" onclick="event.stopPropagation();hideFab()">✕</span>`;
+  }
   f.style.animation='none'; void f.offsetWidth; f.style.animation='';
+}
+function boing(){ const f=$('fab'); if(!f.classList.contains('fab2'))return; f.classList.remove('boing'); void f.offsetWidth; f.classList.add('boing'); }
+/* ── 카운트업 ── */
+function countUp(root){
+  if(!bold()) return;
+  root.querySelectorAll('[data-to]').forEach(el=>{ const a=+el.dataset.from,b=+el.dataset.to,suf=el.textContent.endsWith('원')?'원':''; const delay=+(el.dataset.delay||250);
+    if(reduce){el.textContent=won(b)+suf;return}
+    el.textContent=won(a)+suf; const t0=performance.now()+delay, d=900;
+    const step=t=>{ const p=Math.min(1,Math.max(0,(t-t0)/d)); const e=1-Math.pow(1-p,3); el.textContent=won(Math.round((a+(b-a)*e)/100)*100)+suf; if(p<1) requestAnimationFrame(step); };
+    requestAnimationFrame(step); });
+}
+/* ── 링크 유입 웰컴 ── */
+function showWelcome(){
+  const g=welGov(); if(!bold()||!g||S.view!=='list') return;
+  const G=GOV[g], src=S.mall==='seogu'?'링크로 오셨네요!':`${G.label.replace('전남광주통합특별시 ','')} 문자 링크로 오셨네요!`;
+  const cols=['#2F7CF6','#FF7A00','#12B76A','#FFA300','#FF4D1A'];
+  const cf=reduce?'':Array.from({length:18},(_,i)=>`<i class="cf" style="left:${5+Math.random()*90}%;background:${cols[i%5]};--d:${(.9+Math.random()*.5).toFixed(2)}s;--x:${Math.round(Math.random()*80-40)}px"></i>`).join('');
+  $('wel').innerHTML=`<div class="wcard" id="wcard">${cf}<button class="wx" onclick="closeWelcome()">✕</button>
+    <div class="wk">${src}</div>
+    ${envBig(g,false)}
+    <h3>고향ON에서 기부하면<br><em>혜택이 하나 더</em> 있어요</h3>
+    <div class="wsum">10만원 기부하면 <b data-from="130000" data-to="${130000+G.amt}" data-delay="1000">${won(130000+G.amt)}</b>원 혜택</div>
+    <div class="wsub">세액공제 100,000 + 답례품 30,000 + <b>추가혜택 ${won(G.amt)}</b></div>
+    <div class="btns"><button class="b2" onclick="closeWelcome();openPage('${g}')">혜택 자세히</button><button class="b1" onclick="closeWelcome()">답례품 보러가기</button></div>
+    <div class="wfine">${G.limit} · 지자체 프로모션마다 1인 1회 · 결제 화면에서 1개 선택</div></div>`;
+  $('wel').classList.remove('out'); $('wel').classList.add('on'); countUp($('wel')); S.welSeen=true;
+}
+function closeWelcome(){
+  const w=$('wel'), c=$('wcard'); if(!w.classList.contains('on')||!c){w.classList.remove('on');return}
+  const f=$('fab');
+  if(!reduce && !f.classList.contains('hide')){
+    const fr=f.getBoundingClientRect(), cr=c.getBoundingClientRect(), sc=isPC()?(parseFloat(($('dev').style.transform.match(/scale\(([\d.]+)\)/)||[0,1])[1])):1;
+    const ball=f.querySelector('.ball')||f; const br=ball.getBoundingClientRect();
+    c.style.setProperty('--fx',((br.left+br.width/2)-(cr.left+cr.width/2))/sc+'px'); c.style.setProperty('--fy',((br.top+br.height/2)-(cr.top+cr.height/2))/sc+'px');
+    w.classList.add('out'); c.classList.add('fly');
+    setTimeout(()=>{w.classList.remove('on','out'); w.innerHTML=''; boing();},480);
+  } else { w.classList.remove('on'); w.innerHTML=''; }
+}
+/* ── 조작 ── */
+function renderInflow(){
+  const opts=S.mall==='seogu'?[['none','직접 방문'],['link','문자·복지몰 링크']]:[['none','직접 방문'],['yeongju','경북 영주 문자 링크'],['yangju','경기 양주 문자 링크']];
+  if(!opts.some(o=>o[0]===S.inflow)) S.inflow=S.mall==='seogu'?'link':'none';
+  $('sIn').innerHTML=opts.map(o=>`<button data-v="${o[0]}" class="${o[0]===S.inflow?'on':''}">${o[1]}</button>`).join('');
+  $('sIn').querySelectorAll('button').forEach(b=>b.onclick=()=>{ S.inflow=b.dataset.v; S.view='list'; $('fab').dataset.hidden=''; render(); if(S.inflow!=='none') showWelcome(); });
+  $('replay').style.display=bold()&&welGov()?'inline-block':'none';
 }
 function renderPromo(){
   $('promo').innerHTML=ORDER.map(g=>`<div class="pr ${S.mall==='seogu'&&g!=='seogu'?'dis':''}"><span>${GOV[g].label}</span>
@@ -361,46 +568,47 @@ function renderPromo(){
   document.querySelectorAll('.pam').forEach(el=>el.onchange=()=>{GOV[el.dataset.g].amt=Math.max(0,+el.value||0); render(false);});
 }
 function fit(){ const d=$('dev'),st=$('stage');
-  if(isPC()){ const avail=Math.min(window.innerWidth-370,1280); const s=Math.max(.45,Math.min(1,avail/1282)); d.style.transform=`scale(${s})`; st.style.width=1282*s+'px'; st.style.height=782*s+'px'; }
+  if(isPC()){ const avail=Math.min(document.documentElement.clientWidth-400,1280); const s=Math.max(.45,Math.min(1,avail/1282)); d.style.transform=`scale(${s})`; st.style.width=1282*s+'px'; st.style.height=782*s+'px'; }
   else { d.style.transform=''; st.style.width=''; st.style.height=''; } }
 function render(resetScroll=true){
-  const d=$('dev'); d.className='dev '+S.dev+(S.bind==='on'?' bind-on':'');
+  const d=$('dev'); d.className='dev '+S.dev+(S.bind==='on'?' bind-on':'')+(bold()?' fx-bold':'');
   $('pcbar').style.display=isPC()?'flex':'none'; $('tabbar').style.display=isPC()?'none':'flex'; $('topbtn').style.display=isPC()?'none':'flex';
-  $('url').textContent=(S.mall==='seogu'?'seogu.gohyangon.co.kr':'gohyangon.co.kr')+(S.view==='page'?'/event/benefit':'');
+  $('url').textContent=(S.mall==='seogu'?'seogu.gohyangon.co.kr':'gohyangon.co.kr')+(S.view==='page'?'/event/benefit':(S.inflow!=='none'?'/?inflowPathTpCd=…':''));
   const y=$('scr').scrollTop; $('scr').innerHTML=S.view==='page'?pageView(S.tab):listView(); $('scr').scrollTop=resetScroll?0:y;
-  renderFab(); closeSheet(); renderPromo(); noteUpdate(); fit();
-  document.querySelectorAll('#sIn button').forEach(b=>b.disabled=S.mall!=='hub');
+  $('wel').classList.remove('on'); $('wel').innerHTML='';
+  renderFab(); closeSheet(); renderPromo(); renderInflow(); noteUpdate(); fit();
+  if(S.view==='page') countUp($('scr'));
 }
 function noteUpdate(){
   const g=ctxGov(); let t='';
-  if(g===undefined) t='<b>진행 중인 프로모션 없음</b>: 플로팅과 카드 칩이 모두 사라져요.';
-  else if(S.mall==='seogu') t='<b>독립몰</b>: 지자체·프로모션이 1개라 모든 카드와 플로팅이 같은 금액이에요.';
-  else if(g&&S.inflow===g) t=`<b>허브 · ${GOV[g].label} 링크 유입</b>: 플로팅이 이 지자체 금액으로 고정돼요. 카드는 각자 자기 지자체 금액이에요.`;
-  else if(g) t=`<b>허브 · 진행 중 1곳</b>: 진행 중인 프로모션이 ${GOV[g].label} 하나뿐이라 플로팅이 그 금액을 바로 보여줘요.`;
-  else t='<b>허브 · 직접 방문</b>: 플로팅은 「고향ON 추가혜택 · N곳」으로 보여주고, 누르면 지자체 목록이 나와요. 합산 「최대 N원」은 쓰지 않아요.';
-  if(S.mall==='hub'&&S.inflow!=='none'&&GOV[S.inflow].status!=='on') t+=`<br>⚠️ 유입 지자체(${GOV[S.inflow].label}) 프로모션이 ${GOV[S.inflow].status==='full'?'마감':'종료'}돼 기본 규칙으로 돌아갔어요.`;
-  t+=isPC()?'<br><br>· PC 플로팅 = 우하단 고정(챗봇 버튼 자리). 스크롤하면 접히고 마우스를 올리면 펼쳐져요<br>· 누르면 버튼 위에 팝오버 카드가 떠요'
-           :'<br><br>· 아래로 스크롤하면 플로팅이 접혀요<br>· 누르면 아래에서 패널이 올라와요';
-  t+='<br>· 카드 칩은 처음 보일 때 한 번만 반짝여요<br>· 답례품 상세·결제·마이페이지에는 플로팅이 없어요';
+  if(bold()) t='<b>강하게 (v0.3)</b><br>· <b>링크로 들어오면 첫 화면</b>: 봉투가 열리고 혜택 티켓이 튀어나와요. 합계 숫자가 130,000원에서 올라가요. 닫으면 카드가 플로팅 속으로 빨려 들어가요 (세션당 1번)<br>· <b>상단 띠 배너</b>: 혜택 문구가 계속 흘러가요. 누르면 패널이 열려요<br>· <b>카드</b>: 주황 티켓 리본 「+25,000원」이 미끄러져 들어오고, 몇 초마다 빛이 지나가요<br>· <b>플로팅</b>: 봉투 버튼이 말랑하게 출렁이고, 티켓이 톡 튀어나와요. 말풍선에 금액을 보여줘요<br>· 패널·혜택 페이지는 참고 이미지처럼 <b>수단별 색 티켓</b>(복지=파랑·온누리=주황·네이버페이=초록)으로 보여줘요<br><br>';
+  if(g===undefined) t+='<b>진행 중인 프로모션 없음</b>: 플로팅·띠 배너·카드 리본이 모두 사라져요.';
+  else if(S.mall==='seogu') t+='<b>독립몰</b>: 지자체·프로모션이 1개라 모든 카드와 플로팅이 같은 금액이에요.';
+  else if(g&&S.inflow===g) t+=`<b>허브 · ${GOV[g].label} 링크 유입</b>: 첫 화면과 플로팅이 이 지자체 금액으로 고정돼요. 카드는 각자 자기 지자체 금액이에요.`;
+  else if(g) t+=`<b>허브 · 진행 중 1곳</b>: ${GOV[g].label} 금액을 바로 보여줘요.`;
+  else t+=`<b>허브 · 직접 방문</b>: ${bold()?'말풍선이 지자체별 금액을 하나씩 돌려가며 보여줘요':'플로팅은 「고향ON 추가혜택 · N곳」'}. 합산 「최대 N원」은 쓰지 않아요.`;
+  if(S.mall==='hub'&&GOV[S.inflow]&&GOV[S.inflow].status!=='on') t+=`<br>⚠️ 유입 지자체(${GOV[S.inflow].label}) 프로모션이 ${GOV[S.inflow].status==='full'?'마감':'종료'}돼 첫 화면 없이 기본 규칙으로 돌아갔어요.`;
+  t+='<br><br>· 가짜 남은 시간·남은 인원은 넣지 않았어요 (BO에 실제 값이 있을 때만)<br>· 답례품 상세·결제·마이페이지에는 플로팅이 없어요<br>· 움직임 줄이기 설정을 켠 기기에서는 애니메이션이 멈춰요';
   $('note').innerHTML=t;
 }
-function openSheet(g){ $('sheet').innerHTML=g?sheetOne(g):sheetList(); $('dim').classList.add('on'); $('sheet').classList.add('on'); $('sheet').scrollTop=0; }
+function openSheet(g){ $('sheet').innerHTML=g?sheetOne(g):sheetList(); $('dim').classList.add('on'); $('sheet').classList.add('on'); $('sheet').scrollTop=0; countUp($('sheet')); }
 function closeSheet(){ $('dim').classList.remove('on'); $('sheet').classList.remove('on'); }
+function tapCtx(){ const g=ctxGov(); if(g!==undefined) openSheet(g); }
 function openPage(g){ S.view='page'; S.tab=g; render(); }
 function back(){ S.view='list'; render(); }
 function hideFab(){ $('fab').dataset.hidden='1'; $('fab').classList.add('hide'); toast('오늘 하루 숨겨요'); }
 function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),1400); }
-$('fab').onclick=()=>{ const g=ctxGov(); if(g!==undefined) openSheet(g); };
+$('fab').onclick=tapCtx;
 $('dim').onclick=closeSheet;
+$('replay').onclick=()=>{ S.view='list'; $('fab').dataset.hidden=''; render(); showWelcome(); };
 let lastY=0; $('scr').addEventListener('scroll',e=>{ if(S.view!=='list')return; const y=e.target.scrollTop; $('fab').classList.toggle('mini', y>lastY && y>(isPC()?300:60)); lastY=y; });
 function seg(id,key){ document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{ if(b.disabled)return;
   document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); S[key]=b.dataset.v;
-  if(key==='mall'){S.view='list';S.inflow='none';document.querySelectorAll('#sIn button').forEach((x,i)=>x.classList.toggle('on',i===0));}
-  if(key==='inflow')S.view='list';
-  $('fab').dataset.hidden=''; render(); }); }
-['sDev:dev','sMall:mall','sMem:mem','sIn:inflow','sBind:bind'].forEach(p=>{const[a,b]=p.split(':');seg(a,b)});
+  if(key==='mall'){S.view='list';S.inflow=S.mall==='seogu'?'link':'none';}
+  $('fab').dataset.hidden=''; render(); if(key==='fx'&&bold()&&welGov()) showWelcome(); }); }
+['sFx:fx','sDev:dev','sMall:mall','sMem:mem','sBind:bind'].forEach(p=>{const[a,b]=p.split(':');seg(a,b)});
 window.addEventListener('resize',fit);
-render();
+render(); setTimeout(showWelcome,300);
 </script>
 </body>
 </html>
