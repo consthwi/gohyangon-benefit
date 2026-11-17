@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>고향ON 추가혜택 프로토타입</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--amber:#FFA300;--amber-d:#E08E00;--amber-bg:#FFF6E5;--hot:#FF4D1A;--ink:#1A1A1A;--ink2:#555;--ink3:#8A8A8A;--line:#ECECEC;--bg:#F4F4F2;--c-welfare:#2F7CF6;--c-onnuri:#FF7A00;--c-npay:#12B76A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+button,input,select{font-family:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.wrap{display:flex;gap:24px;justify-content:center;align-items:flex-start;padding:20px 16px;flex-wrap:wrap}
+
+/* ── 조작 패널 ── */
+.ctrl{width:310px;background:#fff;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.06);flex:none}
+.ctrl h1{font-size:15px;margin-bottom:4px}
+.ctrl .sub{font-size:12px;color:var(--ink3);margin-bottom:14px;line-height:1.5}
+.grp{margin-bottom:13px}
+.lab{font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:#fafafa}
+.seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.replay{font-size:12px;padding:6px 10px;border-radius:8px;border:1px dashed #C9A24D;background:#FFF9EC;color:#8A5A00;margin-top:6px}
+.promo{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.promo .pr{display:grid;grid-template-columns:1fr 78px 72px;gap:6px;align-items:center;padding:5px 0;font-size:11.5px}
+.promo .pr+.pr{border-top:1px solid #F2F2F2}
+.promo select,.promo input{font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:4px 5px;background:#fff;width:100%}
+.promo .pr.dis{opacity:.35;pointer-events:none}
+.note{font-size:11.5px;color:var(--ink2);line-height:1.6;background:#FAFAF7;border-radius:8px;padding:10px;margin-top:4px}
+.note b{color:var(--ink)}
+.bind-on .bind{outline:1.5px dashed #2F7CF6;outline-offset:2px}
+.bind-on .bind:not(.chip):not(.tix){position:relative}
+.bind-on .bind::after{content:attr(data-bo);position:absolute;left:0;top:-15px;font-size:9px;color:#2F7CF6;background:#EAF2FF;padding:0 4px;border-radius:3px;white-space:nowrap;z-index:5;font-weight:600}
+
+/* ── 기기 프레임 ── */
+.stage{flex:none}
+.dev{position:relative;overflow:hidden;background:#fff}
+.dev.mo{width:375px;height:780px;border-radius:34px;border:10px solid #111;box-shadow:0 10px 40px rgba(0,0,0,.15)}
+.dev.pc{width:1280px;height:780px;border-radius:10px;border:1px solid #D9D9D6;box-shadow:0 10px 40px rgba(0,0,0,.12);transform-origin:top left}
+.pcbar{height:34px;background:#EDEDEA;display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid #DDD}
+.pcbar i{width:10px;height:10px;border-radius:50%;background:#CFCFCB;display:block}
+.pcbar span{margin-left:14px;font-size:11px;color:#888;background:#fff;border-radius:6px;padding:4px 12px;width:420px}
+.screen{position:absolute;left:0;right:0;bottom:0;top:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.pc .screen{top:34px}
+.mo .screen{padding-bottom:70px}
+.screen::-webkit-scrollbar{display:none}
+
+/* 공통 카드 */
+.card .thumb{aspect-ratio:1;border-radius:10px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:12px;color:rgba(255,255,255,.9);font-weight:600;text-align:center;padding:8px}
+.chip{position:absolute;left:8px;bottom:8px;background:var(--amber);color:#1A1A1A;font-size:11px;font-weight:800;padding:4px 7px 4px 6px;border-radius:6px;overflow:hidden;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(224,142,0,.35)}
+.chip svg{width:11px;height:11px}
+.chip::before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.85),transparent);transform:skewX(-20deg)}
+.chip.shine::before{animation:shine .9s ease-out .15s 1 both}
+@keyframes shine{from{left:-60%}to{left:130%}}
+.card .gov{font-size:11px;color:var(--ink3);margin-top:8px}
+.card .nm{font-size:13px;font-weight:600;line-height:1.35;margin-top:3px;height:35px;overflow:hidden}
+.card .pr{font-size:12px;color:var(--ink2);margin-top:4px}.card .pr b{color:var(--ink);font-size:13.5px}
+.pc .card .thumb{font-size:14px;border-radius:12px}
+.pc .chip{left:12px;bottom:12px;font-size:13px;padding:5px 9px 5px 8px;border-radius:7px}
+.pc .chip svg{width:13px;height:13px}
+.pc .card .gov{font-size:12.5px;margin-top:12px}
+.pc .card .nm{font-size:15px;height:auto}
+.pc .card .pr{font-size:13px}.pc .card .pr b{font-size:16px}
+
+/* v0.3 카드 티켓 리본 */
+.tix{position:absolute;left:0;top:10px;z-index:2;color:#fff;text-align:left;padding:5px 12px 6px 9px;border-radius:0 10px 10px 0;background:linear-gradient(100deg,#FF4D1A,#FF7A00 55%,#FFA300);box-shadow:0 3px 10px rgba(255,77,26,.45);line-height:1.05;overflow:hidden;animation:tixIn .6s cubic-bezier(.3,1.7,.5,1) both;
+  -webkit-mask:radial-gradient(circle at 100% 50%,transparent 4px,#000 4.5px);mask:radial-gradient(circle at 100% 50%,transparent 4px,#000 4.5px)}
+.tix small{display:block;font-size:9.5px;font-weight:700;opacity:.95;letter-spacing:.2px}
+.tix b{font-size:16px;font-weight:900;letter-spacing:-.4px}
+.tix::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg);animation:shineLoop 3.8s ease-in-out 1s infinite}
+@keyframes tixIn{from{transform:translateX(-105%)}to{transform:none}}
+@keyframes shineLoop{0%{left:-70%}22%,100%{left:140%}}
+.pc .tix{top:14px;padding:7px 16px 8px 12px}.pc .tix small{font-size:11.5px}.pc .tix b{font-size:21px}
+
+/* MO 레이아웃 */
+.mo .hdr{position:sticky;top:0;z-index:20;background:#fff;padding:12px 16px 10px;border-bottom:1px solid var(--line)}
+.mo .hdr .row{display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:800;font-size:18px;letter-spacing:-.3px}
+.logo i{font-style:normal;color:var(--amber)}
+.logo small{font-size:12px;font-weight:600;color:var(--ink2);margin-left:4px}
+.mo .search{margin-top:10px;background:#F5F5F5;border-radius:10px;padding:9px 12px;font-size:13px;color:var(--ink3)}
+.mo .sec{padding:18px 16px 4px}
+.sec h2{font-size:16px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:baseline}
+.sec h2 span{font-size:12px;color:var(--ink3);font-weight:500}
+.mo .hero{margin:14px 16px 0;height:120px;border-radius:14px;background:linear-gradient(135deg,#2E4A3A,#4E7A5E);color:#fff;padding:18px;display:flex;flex-direction:column;justify-content:flex-end}
+.hero b{font-size:17px}.hero p{font-size:12px;opacity:.85;margin-top:4px}
+.mo .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 11px}
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:56px;background:#fff;border-top:1px solid var(--line);display:flex;z-index:30}
+.tabbar div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:var(--ink3);gap:3px}
+.tabbar div i{width:20px;height:20px;border-radius:5px;background:#E3E3E3;display:block}
+.tabbar div.on{color:var(--ink)}.tabbar div.on i{background:var(--ink)}
+.topbtn{position:absolute;right:14px;bottom:68px;width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:25;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink2)}
+
+/* v0.3 상단 띠 배너 */
+.tick{background:linear-gradient(90deg,#FF4D1A,#FF8A00 50%,#FFA300);color:#fff;font-size:12.5px;font-weight:800;height:32px;overflow:hidden;display:flex;align-items:center;cursor:pointer}
+.trk{display:flex;white-space:nowrap;animation:mq 24s linear infinite;will-change:transform}
+.trk span{padding:0 16px;display:inline-flex;align-items:center;gap:8px}
+.trk span::before{content:"";width:5px;height:5px;border-radius:50%;background:#fff;opacity:.75}
+.trk em{font-style:normal;background:#fff;color:var(--hot);border-radius:5px;padding:1px 6px;font-weight:900}
+@keyframes mq{to{transform:translateX(-50%)}}
+.mo .tick{margin:10px -16px -10px}
+.pc .tick{height:40px;font-size:14.5px}
+
+/* PC 레이아웃 */
+.pc .in{width:1200px;margin:0 auto}
+.pc .hdr{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.pc .hdr .top{display:flex;align-items:center;gap:40px;height:72px}
+.pc .logo{font-size:24px}
+.pc .search{flex:1;max-width:460px;border:2px solid var(--ink);border-radius:24px;padding:10px 18px;font-size:14px;color:var(--ink3)}
+.pc .util{margin-left:auto;font-size:13px;color:var(--ink2);display:flex;gap:18px}
+.pc .gnb{display:flex;gap:36px;height:48px;align-items:center;font-size:15px;font-weight:700}
+.pc .gnb span{color:#333}
+.pc .hero{height:300px;border-radius:16px;margin-top:24px;background:linear-gradient(135deg,#2E4A3A,#4E7A5E);color:#fff;padding:40px;display:flex;flex-direction:column;justify-content:flex-end}
+.pc .hero b{font-size:28px}.pc .hero p{font-size:15px}
+.pc .sec{padding:44px 0 0}
+.pc .sec h2{font-size:22px;margin-bottom:18px}
+.pc .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px 20px}
+.pc .foot{margin-top:60px;height:180px;background:#F7F7F5;border-top:1px solid var(--line);font-size:12px;color:var(--ink3);padding:30px 0}
+
+/* ── 플로팅 v0.2 (차분) ── */
+.fab{position:absolute;z-index:26;height:48px;border-radius:24px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:8px;padding:0 16px 0 6px;box-shadow:0 6px 18px rgba(0,0,0,.28);animation:pop .55s cubic-bezier(.3,1.6,.5,1) both, bob 2.4s ease-in-out .6s infinite;white-space:nowrap;overflow:visible}
+.mo .fab{left:14px;bottom:68px}
+.pc .fab{right:32px;bottom:32px;height:56px;border-radius:28px;padding:0 20px 0 8px;gap:10px}
+.fab .ic{width:36px;height:36px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;flex:none;position:relative}
+.pc .fab .ic{width:40px;height:40px}
+.fab .ic svg{width:22px;height:22px}
+.fab .tx{font-size:13.5px;font-weight:700}
+.pc .fab .tx{font-size:15px}
+.fab .tx em{font-style:normal;color:var(--amber)}
+.fab .x{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.18);font-size:11px;display:flex;align-items:center;justify-content:center;margin-left:2px}
+.fab .bdg{position:absolute;top:-6px;right:-8px;background:#fff;color:var(--ink);font-size:9.5px;font-weight:800;border-radius:8px;padding:1px 5px;box-shadow:0 1px 3px rgba(0,0,0,.25);opacity:0;transition:opacity .2s}
+.fab.mini{padding:0 6px}
+.pc .fab.mini{padding:0 8px}
+.fab.mini .tx,.fab.mini .x,.fab.mini .bdg2{display:none}
+.pc .fab.mini:hover .bdg2{display:inline-block}
+.fab.mini .bdg{opacity:1}
+.pc .fab.mini:hover{padding:0 20px 0 8px}
+.pc .fab.mini:hover .tx,.pc .fab.mini:hover .x{display:flex}
+.pc .fab.mini:hover .bdg{opacity:0}
+.fab.hide,.fab2.hide{display:none}
+@keyframes pop{from{transform:translateY(30px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -3px}}
+
+/* ── 플로팅 v0.3 (봉투 · 말랑) ── */
+.fab2{position:absolute;z-index:26;display:flex;align-items:center;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22));animation:pop .6s cubic-bezier(.3,1.6,.5,1) both}
+.mo .fab2{left:12px;bottom:66px}
+.pc .fab2{right:28px;bottom:28px;flex-direction:row-reverse}
+.fab2 .ball{width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFC75A,#FFA300 55%,#F08A00);display:flex;align-items:center;justify-content:center;position:relative;flex:none;animation:jellyLoop 4s ease-in-out 1.2s infinite;transform-origin:50% 90%}
+.pc .fab2 .ball{width:76px;height:76px}
+.fab2 .ring{position:absolute;inset:0;border-radius:50%;border:3px solid var(--amber);animation:ring 2s ease-out infinite;pointer-events:none}
+@keyframes ring{from{transform:scale(1);opacity:.75}to{transform:scale(1.65);opacity:0}}
+.fab2 .env{width:46px;height:46px;overflow:visible}
+.pc .fab2 .env{width:56px;height:56px}
+.env .t{animation:tkpop 4s ease-in-out 1.2s infinite}
+.env .t2{animation-delay:1.28s}.env .t3{animation-delay:1.36s}
+@keyframes tkpop{0%,14%,100%{transform:translateY(0)}4%{transform:translateY(-9px)}8%{transform:translateY(1px)}11%{transform:translateY(-2px)}}
+@keyframes jellyLoop{0%,22%,100%{transform:scale(1)}4%{transform:scale(1.17,.85)}8%{transform:scale(.9,1.1)}12%{transform:scale(1.06,.95)}17%{transform:scale(.98,1.02)}}
+.fab2 .bdg{position:absolute;top:-5px;right:-9px;background:var(--hot);color:#fff;font-size:10.5px;font-weight:900;border-radius:10px;padding:2px 6px;border:2px solid #fff;white-space:nowrap}
+.fab2 .bubble{position:relative;background:#fff;border-radius:16px;padding:8px 26px 9px 14px;text-align:left;white-space:nowrap;animation:bubIn .55s cubic-bezier(.3,1.7,.5,1) .35s both}
+.mo .fab2 .bubble{margin-left:12px}
+.pc .fab2 .bubble{margin-right:14px;padding:10px 30px 11px 18px}
+.fab2 .bubble::before{content:"";position:absolute;top:50%;width:12px;height:12px;background:#fff;transform:translateY(-50%) rotate(45deg);border-radius:2px}
+.mo .fab2 .bubble::before{left:-5px}
+.pc .fab2 .bubble::before{right:-5px}
+.fab2 .bubble small{display:block;font-size:10.5px;color:#A86800;font-weight:800}
+.fab2 .bubble b{display:block;font-size:15px;font-weight:900;color:var(--ink);margin-top:1px}
+.fab2 .bubble b em{font-style:normal;color:var(--hot)}
+.pc .fab2 .bubble small{font-size:12px}.pc .fab2 .bubble b{font-size:18px}
+.fab2 .bubble .rot{display:inline-block;animation:rotIn .35s ease-out both}
+@keyframes rotIn{from{transform:translateY(7px)}to{transform:none}}
+.fab2 .x{position:absolute;top:6px;right:7px;width:16px;height:16px;border-radius:50%;background:#EEE;color:#777;font-size:9px;display:flex;align-items:center;justify-content:center}
+@keyframes bubIn{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+.mo .fab2 .bubble{transform-origin:left center}.pc .fab2 .bubble{transform-origin:right center}
+.fab2.mini .bubble{display:none}
+.pc .fab2.mini:hover .bubble{display:block}
+.fab2.boing .ball{animation:boing .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes boing{0%{transform:scale(1)}30%{transform:scale(1.35,.75)}55%{transform:scale(.85,1.2)}75%{transform:scale(1.08,.94)}100%{transform:scale(1)}}
+
+/* ── 미니 패널: MO 바텀시트 / PC 팝오버 ── */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s}
+.mo .dim.on{opacity:1;pointer-events:auto}
+.pc .dim.on{pointer-events:auto;background:transparent;opacity:1}
+.sheet{position:absolute;z-index:41;background:#fff;overflow-y:auto}
+.mo .sheet{left:0;right:0;bottom:0;border-radius:20px 20px 0 0;padding:10px 18px 18px;transform:translateY(105%);transition:transform .38s cubic-bezier(.2,1.25,.4,1);max-height:88%}
+.mo .sheet.on{transform:none}
+.pc .sheet{right:32px;bottom:116px;width:390px;max-height:620px;border-radius:18px;padding:20px 20px 18px;box-shadow:0 16px 48px rgba(0,0,0,.22);border:1px solid #EEE;opacity:0;transform:translateY(12px) scale(.97);transform-origin:bottom right;pointer-events:none;transition:opacity .2s,transform .28s cubic-bezier(.2,1.3,.4,1)}
+.pc .sheet.on{opacity:1;transform:none;pointer-events:auto}
+.pc .sheet .grab{display:none}
+.sheet .grab{width:38px;height:4px;border-radius:2px;background:#DDD;margin:0 auto 14px}
+.sheet .close{position:absolute;right:14px;top:14px;width:28px;height:28px;border-radius:50%;background:#F3F3F1;font-size:13px;display:none}
+.pc .sheet .close{display:block}
+.eyebrow{font-size:11px;font-weight:700;color:var(--amber-d);letter-spacing:.3px}
+.sheet h3{font-size:18px;font-weight:800;margin:4px 0 14px;line-height:1.35}
+.sheet h3 em{font-style:normal;color:var(--hot)}
+.rcpt{background:#FAFAF7;border-radius:12px;padding:14px 14px 12px;font-size:13px}
+.rcpt .r{display:flex;justify-content:space-between;padding:5px 0;color:var(--ink2)}
+.rcpt .r.plus{color:var(--ink);font-weight:700}.rcpt .r.plus b{color:var(--amber-d)}
+.fx-bold .rcpt .r.plus{background:#FFEDE5;margin:2px -8px;padding:6px 8px;border-radius:8px}
+.fx-bold .rcpt .r.plus b{color:var(--hot)}
+.rcpt .sum{border-top:1.5px dashed #D6D6D0;margin-top:6px;padding-top:9px;display:flex;justify-content:space-between;align-items:baseline;font-weight:800}
+.rcpt .sum b{font-size:20px}
+.rcpt .fine{font-size:10.5px;color:var(--ink3);margin-top:6px;line-height:1.5}
+.picks{margin-top:14px}
+.picks .lab{font-size:12.5px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.pick{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-bottom:7px;font-size:13px}
+.pick b{font-weight:800}
+.tag{font-size:10.5px;color:var(--amber-d);background:var(--amber-bg);border-radius:5px;padding:2px 6px;margin-left:6px;font-weight:700}
+.login{background:var(--amber-bg);border-radius:10px;padding:11px 12px;font-size:12.5px;line-height:1.5}
+.btns{display:flex;gap:8px;margin-top:14px}
+.btns button{flex:1;height:46px;border-radius:10px;font-size:14px;font-weight:700}
+.b1{background:var(--ink);color:#fff}.b2{background:#F1F1EF;color:var(--ink)}
+.fx-bold .b1{background:linear-gradient(100deg,#FF4D1A,#FF8A00);color:#fff}
+.govrow{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:8px;cursor:pointer}
+.govrow .g{font-size:14px;font-weight:700}.govrow .s{font-size:11.5px;color:var(--ink3);margin-top:2px}
+.govrow .a{font-size:15px;font-weight:800;color:var(--amber-d);text-align:right}
+.fx-bold .govrow .a{color:var(--hot);font-size:17px;font-weight:900}
+.govrow .a small{display:block;font-size:11px;color:var(--ink3);font-weight:500}
+.govrow.closed{background:#FAFAFA;cursor:default}.govrow.closed .g{color:var(--ink3)}
+.govrow.closed .a{color:var(--ink3);font-size:13px}
+.sfine{font-size:11px;color:var(--ink3);margin-top:4px;line-height:1.5}
+
+/* v0.3 티켓 (참고 이미지: 봉투 + 수단별 색 티켓) */
+.tkrow{display:flex;gap:8px;margin:2px 0 12px}
+.tk2{flex:1;min-width:0;border-radius:10px;color:#fff;padding:13px 8px 10px;text-align:center;background:var(--c);position:relative;box-shadow:0 4px 10px rgba(0,0,0,.12);animation:tkIn .55s cubic-bezier(.3,1.7,.5,1) both;
+  -webkit-mask:radial-gradient(circle at 50% 0,transparent 7px,#000 7.5px);mask:radial-gradient(circle at 50% 0,transparent 7px,#000 7.5px)}
+.tk2:nth-child(2){animation-delay:.08s}.tk2:nth-child(3){animation-delay:.16s}
+.tk2 small{display:block;font-size:11px;font-weight:700;opacity:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk2 b{display:block;font-size:17px;font-weight:900;margin-top:3px;letter-spacing:-.4px}
+.tk2 i{position:absolute;top:5px;right:6px;font-style:normal;font-size:9px;background:rgba(255,255,255,.25);border-radius:4px;padding:0 4px}
+@keyframes tkIn{from{transform:translateY(16px) scale(.85);opacity:0}to{transform:none;opacity:1}}
+.tkhint{font-size:11px;color:var(--ink3);margin:-6px 0 12px;text-align:center}
+
+/* v0.3 봉투 일러스트 (웰컴·혜택 페이지) */
+.wenv{position:relative;width:250px;height:150px;margin:6px auto 2px;perspective:500px}
+.wenv .bk{position:absolute;left:12px;right:12px;bottom:0;height:96px;background:#E8DCC6;border-radius:9px}
+.wenv .fr{position:absolute;left:12px;right:12px;bottom:0;height:96px;background:#F8F1E4;border-radius:9px;z-index:3;clip-path:polygon(0 16%,50% 60%,100% 16%,100% 100%,0 100%)}
+.wenv .fl{position:absolute;left:12px;right:12px;top:54px;height:50px;background:#E0D2B8;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;z-index:4;animation:flap .45s ease-in .15s forwards}
+@keyframes flap{0%{transform:rotateX(0);z-index:4}99%{z-index:4}100%{transform:rotateX(180deg);z-index:0}}
+.wenv .tk{position:absolute;bottom:24px;width:76px;height:98px;margin-left:-38px;border-radius:10px;color:#fff;padding:13px 4px 0;text-align:center;font-weight:900;z-index:2;opacity:0;background:var(--c);box-shadow:0 4px 10px rgba(0,0,0,.15);animation:tkUp .7s cubic-bezier(.3,1.6,.5,1) forwards;
+  -webkit-mask:radial-gradient(circle at 50% 0,transparent 8px,#000 8.5px);mask:radial-gradient(circle at 50% 0,transparent 8px,#000 8.5px)}
+.wenv .tk small{display:block;font-size:10.5px;font-weight:700;white-space:nowrap}
+.wenv .tk b{display:block;font-size:16px;letter-spacing:-.5px;margin-top:3px}
+@keyframes tkUp{from{opacity:1;transform:translateY(70px) rotate(0)}to{opacity:1;transform:translateY(0) rotate(var(--r))}}
+.wenv.still .fl{animation:none;transform:rotateX(180deg);z-index:0}
+.wenv.still .tk{animation-duration:.01s;animation-delay:0s!important}
+
+/* v0.3 링크 유입 웰컴 */
+.wel{position:absolute;inset:0;z-index:50;background:rgba(10,10,10,.62);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.wel.on{opacity:1;pointer-events:auto}
+.wel.out{background:transparent;transition:background .3s}
+.wcard{width:100%;max-width:335px;background:linear-gradient(180deg,#FFF1D6,#fff 58%);border-radius:24px;padding:20px 20px 18px;text-align:center;position:relative;overflow:hidden;animation:wIn .5s cubic-bezier(.3,1.5,.5,1) both}
+.pc .wcard{max-width:440px;padding:28px 32px 24px}
+@keyframes wIn{from{transform:scale(.7) translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.wcard.fly{transition:transform .5s cubic-bezier(.6,0,.8,.4),opacity .45s;transform:translate(var(--fx),var(--fy)) scale(.06)!important;opacity:.2;animation:none}
+.wcard .wx{position:absolute;right:14px;top:14px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);font-size:13px;z-index:6}
+.wk{font-size:12px;font-weight:800;color:#B86E00}
+.wcard h3{font-size:22px;font-weight:900;line-height:1.3;margin-top:2px;word-break:keep-all}
+.pc .wcard h3{font-size:26px}
+.wcard h3 em{font-style:normal;color:var(--hot)}
+.wsum{margin-top:10px;font-size:13px;font-weight:700;color:var(--ink2)}
+.wsum b{font-size:34px;font-weight:900;color:var(--ink);letter-spacing:-1px;margin:0 2px;font-variant-numeric:tabular-nums}
+.wsub{font-size:11.5px;color:var(--ink2);margin-top:4px;line-height:1.5}
+.wsub b{color:var(--hot)}
+.wfine{font-size:10.5px;color:var(--ink3);margin-top:10px;line-height:1.5}
+.wcard .btns button{height:48px}
+.cf{position:absolute;top:-12px;width:7px;height:12px;border-radius:2px;z-index:7;animation:fall 1.7s ease-in var(--d) forwards;opacity:0}
+@keyframes fall{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--x),460px) rotate(560deg)}}
+
+/* ── 혜택 페이지 ── */
+.bhdr{position:sticky;top:0;z-index:20;background:#fff;display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:15px}
+.back{font-size:18px}
+.gtabs{display:flex;gap:6px;padding:12px 16px 2px;overflow-x:auto;scrollbar-width:none;background:#fff}
+.mo .gtabs{position:sticky;top:49px;z-index:19}
+.gtabs::-webkit-scrollbar{display:none}
+.gtabs button{flex:none;height:36px;padding:0 14px;border-radius:18px;font-size:13px;font-weight:700;background:#F3F3F1;color:var(--ink2);white-space:nowrap}
+.gtabs button.on{background:var(--ink);color:#fff}
+.gtabs button small{font-size:10.5px;font-weight:600;margin-left:4px;opacity:.75}
+.bhero{border-radius:16px;background:linear-gradient(160deg,#FFF3DB,#FFE3A8);padding:22px 18px 18px}
+.fx-bold .bhero{background:linear-gradient(165deg,#FFE9C2,#FFD27A 70%,#FFC453)}
+.mo .bhero{margin:14px 16px 0}
+.bhero .k{font-size:13px;font-weight:700;color:#8A5A00}
+.bhero h2{font-size:22px;font-weight:800;line-height:1.3;margin:6px 0 14px;word-break:keep-all}
+.bhero h2 em{font-style:normal;color:#C77700}
+.fx-bold .bhero h2{font-weight:900}
+.fx-bold .bhero h2 em{color:var(--hot);font-variant-numeric:tabular-nums}
+.bhero .rcpt{background:rgba(255,255,255,.8)}
+.bhero.closed{background:#F3F3F1}.bhero.closed h2 em{color:var(--ink2)}
+.blk{padding:22px 16px 0}
+.blk h3{font-size:16px;font-weight:800;margin-bottom:10px}
+.opt{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:8px}
+.fx-bold .opt{border-left:5px solid var(--c,#DDD)}
+.opt .t{display:flex;justify-content:space-between;font-size:14px;font-weight:700}
+.opt .t b{color:var(--amber-d)}
+.fx-bold .opt .t b{color:var(--hot);font-size:16px;font-weight:900}
+.opt .d{font-size:11.5px;color:var(--ink2);margin-top:6px;line-height:1.6}
+.steps{counter-reset:s}
+.step{display:flex;gap:12px;padding:10px 0}
+.step::before{counter-increment:s;content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+.step b{font-size:13.5px;display:block}.step span{font-size:12px;color:var(--ink2);line-height:1.5}
+/* v0.4 답례품 이미지 띠 + 혜택1·2·3 */
+.thumb.ph{background-size:cover!important;background-position:center!important}
+.thumb.ph .nmx{display:none}
+.pstrip{display:flex;gap:6px;margin:8px 0 2px}
+.pstrip figure{flex:1;min-width:0;position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;box-shadow:0 4px 10px rgba(0,0,0,.14);animation:tkIn .55s cubic-bezier(.3,1.7,.5,1) both;background:#eee}
+.pstrip figure:nth-child(2){animation-delay:.1s}.pstrip figure:nth-child(3){animation-delay:.2s}
+.pstrip img{width:100%;height:100%;object-fit:cover;display:block}
+.pstrip figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 7px 6px;font-size:10.5px;font-weight:800;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7));text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .pstrip figcaption{font-size:12.5px}
+.pstrip.big figure:first-child{flex:1.5}
+/* v0.5 혜택 3단 — 검정·빨강 면 제거, 흰 카드 + 앰버 한 톤. 혜택3만 연한 앰버로 살짝 띄움 */
+.b3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;text-align:left}
+.b3>div{position:relative;border-radius:14px;padding:10px 9px 9px;background:#fff;border:1px solid #EFE6D6;box-shadow:0 2px 6px rgba(140,100,30,.06);animation:tkIn .55s cubic-bezier(.3,1.7,.5,1) both;min-width:0}
+.b3>div:nth-child(2){animation-delay:.12s}.b3>div:nth-child(3){animation-delay:.24s}
+.b3>div:not(:last-child)::after{content:'+';position:absolute;right:-11px;top:50%;transform:translateY(-50%);width:10px;text-align:center;font-size:13px;font-weight:800;color:#D9B77A}
+.b3 .n{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#FFF1D6;color:#B36F00;font-size:10px;font-weight:900;font-style:normal;margin-bottom:5px}
+.b3 small{display:block;font-size:10px;font-weight:700;color:#8C7B5E;white-space:nowrap}
+.b3 b{display:block;font-size:18px;font-weight:900;letter-spacing:-.4px;margin-top:1px;white-space:nowrap;color:var(--ink)}
+.b3 i{display:block;font-style:normal;font-size:10px;color:#A09A90;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b3 .k3{background:linear-gradient(160deg,#FFF8E8,#FFEFCF);border-color:#FFD27F}
+.b3 .k3 .n{background:var(--amber);color:#fff}.b3 .k3 b{color:#E06A00}.b3 .k3 small{color:#A86800}
+.pc .b3 small{font-size:11.5px}.pc .b3 b{font-size:22px}.pc .b3 i{font-size:11.5px}.pc .b3 .n{width:20px;height:20px;font-size:11px}
+/* v0.5 누끼 PNG 무대 — 실사 배경 없이 제품만 띄움. PNG가 아직 없으면 실사 컷을 원형 접시로 대신 보여줌 */
+.pstage{position:relative;height:172px;margin:6px 0 0}
+.pc .pstage{height:232px}
+.pstage .halo{position:absolute;left:50%;top:46%;width:210px;height:210px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#FFE6B3 0%,rgba(255,236,196,.55) 45%,rgba(255,246,228,0) 70%)}
+.pc .pstage .halo{width:300px;height:300px}
+.pstage .floor{position:absolute;left:10%;right:10%;bottom:4px;height:20px;border-radius:50%;background:radial-gradient(ellipse,rgba(150,95,10,.20),rgba(150,95,10,0) 70%)}
+.pstage .pi{position:absolute;bottom:12px;margin:0;display:flex;justify-content:center;align-items:flex-end;animation:tkIn .6s cubic-bezier(.3,1.7,.5,1) both}
+.pstage .pc_{left:25%;width:50%;height:146px;z-index:3}
+.pstage .pl{left:0;width:38%;height:108px;bottom:22px;z-index:2;animation-delay:.12s}
+.pstage .pr{right:0;width:38%;height:108px;bottom:22px;z-index:2;animation-delay:.22s}
+.pc .pstage .pc_{height:198px}.pc .pstage .pl,.pc .pstage .pr{height:148px;bottom:28px}
+.pstage .pi img{max-width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 10px 12px rgba(110,70,10,.22));animation:flt 3.2s ease-in-out infinite}
+.pstage .pl img{animation-delay:-1s}.pstage .pr img{animation-delay:-2s}
+.pstage .pi.fb img{width:auto;aspect-ratio:1;object-fit:cover;border-radius:50%;border:4px solid #fff;box-shadow:0 8px 18px rgba(110,70,10,.22);filter:none}
+.pstage .pi.fb.pc_ img{height:88%}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.pnames{text-align:center;font-size:11px;color:#8C7B5E;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .pnames{font-size:12.5px}
+@media (prefers-reduced-motion:reduce){.pstage .pi img{animation:none}}
+.ddc{display:inline-flex;align-items:center;gap:5px;background:var(--hot);color:#fff;font-size:11px;font-weight:900;border-radius:999px;padding:3px 4px 3px 9px;vertical-align:middle}
+.ddc em{font-style:normal;background:#fff;color:var(--hot);border-radius:999px;padding:0 6px}
+.hs{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.mo .hs .card{width:130px;flex:none}
+.warn{font-size:11.5px;color:var(--ink2);line-height:1.75;background:#FAFAF7;border-radius:12px;padding:12px 14px}
+.cta{padding:12px 16px 14px;margin-top:18px}
+.mo .cta{position:sticky;bottom:0;background:linear-gradient(transparent,#fff 30%)}
+.cta button{width:100%;height:50px;border-radius:12px;background:var(--amber);font-size:15px;font-weight:800;color:#1A1A1A}
+.fx-bold .cta button{background:linear-gradient(100deg,#FF4D1A,#FF8A00);color:#fff;box-shadow:0 6px 16px rgba(255,77,26,.35)}
+.closedmsg{background:#fff;border-radius:12px;padding:14px;font-size:13px;line-height:1.6;color:var(--ink2)}
+.pc .bp .crumb{font-size:12.5px;color:var(--ink3);padding-top:24px}
+.pc .bp .ttl{font-size:30px;font-weight:800;margin:8px 0 4px}
+.pc .bp .ttl em{font-style:normal;color:var(--amber-d)}
+.pc .bp .lead{font-size:14px;color:var(--ink2)}
+.pc .gtabs{padding:22px 0 0;gap:8px}
+.pc .gtabs button{height:42px;padding:0 20px;font-size:14px;border-radius:21px}
+.pc .two{display:grid;grid-template-columns:520px 1fr;gap:36px;margin-top:24px;align-items:start}
+.pc .bhero{padding:32px 30px 28px}
+.pc .bhero h2{font-size:28px}
+.pc .rcpt{font-size:14.5px;padding:18px 18px 14px}
+.pc .rcpt .sum b{font-size:24px}
+.pc .blk{padding:0 0 26px}
+.pc .blk h3{font-size:18px}
+.pc .hs{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;overflow:visible}
+.pc .warn{font-size:13px;padding:16px 20px}
+.pc .cta{text-align:center;padding:30px 0 0}
+.pc .cta button{width:380px;height:56px;font-size:16px}
+.toast{position:absolute;left:50%;top:70px;transform:translateX(-50%);background:rgba(20,20,20,.88);color:#fff;font-size:12px;padding:8px 12px;border-radius:8px;z-index:60;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion: reduce){
+  .fab,.fab2,.fab2 .ball,.fab2 .ring,.env .t,.tix,.tix::after,.trk,.tk2,.wenv .fl,.wenv .tk,.wcard,.cf{animation:none!important}
+  .wenv .tk{opacity:1;transform:rotate(var(--r))}.wenv .fl{transform:rotateX(180deg);z-index:0}
+  .chip.shine::before{animation:none}.sheet{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="ctrl">
+    <h1>고향ON 추가혜택 프로토타입 v0.5</h1>
+    <p class="sub">상무 지시(11/12) · 상무 피드백(11/17) 반영 · 내부 논의용<br>답례품 이미지 = 누끼 PNG 자리(<code>png/{seogu|yangju|yeongju}_{1~3}.png</code>, 없으면 실사 컷 원형 대체). ⚠️ 양주 수단은 <b>예시</b>, 금액은 볼트 기록 기준.</p>
+    <div class="grp"><div class="lab">⓪ 강조 강도</div><div class="seg" id="sFx"><button data-v="bold" class="on">강하게 (v0.3~)</button><button data-v="calm">차분하게 (v0.2)</button></div></div>
+    <div class="grp"><div class="lab">⓪-2 답례품 이미지 (상무 1117)</div><div class="seg" id="sImg"><button data-v="png" class="on">누끼 PNG (v0.5)</button><button data-v="head">실사 띠 (v0.4)</button><button data-v="bg">실사 배경</button><button data-v="none">없음 (v0.3)</button></div></div>
+    <div class="grp"><div class="lab">① 기기</div><div class="seg" id="sDev"><button data-v="mo" class="on">MO</button><button data-v="pc">PC</button></div></div>
+    <div class="grp"><div class="lab">② 몰</div><div class="seg" id="sMall"><button data-v="seogu" class="on">독립몰 (서구)</button><button data-v="hub">허브</button></div></div>
+    <div class="grp"><div class="lab">③ 회원 상태</div><div class="seg" id="sMem"><button data-v="guest">비로그인</button><button data-v="normal" class="on">일반 회원</button><button data-v="welfare">복지관 회원</button></div></div>
+    <div class="grp"><div class="lab">④ 유입 경로</div><div class="seg" id="sIn"></div><button class="replay" id="replay">▶ 링크 유입 첫 화면 다시 보기</button></div>
+    <div class="grp"><div class="lab">⑤ 프로모션 상태 (BO 값 바꿔보기)</div>
+      <div class="promo" id="promo"></div>
+      <div style="font-size:10.5px;color:#8A8A8A;margin-top:5px;line-height:1.5">진행 = 정상 노출 · 인원 마감 = 칩·플로팅에서 빠지고 혜택 페이지에 「마감」 표시 · 종료 = 모든 화면에서 사라짐</div></div>
+    <div class="grp"><div class="lab">⑥ BO 연동 칸 표시</div><div class="seg" id="sBind"><button data-v="off" class="on">끄기</button><button data-v="on">켜기</button></div></div>
+    <div class="note" id="note"></div>
+  </div>
+  <div class="stage" id="stage">
+    <div class="dev mo" id="dev">
+      <div class="pcbar" id="pcbar" style="display:none"><i></i><i></i><i></i><span id="url">seogu.gohyangon.co.kr</span></div>
+      <div class="screen" id="scr"></div>
+      <div class="topbtn" id="topbtn">↑</div>
+      <button class="fab" id="fab"></button>
+      <div class="tabbar" id="tabbar"><div class="on"><i></i>홈</div><div><i></i>답례품</div><div><i></i>기부사업</div><div><i></i>마이</div></div>
+      <div class="dim" id="dim"></div>
+      <div class="sheet" id="sheet"></div>
+      <div class="wel" id="wel"></div>
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+<script>
+const COUPON='<svg viewBox="0 0 24 24" fill="none"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a2.5 2.5 0 0 0 0 5V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a2.5 2.5 0 0 0 0-5V8Z" fill="#1A1A1A"/><path d="M9.5 9.5v5M14.5 9.5v5" stroke="#FFA300" stroke-width="1.6" stroke-dasharray="1.6 1.6"/></svg>';
+/* 플로팅용 봉투 아이콘: 티켓 3장이 주기적으로 톡 튀어나온다 */
+const ENV=`<svg class="env" viewBox="0 0 64 64" aria-hidden="true">
+<g class="t t1"><rect x="11" y="15" width="15" height="24" rx="3" fill="#2F7CF6" transform="rotate(-14 18 27)"/></g>
+<g class="t t2"><rect x="24.5" y="9" width="15" height="26" rx="3" fill="#FF7A00"/></g>
+<g class="t t3"><rect x="38" y="15" width="15" height="24" rx="3" fill="#12B76A" transform="rotate(14 46 27)"/></g>
+<path d="M6 31 Q6 28 9 28 H55 Q58 28 58 31 V55 Q58 58 55 58 H9 Q6 58 6 55 Z" fill="#EFE4CF"/>
+<path d="M6 33 L32 48 L58 33 V55 Q58 58 55 58 H9 Q6 58 6 55 Z" fill="#FCF7EE"/></svg>`;
+/* 답례품 이미지 = 각 몰에 등록된 실제 상품 이미지(공개 CDN). 게이트 페이지(박정식 팀장안)와 같은 컷 */
+const IMG='https://image.benecafe.co.kr/cdnetbs/gohyangon/upload/PROD/2026/';
+/* 지자체 = BO 프로모션 1위 건이 있다고 가정한 시뮬레이션 데이터 */
+const GOV={
+  seogu:{label:'전남광주통합특별시 서구',amt:25000,status:'on',
+    opts:a=>({normal:[['온누리 적립금',a,'자동 지급 · 사용처 온누리시장'],['네이버페이 포인트',Math.min(a,20000),'매월 15일·말일 지급']],
+              welfare:[['○○공사 복지 적립금',a,'소속 고객사 적립금 · 고객사별 표시'],['온누리 적립금',a,'자동 지급 · 사용처 온누리시장'],['네이버페이 포인트',Math.min(a,20000),'매월 15일·말일 지급']]}),
+    limit:'인원 제한 없음',items:[['한우 1등급 꽃등심 400g','#7A2E2E',IMG+'08/18/UFJPRC8yMDI2LzA4LzE4-4453912d-a8da-48e6-bb5a-3527709554e8'],['포기김치 3+1kg','#A6402B',IMG+'07/09/UFJPRC8yMDI2LzA3LzA5-f39d91a8-ec5d-4334-90c8-2b4b383aca56'],['냉장한돈세트','#8C4A3A',IMG+'07/09/UFJPRC8yMDI2LzA3LzA5-7feec85c-7109-42d9-bfb4-b8ce4c009a26'],['생오겹살 1.4kg','#6E3B2E',IMG+'07/09/UFJPRC8yMDI2LzA3LzA5-945bf763-d56a-49c1-87bd-ccc3e40089a7']]},
+  yangju:{label:'경기 양주',amt:15000,status:'on',
+    opts:a=>({normal:[['온누리 적립금',a,'예시 · 수단 확정 중']],welfare:[['○○공사 복지 적립금',a,'예시 · 수단 확정 중'],['온누리 적립금',a,'예시 · 수단 확정 중']]}),
+    limit:'선착순 300명 · 마감 시 종료',items:[['양주골쌀 10kg','#7C6A3A',IMG+'10/26/UFJPRC8yMDI2LzEwLzI2-3ce63a31-e3db-4823-a778-64001841bdfe'],['한돈 선물세트','#5A4A2E',IMG+'10/27/UFJPRC8yMDI2LzEwLzI3-4f73698d-d5a6-46f2-ba94-2fbc0bcea10c'],['참·들기름 세트','#6A5A2E',IMG+'10/28/UFJPRC8yMDI2LzEwLzI4-e2b36b20-c95a-4d36-a94c-43953992d43d']]},
+  yeongju:{label:'경북 영주',amt:10000,status:'on',
+    opts:a=>({normal:[['온누리 적립금',a,'1113 영주시 전달자료 기준'],['네이버페이 포인트',a,'1113 영주시 전달자료 기준']],welfare:[['○○공사 복지 적립금',a,'소속 고객사 적립금'],['온누리 적립금',a,'1113 영주시 전달자료 기준'],['네이버페이 포인트',a,'1113 영주시 전달자료 기준']]}),
+    limit:'1인 최대 1만원',items:[['영주사과 5+1kg','#9E2A2A',IMG+'11/10/UFJPRC8yMDI2LzExLzEw-6c4ac8c4-a58d-45a5-806c-9e8a07e38b12'],['1++ 한우 구이용','#6B2B2B',IMG+'11/13/UFJPRC8yMDI2LzExLzEz-c2004cfa-5183-402e-a4ef-1b72ba1dd1d9'],['풍기인삼 선물세트','#5B4B2B',IMG+'11/11/UFJPRC8yMDI2LzExLzEx-2f602fd0-c6db-47bc-8ed2-827437387a5f']]}
+};
+const ORDER=['seogu','yangju','yeongju'];
+const S={fx:'bold',img:'png',dev:'mo',mall:'seogu',mem:'normal',inflow:'link',bind:'off',view:'list',tab:null,welSeen:false};
+/* 2026 세액공제 마감(12/31)까지 남은 날 — 실제 날짜로만 계산 */
+function dday(){const t=new Date();return Math.max(0,Math.ceil((new Date(2026,11,31)-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5))}
+const ddTxt=()=>dday()<=10?`2026 마지막 기회 <em>D-${dday()}</em>`:`2026 세액공제 마감 <em>D-${dday()}</em>`;
+const useImg=()=>S.fx==='bold'&&S.img!=='none';
+/* 헤드라인 자리에 들어가는 답례품 이미지 띠 (상무 1117 피드백) */
+function pstrip(g,n=3,big){ return `<div class="pstrip${big?' big':''} bind" data-bo="${GOV[g].label} 대표 답례품 (BO 노출 순서)">${GOV[g].items.slice(0,n).map(it=>`<figure><img src="${it[2]}" alt="${it[0]}"><figcaption>${it[0]}</figcaption></figure>`).join('')}</div>`; }
+/* 혜택1·2·3 (이벤트 페이지에서 쓰던 구성 그대로) */
+function b3(g){ const a=GOV[g].amt;
+  return `<div class="b3"><div class="k1"><i class="n">1</i><small>세액공제</small><b>100%</b><i>10만원까지</i></div><div><i class="n">2</i><small>답례품</small><b>3만원</b><i>기부금의 30%</i></div><div class="k3 bind" data-bo="1위 프로모션 금액"><i class="n">3</i><small>고향ON 추가혜택</small><b>+${man(a)}원</b><i>고향ON에서만</i></div></div>`; }
+/* v0.5 누끼 PNG — 운영자가 png/{지자체}_{순번}.png 로 넣으면 자동 교체. 없으면 실사 컷을 원형 접시로 */
+const PNG=(g,i)=>`png/${g}_${i+1}.png`;
+function phFb(im){ im.onerror=null; im.closest('figure').classList.add('fb'); im.src=im.dataset.ph; }
+function pstage(g){ const it=GOV[g].items.slice(0,3), cls=['pl','pc_','pr'], idx=[1,0,2];
+  return `<div class="pstage bind" data-bo="${GOV[g].label} 대표 답례품 PNG (가운데=1순위)"><div class="halo"></div><div class="floor"></div>${idx.map((k,j)=>it[k]?`<figure class="pi ${cls[j]}"><img src="${PNG(g,k)}" data-ph="${it[k][2]}" alt="${it[k][0]}" onerror="phFb(this)"></figure>`:'').join('')}</div><div class="pnames">${it.map(x=>x[0]).join(' · ')}</div>`; }
+const vis=g=>S.img==='png'?pstage(g):pstrip(g,3,true);
+const hasVis=()=>S.img==='png'||S.img==='head';
+const heroBg=g=>`background:linear-gradient(180deg,rgba(255,241,214,.25) 0%,rgba(255,248,235,.94) 46%,#fff 70%),url('${GOV[g].items[0][2]}') center top/100% auto no-repeat`;
+const $=id=>document.getElementById(id);
+const won=n=>Number(n).toLocaleString('ko-KR');
+const man=n=>{const v=n/10000; return (Number.isInteger(v)?v:v.toFixed(1).replace(/\.0$/,''))+'만'};
+const isPC=()=>S.dev==='pc', bold=()=>S.fx==='bold';
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* 수단 → 티켓 색·짧은 이름 */
+const tcol=n=>n.includes('복지')?'var(--c-welfare)':n.includes('네이버')?'var(--c-npay)':'var(--c-onnuri)';
+const tname=n=>n.includes('복지')?'복지 적립금':n.includes('네이버')?'네이버페이':'온누리 적립금';
+/* 상태 판정 */
+const pool=()=>S.mall==='seogu'?['seogu']:ORDER;
+const shown=()=>pool().filter(g=>GOV[g].status!=='end');
+const live=()=>pool().filter(g=>GOV[g].status==='on');
+function ctxGov(){
+  const L=live(); if(!L.length) return undefined;
+  if(S.mall==='seogu') return 'seogu';
+  if(GOV[S.inflow] && GOV[S.inflow].status==='on') return S.inflow;
+  if(L.length===1) return L[0];
+  return null;
+}
+function welGov(){ if(S.inflow==='none') return null; if(S.mall==='seogu') return GOV.seogu.status==='on'?'seogu':null; return GOV[S.inflow]&&GOV[S.inflow].status==='on'?S.inflow:null; }
+function chip(g){ if(GOV[g].status!=='on') return '';
+  if(bold()) return `<span class="tix bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션"><small>고향ON 추가혜택</small><b>+${won(GOV[g].amt)}원</b></span>`;
+  return `<span class="chip shine bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션">${COUPON}+${man(GOV[g].amt)} 추가혜택</span>`;}
+function card(g,it){
+  return `<div class="card"><div class="thumb ph" style="background:${it[1]} url('${it[2]}')"><span class="nmx">${it[0]}</span>${chip(g)}</div>
+  ${S.mall==='hub'?`<div class="gov">${GOV[g].label}</div>`:''}<div class="nm">${it[0]}</div><div class="pr">기부금 <b>100,000원</b></div></div>`;}
+function allCards(){ let c=''; pool().forEach(g=>GOV[g].items.forEach(it=>c+=card(g,it))); return c; }
+function ticker(){
+  if(!bold()) return ''; const L=live(); if(!L.length) return '';
+  let items;
+  if(S.mall==='seogu'){ const a=GOV.seogu.amt;
+    items=[ddTxt(),`고향ON 추가혜택 진행 중`,`10만원 기부하면 적립금·포인트 <em>+${won(a)}원</em> 더`,`세액공제 10만원 + 답례품 3만원 + 추가혜택 ${man(a)}원`]; }
+  else { items=L.map(g=>`${GOV[g].label} 기부하면 <em>+${won(GOV[g].amt)}원</em>${GOV[g].limit.startsWith('선착순')?' · '+GOV[g].limit.split(' · ')[0]:''}`).concat(['지자체마다 1번씩 받을 수 있어요']); items.unshift(ddTxt()); }
+  const one=items.map(t=>`<span>${t}</span>`).join('');
+  return `<div class="tick bind" data-bo="띠 배너 · 진행 중 1위 프로모션" onclick="tapCtx()"><div class="trk">${one}${one}</div></div>`;
+}
+function listView(){
+  const logo=S.mall==='seogu'?'<div class="logo">고향<i>ON</i><small>서구</small></div>':'<div class="logo">고향<i>ON</i></div>';
+  const heroT=S.mall==='seogu'?['서구가 전하는 이야기','메인 비주얼 배너 영역 (기존)']:['고향사랑기부, 고향ON에서','허브 메인 비주얼 배너 영역 (기존)'];
+  const c=allCards();
+  if(!isPC()) return `<div class="hdr"><div class="row">${logo}<span style="font-size:12px;color:#8A8A8A">${S.mem==='guest'?'로그인':'마이'}</span></div><div class="search">답례품을 검색해 보세요</div>${ticker()}</div>
+    <div class="hero"><b>${heroT[0]}</b><p>${heroT[1]}</p></div>
+    <div class="sec"><h2>인기 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div>
+    <div class="sec"><h2>추천 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div>`;
+  const gnb=S.mall==='seogu'?['서구 이야기','답례품','기부사업','고향사랑 안내','이벤트']:['지자체','답례품','지정기부','고향사랑 안내','혜택·이벤트'];
+  return `<div class="hdr"><div class="in"><div class="top">${logo}<div class="search">답례품을 검색해 보세요</div><div class="util"><span>${S.mem==='guest'?'로그인':'마이페이지'}</span><span>고객센터</span></div></div>
+    <div class="gnb">${gnb.map(x=>`<span>${x}</span>`).join('')}</div></div>${ticker()}</div>
+    <div class="in"><div class="hero"><b>${heroT[0]}</b><p>${heroT[1]}</p></div>
+    <div class="sec"><h2>인기 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div>
+    <div class="sec"><h2>추천 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div></div>
+    <div class="foot"><div class="in">푸터 영역 (기존)</div></div>`;
+}
+function rcpt(g){ const p=GOV[g].amt;
+  return `<div class="rcpt"><div class="r"><span>세액공제 (10만원 기부 시)</span><span>100,000원</span></div>
+  <div class="r"><span>답례품 (기부금의 30%)</span><span>30,000원</span></div>
+  <div class="r plus bind" data-bo="연계 경품 최대 금액"><span>고향ON 추가혜택</span><b>+${won(p)}원</b></div>
+  <div class="sum"><span>받는 혜택 합계</span><b data-from="130000" data-to="${130000+p}">${won(130000+p)}원</b></div>
+  <div class="fine">세액공제는 연말정산·종합소득세 신고 시 적용 · 추가혜택은 결제 화면에서 1개 선택</div></div>`;}
+function optList(g){ const o=GOV[g].opts(GOV[g].amt); return S.mem==='guest'?o.normal:o[S.mem]; }
+function tickets(g,cls){ return optList(g).map(o=>`<div class="${cls}" style="--c:${tcol(o[0])}"><small>${tname(o[0])}</small><b>${won(o[1])}원</b></div>`).join(''); }
+function picks(g){
+  if(bold()) return `<div class="picks"><div class="lab">${S.mem==='guest'?'이런 혜택 중 1개를 골라요 <span style="color:#8A8A8A;font-weight:500">(일반 회원 기준)</span>':'내가 고를 수 있는 고향ON 추가혜택 <span style="color:#8A8A8A;font-weight:500">(택1)</span>'}</div>
+    <div class="tkrow bind" data-bo="연계 경품 · FO 표시명/금액">${tickets(g,'tk2')}</div>${S.mem==='welfare'?'<div class="tkhint">파란 티켓 = 우리 회사 복지 적립금</div>':''}</div>`;
+  if(S.mem==='guest') return `<div class="picks"><div class="lab">내가 받을 수 있는 고향ON 추가혜택</div><div class="login">로그인하면 <b>내가 고를 수 있는 혜택</b>을 바로 보여드려요.<br><span style="color:#8A8A8A;font-size:11.5px">적립금 또는 포인트 중 1개 · 최대 ${won(GOV[g].amt)}원</span></div></div>`;
+  return `<div class="picks"><div class="lab">내가 고를 수 있는 고향ON 추가혜택 <span style="color:#8A8A8A;font-weight:500">(택1)</span></div>
+  ${optList(g).map((o,i)=>`<div class="pick bind" data-bo="연계 경품 · FO 표시명/금액"><span>${o[0]}${S.mem==='welfare'&&i===0?'<span class="tag">우리 회사</span>':''}</span><b>${won(o[1])}원</b></div>`).join('')}</div>`;}
+function sheetOne(g){
+  const h=bold()?`10만원 기부하면<br><em>+${won(GOV[g].amt)}원</em> 더 받아요`:'10만원 기부하면<br>혜택이 하나 더 있어요';
+  let head=`<h3>${h}</h3>`, body=bold()?picks(g)+rcpt(g):rcpt(g)+picks(g);
+  if(useImg()){ body=b3(g)+picks(g)+`<div class="sfine" style="margin-top:-4px">10만원 기부 시 받는 혜택 합계 <b style="color:var(--ink)">${won(130000+GOV[g].amt)}원</b> · 세액공제는 연말정산·종합소득세 신고 시 적용</div>`;
+    head=hasVis()?vis(g):`<h3>${h}</h3>`; }
+  return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON 추가혜택 · ${GOV[g].label} ${bold()?`<span class="ddc">${ddTxt()}</span>`:''}</div>
+  ${head}${body}
+  <div class="btns"><button class="b2" onclick="toast('${GOV[g].label} 답례품 목록으로 이동')">답례품 보러가기</button><button class="b1" onclick="openPage('${g}')">자세히 보기 ›</button></div>`;}
+function sheetList(){
+  const rows=shown().map(g=>{const G=GOV[g]; if(G.status==='full') return `<div class="govrow closed"><div><div class="g">${G.label}</div><div class="s">추가혜택 인원 마감</div></div><div class="a">마감</div></div>`;
+    return `<div class="govrow" onclick="openSheet('${g}')"><div><div class="g">${G.label}</div><div class="s">${G.limit}</div></div><div class="a bind" data-bo="${G.label} 1위 프로모션">+${won(G.amt)}원<small>자세히 ›</small></div></div>`;}).join('');
+  return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON에서만</div><h3>${bold()?`지금 <em>${live().length}곳</em>에서<br>추가혜택을 드려요`:'고향ON 추가혜택'}</h3>${rows}
+  <div class="sfine">기부하는 지자체마다 1번씩 받을 수 있어요 · 금액과 혜택은 지자체마다 달라요</div>
+  <div class="btns"><button class="b1" onclick="openPage(shown()[0])">혜택 한눈에 보기 ›</button></div>`;}
+function envBig(g,still){
+  const L=optList(g).slice(0,3), n=L.length;
+  const pos=n===1?[[50,0]]:n===2?[[36,-8],[64,8]]:[[24,-12],[50,0],[76,12]];
+  const tks=L.map((o,i)=>`<div class="tk" style="--c:${tcol(o[0])};--r:${pos[i][1]}deg;left:${pos[i][0]}%;animation-delay:${.45+i*.12}s"><small>${tname(o[0])}</small><b>${won(o[1])}</b></div>`).join('');
+  return `<div class="wenv${still?' still':''}"><div class="bk"></div>${tks}<div class="fl"></div><div class="fr"></div></div>`;
+}
+function tabsHtml(g){ if(S.mall!=='hub') return '';
+  return `<div class="gtabs">${shown().map(k=>`<button class="${k===g?'on':''}" onclick="openPage('${k}')">${GOV[k].label}${GOV[k].status==='full'?'<small>마감</small>':''}</button>`).join('')}</div>`;}
+function pageParts(g){
+  const G=GOV[g]; const closed=G.status==='full';
+  const hero=closed?`<div class="bhero closed"><div class="k">고향ON 추가혜택 · ${G.label}</div><h2>추가혜택이<br><em>마감</em>되었어요</h2><div class="closedmsg">준비된 인원이 모두 찼어요. 답례품 기부와 세액공제는 그대로 받을 수 있어요.</div></div>`
+    :useImg()?`<div class="bhero" style="${S.img==='bg'?heroBg(g)+';padding-top:'+(isPC()?260:150)+'px':''}"><div class="k">고향ON 추가혜택 · ${G.label} <span class="ddc">${ddTxt()}</span></div>${hasVis()?vis(g):''}<h2 style="margin-top:12px">10만원 기부하면<br><em data-from="130000" data-to="${130000+G.amt}">${won(130000+G.amt)}원</em> 혜택</h2>${b3(g)}<div style="height:12px"></div>${rcpt(g)}</div>`
+    :`<div class="bhero"><div class="k">고향ON 추가혜택 · ${G.label}</div>${bold()?envBig(g,false):''}<h2>10만원 기부하면<br><em data-from="130000" data-to="${130000+G.amt}">${won(130000+G.amt)}원</em> 혜택</h2>${rcpt(g)}</div>`;
+  const opts=closed?'':`<div class="blk"><h3>추가혜택 고르기 <span style="font-size:12px;color:#8A8A8A;font-weight:500">결제 화면에서 1개</span></h3>${S.mem==='guest'?'<div class="login" style="margin-bottom:8px">아래는 일반 회원 기준이에요. 로그인하면 내 혜택으로 바뀌어요.</div>':''}${optList(g).map(o=>`<div class="opt bind" style="--c:${tcol(o[0])}" data-bo="연계 경품 행"><div class="t"><span>${o[0]}</span><b>${won(o[1])}원</b></div><div class="d">${o[2]}</div></div>`).join('')}</div>`;
+  const steps=closed?'':`<div class="blk"><h3>받는 방법</h3><div class="steps"><div class="step"><div><b>답례품 고르고 10만원 이상 기부</b><span>일반기부로 진행돼요</span></div></div><div class="step"><div><b>결제 화면에서 추가혜택 선택</b><span>적립금·포인트 중 1개를 골라요</span></div></div><div class="step"><div><b>지급 후 사용</b><span class="bind" data-bo="연계 경품 · 지급 시점/사용처/유효기간">수단별 지급 시점·사용처는 위 안내를 따라요</span></div></div></div></div>`;
+  const prods=`<div class="blk"><h3>${G.label} 답례품</h3><div class="hs">${G.items.map(it=>card(g,it)).join('')}</div></div>`;
+  const warn=`<div class="blk"><h3>꼭 확인하세요</h3><div class="warn bind" data-bo="지급 조건 · 참여 제한 그룹">· 10만원 이상 기부 시 받을 수 있어요<br>· ${G.limit} · 지자체 프로모션마다 1인 1회<br>· 이미 받으신 분은 결제 화면에 혜택 선택이 나타나지 않아요 (기부는 그대로 가능)<br>· 혜택을 선택하지 않으면 지급되지 않아요<br>· 프로모션 내용은 지자체 사정에 따라 바뀌거나 일찍 끝날 수 있어요</div></div>`;
+  const cta=`<div class="cta"><button onclick="toast('${G.label} 답례품 목록으로 이동')">${bold()&&!closed?`답례품 고르고 +${man(G.amt)}원 받기`:`${G.label} 답례품 보러가기`}</button></div>`;
+  return {hero,opts,steps,prods,warn,cta};
+}
+function pageView(g){
+  const P=pageParts(g);
+  if(!isPC()) return `<div class="bp"><div class="bhdr"><button class="back" onclick="back()">‹</button>고향ON 추가혜택</div>${tabsHtml(g)}${P.hero}${P.opts}${P.steps}${P.prods}${P.warn}${P.cta}</div>`;
+  const logo=S.mall==='seogu'?'<div class="logo">고향<i>ON</i><small>서구</small></div>':'<div class="logo">고향<i>ON</i></div>';
+  return `<div class="hdr"><div class="in"><div class="top">${logo}<div class="search">답례품을 검색해 보세요</div><div class="util"><span>마이페이지</span><span>고객센터</span></div></div></div></div>
+  <div class="in bp"><div class="crumb"><a onclick="back()" style="cursor:pointer">홈</a> › 고향ON 추가혜택</div>
+  <div class="ttl">고향ON <em>추가혜택</em></div><div class="lead">고향ON에서 기부하면 세액공제·답례품에 더해 받을 수 있는 혜택이에요.</div>${tabsHtml(g)}
+  <div class="two"><div>${P.hero}</div><div>${P.opts}${P.steps}</div></div>${P.prods.replace('class="blk"','class="blk" style="padding-top:30px"')}${P.warn}${P.cta}</div>
+  <div class="foot"><div class="in">푸터 영역 (기존)</div></div>`;
+}
+/* ── 플로팅 ── */
+let rotT=null;
+function renderFab(){
+  const f=$('fab'); const g=ctxGov(); clearInterval(rotT);
+  if(S.view==='page'||g===undefined||f.dataset.hidden==='1'){f.className='fab hide';return}
+  if(bold()){
+    f.className='fab2';
+    const bdg=g?`+${man(GOV[g].amt)}`:`${live().length}곳`;
+    const line=g?`<em>+${won(GOV[g].amt)}원</em> 더 받기`:`<span class="rot" id="rot"></span>`;
+    f.innerHTML=`<span class="ball"><span class="ring"></span>${ENV}<span class="bdg">${bdg}</span></span><span class="bubble bind" data-bo="${g?'1위 프로모션 금액':'진행 중 지자체 순환'}"><small>고향ON 추가혜택</small><b>${line}</b><span class="x" onclick="event.stopPropagation();hideFab()">✕</span></span>`;
+    if(!g){ const L=live(); let i=0; const put=()=>{const el=$('rot'); if(!el)return; const k=L[i%L.length]; el.outerHTML=`<span class="rot" id="rot">${GOV[k].label.replace('전남광주통합특별시 ','')} <em>+${man(GOV[k].amt)}원</em></span>`; i++;};
+      put(); if(!reduce) rotT=setInterval(put,2200); }
+  } else {
+    f.className='fab';
+    const txt=g?`고향ON 추가혜택 <em>+${man(GOV[g].amt)}</em>`:'고향ON 추가혜택';
+    const bdg=g?`+${man(GOV[g].amt)}`:`${live().length}곳`;
+    f.innerHTML=`<span class="ic">${COUPON}<span class="bdg">${bdg}</span></span><span class="tx bind" data-bo="${g?'카드 문구 (플로팅 공용)':'진행 중 지자체 수'}">${txt}</span>${!g?`<span class="bdg2" style="font-size:11px;font-weight:800;background:var(--amber);color:#1A1A1A;border-radius:9px;padding:1px 7px">${live().length}곳</span>`:''}<span class="x" onclick="event.stopPropagation();hideFab()">✕</span>`;
+  }
+  f.style.animation='none'; void f.offsetWidth; f.style.animation='';
+}
+function boing(){ const f=$('fab'); if(!f.classList.contains('fab2'))return; f.classList.remove('boing'); void f.offsetWidth; f.classList.add('boing'); }
+/* ── 카운트업 ── */
+function countUp(root){
+  if(!bold()) return;
+  root.querySelectorAll('[data-to]').forEach(el=>{ const a=+el.dataset.from,b=+el.dataset.to,suf=el.textContent.endsWith('원')?'원':''; const delay=+(el.dataset.delay||250);
+    if(reduce){el.textContent=won(b)+suf;return}
+    el.textContent=won(a)+suf; const t0=performance.now()+delay, d=900;
+    const step=t=>{ const p=Math.min(1,Math.max(0,(t-t0)/d)); const e=1-Math.pow(1-p,3); el.textContent=won(Math.round((a+(b-a)*e)/100)*100)+suf; if(p<1) requestAnimationFrame(step); };
+    requestAnimationFrame(step); });
+}
+/* ── 링크 유입 웰컴 ── */
+function showWelcome(){
+  const g=welGov(); if(!bold()||!g||S.view!=='list') return;
+  const G=GOV[g], src=S.mall==='seogu'?'링크로 오셨네요!':`${G.label.replace('전남광주통합특별시 ','')} 문자 링크로 오셨네요!`;
+  const cols=['#2F7CF6','#FF7A00','#12B76A','#FFA300','#FF4D1A'];
+  const cf=reduce?'':Array.from({length:18},(_,i)=>`<i class="cf" style="left:${5+Math.random()*90}%;background:${cols[i%5]};--d:${(.9+Math.random()*.5).toFixed(2)}s;--x:${Math.round(Math.random()*80-40)}px"></i>`).join('');
+  const head=hasVis()?vis(g):`<h3>고향ON에서 기부하면<br><em>혜택이 하나 더</em> 있어요</h3>`;
+  const sub=S.img==='none'?`<div class="wsub">세액공제 100,000 + 답례품 30,000 + <b>추가혜택 ${won(G.amt)}</b></div>`:b3(g);
+  $('wel').innerHTML=`<div class="wcard" id="wcard" style="${S.img==='bg'?heroBg(g)+';padding-top:120px':''}">${cf}<button class="wx" onclick="closeWelcome()">✕</button>
+    <div class="wk">${src} <span class="ddc">${ddTxt()}</span></div>
+    ${envBig(g,false)}
+    ${head}
+    <div class="wsum">10만원 기부하면 <b data-from="130000" data-to="${130000+G.amt}" data-delay="1000">${won(130000+G.amt)}</b>원 혜택</div>
+    ${sub}
+    <div class="btns"><button class="b2" onclick="closeWelcome();openPage('${g}')">혜택 자세히</button><button class="b1" onclick="closeWelcome()">답례품 보러가기</button></div>
+    <div class="wfine">${G.limit} · 지자체 프로모션마다 1인 1회 · 결제 화면에서 1개 선택</div></div>`;
+  $('wel').classList.remove('out'); $('wel').classList.add('on'); countUp($('wel')); S.welSeen=true;
+}
+function closeWelcome(){
+  const w=$('wel'), c=$('wcard'); if(!w.classList.contains('on')||!c){w.classList.remove('on');return}
+  const f=$('fab');
+  if(!reduce && !f.classList.contains('hide')){
+    const fr=f.getBoundingClientRect(), cr=c.getBoundingClientRect(), sc=isPC()?(parseFloat(($('dev').style.transform.match(/scale\(([\d.]+)\)/)||[0,1])[1])):1;
+    const ball=f.querySelector('.ball')||f; const br=ball.getBoundingClientRect();
+    c.style.setProperty('--fx',((br.left+br.width/2)-(cr.left+cr.width/2))/sc+'px'); c.style.setProperty('--fy',((br.top+br.height/2)-(cr.top+cr.height/2))/sc+'px');
+    w.classList.add('out'); c.classList.add('fly');
+    setTimeout(()=>{w.classList.remove('on','out'); w.innerHTML=''; boing();},480);
+  } else { w.classList.remove('on'); w.innerHTML=''; }
+}
+/* ── 조작 ── */
+function renderInflow(){
+  const opts=S.mall==='seogu'?[['none','직접 방문'],['link','문자·복지몰 링크']]:[['none','직접 방문'],['yeongju','경북 영주 문자 링크'],['yangju','경기 양주 문자 링크']];
+  if(!opts.some(o=>o[0]===S.inflow)) S.inflow=S.mall==='seogu'?'link':'none';
+  $('sIn').innerHTML=opts.map(o=>`<button data-v="${o[0]}" class="${o[0]===S.inflow?'on':''}">${o[1]}</button>`).join('');
+  $('sIn').querySelectorAll('button').forEach(b=>b.onclick=()=>{ S.inflow=b.dataset.v; S.view='list'; $('fab').dataset.hidden=''; render(); if(S.inflow!=='none') showWelcome(); });
+  $('replay').style.display=bold()&&welGov()?'inline-block':'none';
+}
+function renderPromo(){
+  $('promo').innerHTML=ORDER.map(g=>`<div class="pr ${S.mall==='seogu'&&g!=='seogu'?'dis':''}"><span>${GOV[g].label}</span>
+  <select data-g="${g}" class="pst"><option value="on" ${GOV[g].status==='on'?'selected':''}>진행</option><option value="full" ${GOV[g].status==='full'?'selected':''}>인원 마감</option><option value="end" ${GOV[g].status==='end'?'selected':''}>종료</option></select>
+  <input data-g="${g}" class="pam" type="number" step="5000" min="0" value="${GOV[g].amt}"></div>`).join('');
+  document.querySelectorAll('.pst').forEach(el=>el.onchange=()=>{GOV[el.dataset.g].status=el.value; if(S.view==='page'&&!shown().includes(S.tab)) S.view='list'; render(false);});
+  document.querySelectorAll('.pam').forEach(el=>el.onchange=()=>{GOV[el.dataset.g].amt=Math.max(0,+el.value||0); render(false);});
+}
+function fit(){ const d=$('dev'),st=$('stage');
+  if(isPC()){ const avail=Math.min(document.documentElement.clientWidth-400,1280); const s=Math.max(.45,Math.min(1,avail/1282)); d.style.transform=`scale(${s})`; st.style.width=1282*s+'px'; st.style.height=782*s+'px'; }
+  else { d.style.transform=''; st.style.width=''; st.style.height=''; } }
+function render(resetScroll=true){
+  const d=$('dev'); d.className='dev '+S.dev+(S.bind==='on'?' bind-on':'')+(bold()?' fx-bold':'');
+  $('pcbar').style.display=isPC()?'flex':'none'; $('tabbar').style.display=isPC()?'none':'flex'; $('topbtn').style.display=isPC()?'none':'flex';
+  $('url').textContent=(S.mall==='seogu'?'seogu.gohyangon.co.kr':'gohyangon.co.kr')+(S.view==='page'?'/event/benefit':(S.inflow!=='none'?'/?inflowPathTpCd=…':''));
+  const y=$('scr').scrollTop; $('scr').innerHTML=S.view==='page'?pageView(S.tab):listView(); $('scr').scrollTop=resetScroll?0:y;
+  $('wel').classList.remove('on'); $('wel').innerHTML='';
+  renderFab(); closeSheet(); renderPromo(); renderInflow(); noteUpdate(); fit();
+  if(S.view==='page') countUp($('scr'));
+}
+function noteUpdate(){
+  const g=ctxGov(); let t='';
+  if(bold()) t='<b>강하게 (v0.3)</b><br>· <b>링크로 들어오면 첫 화면</b>: 봉투가 열리고 혜택 티켓이 튀어나와요. 합계 숫자가 130,000원에서 올라가요. 닫으면 카드가 플로팅 속으로 빨려 들어가요 (세션당 1번)<br>· <b>상단 띠 배너</b>: 혜택 문구가 계속 흘러가요. 누르면 패널이 열려요<br>· <b>카드</b>: 주황 티켓 리본 「+25,000원」이 미끄러져 들어오고, 몇 초마다 빛이 지나가요<br>· <b>플로팅</b>: 봉투 버튼이 말랑하게 출렁이고, 티켓이 톡 튀어나와요. 말풍선에 금액을 보여줘요<br>· 패널·혜택 페이지는 참고 이미지처럼 <b>수단별 색 티켓</b>(복지=파랑·온누리=주황·네이버페이=초록)으로 보여줘요<br><br>';
+  if(g===undefined) t+='<b>진행 중인 프로모션 없음</b>: 플로팅·띠 배너·카드 리본이 모두 사라져요.';
+  else if(S.mall==='seogu') t+='<b>독립몰</b>: 지자체·프로모션이 1개라 모든 카드와 플로팅이 같은 금액이에요.';
+  else if(g&&S.inflow===g) t+=`<b>허브 · ${GOV[g].label} 링크 유입</b>: 첫 화면과 플로팅이 이 지자체 금액으로 고정돼요. 카드는 각자 자기 지자체 금액이에요.`;
+  else if(g) t+=`<b>허브 · 진행 중 1곳</b>: ${GOV[g].label} 금액을 바로 보여줘요.`;
+  else t+=`<b>허브 · 직접 방문</b>: ${bold()?'말풍선이 지자체별 금액을 하나씩 돌려가며 보여줘요':'플로팅은 「고향ON 추가혜택 · N곳」'}. 합산 「최대 N원」은 쓰지 않아요.`;
+  if(S.mall==='hub'&&GOV[S.inflow]&&GOV[S.inflow].status!=='on') t+=`<br>⚠️ 유입 지자체(${GOV[S.inflow].label}) 프로모션이 ${GOV[S.inflow].status==='full'?'마감':'종료'}돼 첫 화면 없이 기본 규칙으로 돌아갔어요.`;
+  t+='<br><br>· 가짜 남은 시간·남은 인원은 넣지 않았어요 (BO에 실제 값이 있을 때만)<br>· 답례품 상세·결제·마이페이지에는 플로팅이 없어요<br>· 움직임 줄이기 설정을 켠 기기에서는 애니메이션이 멈춰요';
+  $('note').innerHTML=t;
+}
+function openSheet(g){ $('sheet').innerHTML=g?sheetOne(g):sheetList(); $('sheet').style.cssText=(g&&useImg()&&S.img==='bg')?heroBg(g)+';padding-top:150px':''; $('dim').classList.add('on'); $('sheet').classList.add('on'); $('sheet').scrollTop=0; countUp($('sheet')); }
+function closeSheet(){ $('dim').classList.remove('on'); $('sheet').classList.remove('on'); }
+function tapCtx(){ const g=ctxGov(); if(g!==undefined) openSheet(g); }
+function openPage(g){ S.view='page'; S.tab=g; render(); }
+function back(){ S.view='list'; render(); }
+function hideFab(){ $('fab').dataset.hidden='1'; $('fab').classList.add('hide'); toast('오늘 하루 숨겨요'); }
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),1400); }
+$('fab').onclick=tapCtx;
+$('dim').onclick=closeSheet;
+$('replay').onclick=()=>{ S.view='list'; $('fab').dataset.hidden=''; render(); showWelcome(); };
+let lastY=0; $('scr').addEventListener('scroll',e=>{ if(S.view!=='list')return; const y=e.target.scrollTop; $('fab').classList.toggle('mini', y>lastY && y>(isPC()?300:60)); lastY=y; });
+function seg(id,key){ document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{ if(b.disabled)return;
+  document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); S[key]=b.dataset.v;
+  if(key==='mall'){S.view='list';S.inflow=S.mall==='seogu'?'link':'none';}
+  $('fab').dataset.hidden=''; render(); if((key==='fx'||key==='img')&&bold()&&welGov()) showWelcome(); }); }
+['sFx:fx','sImg:img','sDev:dev','sMall:mall','sMem:mem','sBind:bind'].forEach(p=>{const[a,b]=p.split(':');seg(a,b)});
+window.addEventListener('resize',fit);
+render(); setTimeout(showWelcome,300);
+</script>
+</body>
+</html>
