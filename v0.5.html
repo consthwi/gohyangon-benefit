@@ -404,10 +404,10 @@ button{cursor:pointer;border:0;background:none}
 .pc .pnames{font-size:12.5px}
 @media (prefers-reduced-motion:reduce){.pstage .pi img{animation:none}}
 /* v0.5-2 답례품 리본 — 떠 있는 제품이 "답례품"임을 알려줌 (좌측 상단, 끝이 V자로 파인 리본 + 접힌 꼬리) */
-.prib{position:absolute;left:-4px;top:6px;z-index:5;display:flex;align-items:center;gap:5px;height:26px;padding:0 16px 0 8px;background:linear-gradient(180deg,#FFB21F,#FF9A00);color:#fff;font-size:11.5px;font-weight:900;letter-spacing:-.2px;clip-path:polygon(0 0,100% 0,calc(100% - 9px) 50%,100% 100%,0 100%);box-shadow:0 3px 8px rgba(224,142,0,.3);animation:ribIn .5s cubic-bezier(.3,1.6,.5,1) .35s both}
+.prib{position:absolute;left:-4px;top:6px;z-index:5;display:flex;align-items:center;gap:5px;height:26px;padding:0 16px 0 8px;background:linear-gradient(100deg,#FF4D1A,#FF8A00);color:#fff;font-size:11.5px;font-weight:900;letter-spacing:-.2px;clip-path:polygon(0 0,100% 0,calc(100% - 9px) 50%,100% 100%,0 100%);box-shadow:0 3px 8px rgba(255,77,26,.3);animation:ribIn .5s cubic-bezier(.3,1.6,.5,1) .35s both}
 .prib::after{content:"";position:absolute}
 .pribw{position:absolute;left:-4px;top:6px;z-index:4}
-.pribw::after{content:"";position:absolute;left:0;top:26px;border-top:4px solid #B86A00;border-left:4px solid transparent}
+.pribw::after{content:"";position:absolute;left:0;top:26px;border-top:4px solid #B8320C;border-left:4px solid transparent}
 .prib svg{width:15px;height:15px;flex:none}
 .prib small{font-size:10px;font-weight:700;opacity:.9}
 .pc .prib{height:30px;font-size:13px;padding:0 18px 0 10px}.pc .prib svg{width:17px;height:17px}.pc .pribw::after{top:30px}
@@ -686,7 +686,7 @@ function showWelcome(){
     ${hasVis()?wsum+head:head+wsum}
     ${sub}
     <div class="btns"><button class="b2" onclick="closeWelcome();openPage('${g}')">혜택 자세히</button><button class="b1" onclick="closeWelcome()">답례품 보러가기</button></div>
-    ${fcfsChip(g)}${hasVis()?'<div class="wnote">세액공제는 납부할 세금이 있을 때 적용돼요</div>':''}</div>`;
+    ${fcfsChip(g)}</div>`;
   $('wel').classList.remove('out'); $('wel').classList.add('on'); countUp($('wel')); S.welSeen=true;
 }
 function closeWelcome(){
