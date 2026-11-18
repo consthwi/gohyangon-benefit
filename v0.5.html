@@ -355,7 +355,7 @@ button{cursor:pointer;border:0;background:none}
 .b3 .h{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:#8A817C;white-space:nowrap}
 .b3 .h .n{margin:0}
 /* v0.5-12 카드 안 글자 가운데 정렬 */
-.b3 .cap{margin-top:2px;font-size:10px;color:#8A817C;font-weight:600}.pc .b3 .cap{font-size:11.5px}
+.b3 .cap{margin-top:2px;font-size:10px;color:#8A817C;font-weight:600}.b3 .cap.up{color:#FF4D1A;font-weight:800}.pc .b3 .cap{font-size:11.5px}
 .b3{text-align:center}.b3 .h{justify-content:center}.b3>div{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .b3>div>b{margin-top:7px}
 .b3 .k3 .h{color:#B23A0A}.b3 .h em{font-style:normal;color:var(--amber-d)}
@@ -377,7 +377,7 @@ button{cursor:pointer;border:0;background:none}
 .b3 .h{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:#8A817C;white-space:nowrap}
 .b3 .h .n{margin:0}
 /* v0.5-12 카드 안 글자 가운데 정렬 */
-.b3 .cap{margin-top:2px;font-size:10px;color:#8A817C;font-weight:600}.pc .b3 .cap{font-size:11.5px}
+.b3 .cap{margin-top:2px;font-size:10px;color:#8A817C;font-weight:600}.b3 .cap.up{color:#FF4D1A;font-weight:800}.pc .b3 .cap{font-size:11.5px}
 .b3{text-align:center}.b3 .h{justify-content:center}.b3>div{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .b3>div>b{margin-top:7px}
 .b3 .k3 .h{color:#B23A0A}.b3 .h em{font-style:normal;color:var(--amber-d)}
@@ -511,7 +511,7 @@ const GOV={
   yangju:{label:'경기 양주',amt:15000,status:'on',
     opts:a=>({normal:[['온누리 적립금',a,'예시 · 수단 확정 중']],welfare:[['○○공사 복지 적립금',a,'예시 · 수단 확정 중'],['온누리 적립금',a,'예시 · 수단 확정 중']]}),
     cap:300,items:[['양주골쌀 10kg','#7C6A3A',IMG+'10/26/UFJPRC8yMDI2LzEwLzI2-3ce63a31-e3db-4823-a778-64001841bdfe'],['한돈 선물세트','#5A4A2E',IMG+'10/27/UFJPRC8yMDI2LzEwLzI3-4f73698d-d5a6-46f2-ba94-2fbc0bcea10c'],['참·들기름 세트','#6A5A2E',IMG+'10/28/UFJPRC8yMDI2LzEwLzI4-e2b36b20-c95a-4d36-a94c-43953992d43d']]},
-  yeongju:{label:'경북 영주',amt:10000,status:'on',
+  yeongju:{label:'경북 영주',amt:10000,up:10000,status:'on',
     opts:a=>({normal:[['온누리 적립금',a,'1113 영주시 전달자료 기준'],['네이버페이 포인트',a,'1113 영주시 전달자료 기준']],welfare:[['○○공사 복지 적립금',a,'소속 고객사 적립금'],['온누리 적립금',a,'1113 영주시 전달자료 기준'],['네이버페이 포인트',a,'1113 영주시 전달자료 기준']]}),
     cap:0,items:[['영주사과 5+1kg','#9E2A2A',IMG+'11/10/UFJPRC8yMDI2LzExLzEw-6c4ac8c4-a58d-45a5-806c-9e8a07e38b12'],['1++ 한우 구이용','#6B2B2B',IMG+'11/13/UFJPRC8yMDI2LzExLzEz-c2004cfa-5183-402e-a4ef-1b72ba1dd1d9'],['풍기인삼 선물세트','#5B4B2B',IMG+'11/11/UFJPRC8yMDI2LzExLzEx-2f602fd0-c6db-47bc-8ed2-827437387a5f']]}
 };
@@ -525,13 +525,15 @@ const useImg=()=>S.fx==='bold'&&S.img!=='none';
 function pstrip(g,n=3,big){ return `<div class="pstrip${big?' big':''} bind" data-bo="${GOV[g].label} 대표 답례품 (BO 노출 순서)">${GOV[g].items.slice(0,n).map(it=>`<figure><img src="${it[2]}" alt="${it[0]}"><figcaption>${it[0]}</figcaption></figure>`).join('')}</div>`; }
 /* 혜택1·2·3 (이벤트 페이지에서 쓰던 구성 그대로) */
 function b3(g){ const a=GOV[g].amt;
-  return `<div class="b3${hasVis()?' lk':''}"><div class="k1"><span class="h"><i class="n">1</i>세액공제</span><b>100%</b><i class="cap bind" data-bo="세액공제 3단(2026.1.1): 10만원까지 100% · 10만~20만원 44% · 초과 16.5%">10만원까지</i></div><div><span class="h"><i class="n">2</i>답례품</span><b>3만원</b></div><div class="k3 bind" data-bo="gifts[enabled].amount 최댓값 · 유입코드·고객사로 고른 프로모션"><span class="h"><i class="n">3</i><span>고향<em>ON</em></span></span><b>추가혜택</b></div></div>`; }
+  return `<div class="b3${hasVis()?' lk':''}"><div class="k1"><span class="h"><i class="n">1</i>세액공제</span><b>100%</b><i class="cap bind" data-bo="세액공제 3단(2026.1.1): 10만원까지 100% · 10만~20만원 44% · 초과 16.5%">10만원까지</i></div><div><span class="h"><i class="n">2</i>답례품</span><b>3만원</b>${UP(g)?`<i class="cap up bind" data-bo="답례품 증량(공급사 제공) — BO 필드 없음 · 개발 확인">+${man(UP(g))}원 증량</i>`:''}</div><div class="k3 bind" data-bo="gifts[enabled].amount 최댓값 · 유입코드·고객사로 고른 프로모션"><span class="h"><i class="n">3</i><span>고향<em>ON</em></span></span><b>추가혜택</b></div></div>`; }
 /* v0.5 누끼 PNG — 운영자가 png/{지자체}_{순번}.png 로 넣으면 자동 교체. 없으면 실사 컷을 원형 접시로 */
 const GIFT=`<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="2"/><path d="M2 9h20M12 9v12"/><path d="M12 9c-1.5-3-5-4-5.5-2S9 9 12 9zM12 9c1.5-3 5-4 5.5-2S15 9 12 9z"/></svg>`;
 const CLK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
 /* 선착순 인원(cap) — 0이면 인원 제한 없음 → 아무것도 안 보임 */
 const fcfs=g=>GOV[g].cap?`선착순 ${won(GOV[g].cap)}명`:'';
 const fcfsChip=g=>GOV[g].cap?`<div class="fcfs bind" data-bo="participantGroup.totalParticipantLimit · endOnParticipantLimit=Y일 때만">${CLK}${fcfs(g)} · 마감 시 종료</div>`:'';
+/* 답례품 증량(공급사 제공) — 영주 = 3만원 답례품 +1만원 증량(1109 영주시 · 운영자 1118) → 합계에 포함 */
+const UP=g=>GOV[g].up||0, TOT=g=>130000+UP(g)+GOV[g].amt;
 const PNG=(g,i)=>`png/${g}_${i+1}.png`;
 /* 깨진 이미지 순간 노출(대체 글자 깜빡임) 방지: 불러온 뒤에만 보이고, 한 번 실패한 PNG는 기억해 바로 실사 컷 사용 */
 const PNG_FAIL=new Set();
@@ -596,8 +598,9 @@ function listView(){
 function rcpt(g){ const p=GOV[g].amt;
   return `<div class="rcpt"><div class="r"><span>세액공제 (10만원 기부 시)</span><span>100,000원</span></div>
   <div class="r"><span>답례품 (기부금의 30%)</span><span>30,000원</span></div>
+  ${UP(g)?`<div class="r plus"><span>답례품 증량</span><b>+${won(UP(g))}원</b></div>`:''}
   <div class="r plus bind" data-bo="연계 경품 최대 금액"><span>고향ON 추가혜택</span><b>+${won(p)}원</b></div>
-  <div class="sum"><span>받는 혜택 합계</span><b data-from="130000" data-to="${130000+p}">${won(130000+p)}원</b></div>
+  <div class="sum"><span>받는 혜택 합계</span><b data-from="130000" data-to="${TOT(g)}">${won(TOT(g))}원</b></div>
   <div class="fine">세액공제는 연말정산·종합소득세 신고 시 적용 · 추가혜택은 결제 화면에서 1개 선택</div></div>`;}
 function optList(g){ const o=GOV[g].opts(GOV[g].amt); return S.mem==='guest'?o.normal:o[S.mem]; }
 function tickets(g,cls){ return optList(g).map(o=>`<div class="${cls}" style="--c:${tcol(o[0])}"><small>${tname(o[0])}</small><b>${won(o[1])}원</b></div>`).join(''); }
@@ -610,7 +613,7 @@ function picks(g){
 function sheetOne(g){
   const h=bold()?`10만원 기부하면<br><em>+${won(GOV[g].amt)}원</em> 더 받아요`:'10만원 기부하면<br>혜택이 하나 더 있어요';
   let head=`<h3>${h}</h3>`, body=bold()?picks(g)+rcpt(g):rcpt(g)+picks(g);
-  if(useImg()){ body=b3(g)+picks(g)+`<div class="sfine" style="margin-top:-4px">10만원 기부 시 받는 혜택 합계 <b style="color:var(--ink)">${won(130000+GOV[g].amt)}원</b> · 세액공제는 연말정산·종합소득세 신고 시 적용</div>`;
+  if(useImg()){ body=b3(g)+picks(g)+`<div class="sfine" style="margin-top:-4px">10만원 기부 시 받는 혜택 합계 <b style="color:var(--ink)">${won(TOT(g))}원</b> · 세액공제는 연말정산·종합소득세 신고 시 적용</div>`;
     head=hasVis()?vis(g):`<h3>${h}</h3>`; }
   return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON 추가혜택 · ${GOV[g].label} ${bold()?`<span class="ddc">${ddTxt()}</span>`:''}</div>
   ${head}${body}
@@ -632,8 +635,8 @@ function tabsHtml(g){ if(S.mall!=='hub') return '';
 function pageParts(g){
   const G=GOV[g]; const closed=G.status==='full';
   const hero=closed?`<div class="bhero closed"><div class="k">고향ON 추가혜택 · ${G.label}</div><h2>추가혜택이<br><em>마감</em>되었어요</h2><div class="closedmsg">준비된 인원이 모두 찼어요. 답례품 기부와 세액공제는 그대로 받을 수 있어요.</div></div>`
-    :useImg()?`<div class="bhero" style="${S.img==='bg'?heroBg(g)+';padding-top:'+(isPC()?260:150)+'px':''}"><div class="k">고향ON 추가혜택 · ${G.label} <span class="ddc">${ddTxt()}</span></div>${hasVis()?vis(g):''}<h2 style="margin-top:12px">10만원 기부하면<br><em data-from="130000" data-to="${130000+G.amt}">${won(130000+G.amt)}원</em> 혜택</h2>${b3(g)}<div style="height:12px"></div>${rcpt(g)}</div>`
-    :`<div class="bhero"><div class="k">고향ON 추가혜택 · ${G.label}</div>${bold()?envBig(g,false):''}<h2>10만원 기부하면<br><em data-from="130000" data-to="${130000+G.amt}">${won(130000+G.amt)}원</em> 혜택</h2>${rcpt(g)}</div>`;
+    :useImg()?`<div class="bhero" style="${S.img==='bg'?heroBg(g)+';padding-top:'+(isPC()?260:150)+'px':''}"><div class="k">고향ON 추가혜택 · ${G.label} <span class="ddc">${ddTxt()}</span></div><h2 style="margin-top:12px">10만원 기부하면<br><em data-from="130000" data-to="${TOT(g)}">${won(TOT(g))}원</em> 혜택</h2>${hasVis()?vis(g):''}${b3(g)}<div style="height:12px"></div>${rcpt(g)}</div>`
+    :`<div class="bhero"><div class="k">고향ON 추가혜택 · ${G.label}</div>${bold()?envBig(g,false):''}<h2>10만원 기부하면<br><em data-from="130000" data-to="${TOT(g)}">${won(TOT(g))}원</em> 혜택</h2>${rcpt(g)}</div>`;
   const opts=closed?'':`<div class="blk"><h3>추가혜택 고르기 <span style="font-size:12px;color:#8A8A8A;font-weight:500">결제 화면에서 1개</span></h3>${S.mem==='guest'?'<div class="login" style="margin-bottom:8px">아래는 일반 회원 기준이에요. 로그인하면 내 혜택으로 바뀌어요.</div>':''}${optList(g).map(o=>`<div class="opt bind" style="--c:${tcol(o[0])}" data-bo="gifts[sortOrder] displayName · amount · deliveryMessage"><div class="t"><span>${o[0]}</span><b>${won(o[1])}원</b></div><div class="d">${o[2]}</div></div>`).join('')}</div>`;
   const steps=closed?'':`<div class="blk"><h3>받는 방법</h3><div class="steps"><div class="step"><div><b>답례품 고르고 10만원 이상 기부</b><span>일반기부로 진행돼요</span></div></div><div class="step"><div><b>결제 화면에서 추가혜택 선택</b><span>적립금·포인트 중 1개를 골라요</span></div></div><div class="step"><div><b>지급 후 사용</b><span class="bind" data-bo="연계 경품 · 지급 시점/사용처/유효기간">수단별 지급 시점·사용처는 위 안내를 따라요</span></div></div></div></div>`;
   const prods=`<div class="blk"><h3>${G.label} 답례품</h3><div class="hs">${G.items.map(it=>card(g,it)).join('')}</div></div>`;
@@ -688,8 +691,8 @@ function showWelcome(){
   const cols=['#2F7CF6','#FF7A00','#12B76A','#FF6C00','#FF4D1A'];
   const cf=reduce?'':Array.from({length:18},(_,i)=>`<i class="cf" style="left:${5+Math.random()*90}%;background:${cols[i%5]};--d:${(.9+Math.random()*.5).toFixed(2)}s;--x:${Math.round(Math.random()*80-40)}px"></i>`).join('');
   const head=hasVis()?vis(g):`<h3>고향ON에서 기부하면<br><em>혜택이 하나 더</em> 있어요</h3>`;
-  const wsum=`<div class="wsum${hasVis()?' top':''}">10만원 기부하면${hasVis()?'<s>최대</s>':''} <b data-from="130000" data-to="${130000+G.amt}" data-delay="1000">${won(130000+G.amt)}</b>원 혜택</div>`;
-  const sub=S.img==='none'?`<div class="wsub">세액공제 100,000 + 답례품 30,000 + <b>추가혜택 ${won(G.amt)}</b></div>`:b3(g);
+  const wsum=`<div class="wsum${hasVis()?' top':''}">10만원 기부하면${hasVis()?'<s>최대</s>':''} <b data-from="130000" data-to="${TOT(g)}" data-delay="1000">${won(TOT(g))}</b>원 혜택</div>`;
+  const sub=S.img==='none'?`<div class="wsub">세액공제 100,000 + 답례품 30,000${UP(g)?` + 증량 ${won(UP(g))}`:''} + <b>추가혜택 ${won(G.amt)}</b></div>`:b3(g);
   $('wel').innerHTML=`<div class="wcard" id="wcard" style="${S.img==='bg'?heroBg(g)+';padding-top:120px':''}">${cf}<button class="wx" onclick="closeWelcome()">✕</button>
     <span class="ddc wdd">${ddTxt()}</span>${S.mem==='welfare'?`<div class="wk bind" data-bo="복지관 회원(고객사 조회 성공)일 때만">${src}</div>`:'<div class="wk0"></div>'}
     ${envBig(g,false)}
