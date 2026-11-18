@@ -256,7 +256,10 @@ button{cursor:pointer;border:0;background:none}
 @keyframes wIn{from{transform:scale(.7) translateY(30px);opacity:0}to{transform:none;opacity:1}}
 .wcard.fly{transition:transform .5s cubic-bezier(.6,0,.8,.4),opacity .45s;transform:translate(var(--fx),var(--fy)) scale(.06)!important;opacity:.2;animation:none}
 .wcard .wx{position:absolute;right:14px;top:14px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);font-size:13px;z-index:6}
-.wk{font-size:12px;font-weight:800;color:#B86E00}
+.wk{font-size:12.5px;font-weight:800;color:#B86E00;margin-top:30px}
+/* v0.5-3 D-day 칩 = 좌상단(닫기 ✕와 같은 줄), 「링크로 오셨네요」 = 그 아래 가운데 */
+.wcard .wdd{position:absolute;left:14px;top:16px;z-index:6}
+.pc .wcard .wdd{left:20px;top:20px}.pc .wk{margin-top:34px;font-size:14px}
 .wcard h3{font-size:22px;font-weight:900;line-height:1.3;margin-top:2px;word-break:keep-all}
 .pc .wcard h3{font-size:26px}
 .wcard h3 em{font-style:normal;color:var(--hot)}
@@ -338,6 +341,12 @@ button{cursor:pointer;border:0;background:none}
 .pstage .pi.fb img{width:auto;aspect-ratio:1;object-fit:cover;border-radius:50%;border:4px solid #fff;box-shadow:0 8px 18px rgba(110,70,10,.22);filter:none}
 .pstage .pi.fb.pc_ img{height:88%}
 @keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+/* v0.5-3 답례품명 = 제품 밑동에 붙은 흰 이름표(가운데는 바닥 쪽, 양옆은 한 단 위 → 겹치지 않음) */
+.pstage{margin-bottom:12px}
+.ptag{position:absolute;left:50%;bottom:0;transform:translateX(-50%);max-width:104%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(255,255,255,.95);border:1px solid #F1DDB5;color:#5A4520;font-size:10px;font-weight:700;letter-spacing:-.2px;line-height:1;padding:4px 8px;border-radius:999px;box-shadow:0 2px 6px rgba(120,80,10,.14);z-index:2;animation:tagIn .4s ease-out .5s both}
+.pstage .pc_ .ptag{bottom:-14px;font-size:11px;font-weight:800;color:#3A2A10;padding:5px 10px;border-color:#FFD27F}
+.pc .ptag{font-size:11.5px}.pc .pstage .pc_ .ptag{font-size:13px}
+@keyframes tagIn{from{opacity:0;transform:translate(-50%,4px)}to{opacity:1;transform:translateX(-50%)}}
 .pnames{text-align:center;font-size:11px;color:#8C7B5E;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pc .pnames{font-size:12.5px}
 @media (prefers-reduced-motion:reduce){.pstage .pi img{animation:none}}
@@ -465,7 +474,7 @@ const fcfsChip=g=>GOV[g].cap?`<div class="fcfs bind" data-bo="participantGroup.t
 const PNG=(g,i)=>`png/${g}_${i+1}.png`;
 function phFb(im){ im.onerror=null; im.closest('figure').classList.add('fb'); im.src=im.dataset.ph; }
 function pstage(g){ const it=GOV[g].items.slice(0,3), cls=['pl','pc_','pr'], idx=[1,0,2];
-  return `<div class="pstage bind" data-bo="${GOV[g].label} 대표 답례품 PNG (가운데=1순위)"><div class="halo"></div><div class="floor"></div><div class="pribw"></div><div class="prib">${GIFT}기부하면 받는 답례품</div>${idx.map((k,j)=>it[k]?`<figure class="pi ${cls[j]}"><img src="${PNG(g,k)}" data-ph="${it[k][2]}" alt="${it[k][0]}" onerror="phFb(this)"></figure>`:'').join('')}</div><div class="pnames">${it.map(x=>x[0]).join(' · ')}</div>`; }
+  return `<div class="pstage bind" data-bo="${GOV[g].label} 대표 답례품 PNG (가운데=1순위)"><div class="halo"></div><div class="floor"></div><div class="pribw"></div><div class="prib">${GIFT}기부하면 받는 답례품</div>${idx.map((k,j)=>it[k]?`<figure class="pi ${cls[j]}"><img src="${PNG(g,k)}" data-ph="${it[k][2]}" alt="${it[k][0]}" onerror="phFb(this)"><figcaption class="ptag" title="${it[k][0]}">${it[k][0]}</figcaption></figure>`:'').join('')}</div>`; }
 const vis=g=>S.img==='png'?pstage(g):pstrip(g,3,true);
 const hasVis=()=>S.img==='png'||S.img==='head';
 const heroBg=g=>`background:linear-gradient(180deg,rgba(255,241,214,.25) 0%,rgba(255,248,235,.94) 46%,#fff 70%),url('${GOV[g].items[0][2]}') center top/100% auto no-repeat`;
@@ -618,7 +627,7 @@ function showWelcome(){
   const head=hasVis()?vis(g):`<h3>고향ON에서 기부하면<br><em>혜택이 하나 더</em> 있어요</h3>`;
   const sub=S.img==='none'?`<div class="wsub">세액공제 100,000 + 답례품 30,000 + <b>추가혜택 ${won(G.amt)}</b></div>`:b3(g);
   $('wel').innerHTML=`<div class="wcard" id="wcard" style="${S.img==='bg'?heroBg(g)+';padding-top:120px':''}">${cf}<button class="wx" onclick="closeWelcome()">✕</button>
-    <div class="wk">${src} <span class="ddc">${ddTxt()}</span></div>
+    <span class="ddc wdd">${ddTxt()}</span><div class="wk">${src}</div>
     ${envBig(g,false)}
     ${head}
     <div class="wsum">10만원 기부하면 <b data-from="130000" data-to="${130000+G.amt}" data-delay="1000">${won(130000+G.amt)}</b>원 혜택</div>
