@@ -727,9 +727,9 @@ function picks(g){
   return `<div class="picks"><div class="lab">내가 고를 수 있는 고향ON 추가혜택 <span style="color:#8A8A8A;font-weight:500">(택1)</span></div>
   ${optList(g).map((o,i)=>`<div class="pick bind" data-bo="연계 경품 · FO 표시명/금액"><span>${o[0]}${S.mem==='welfare'&&i===0?'<span class="tag">우리 회사</span>':''}</span><b>${won(o[1])}원</b></div>`).join('')}</div>`;}
 function sheetOne(g){
-  if(V2()) return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="shd">${bold()?`<span class="ddc">${ddTxt()}</span>`:'<span></span>'}<span class="sgov">${GOV[g].label}</span></div>
+  if(S.ver!=='0') return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="shd">${bold()?`<span class="ddc">${ddTxt()}</span>`:'<span></span>'}<span class="sgov">${GOV[g].label}</span></div>
   ${hasVis()?vis(g):`<h3>10만원 기부하면<br><em>+${won(MORE(g))}원</em> 더 받아요</h3>`}<div class="s2r">${rcpt(g)}</div>${fcfsChip(g)}
-  <div class="btns"><button class="b1" onclick="toast('${GOV[g].label} 답례품 목록으로 이동')">답례품 보러가기</button></div>`;
+  <div class="btns">${V2()?`<button class="b1" onclick="toast('${GOV[g].label} 답례품 목록으로 이동')">답례품 보러가기</button>`:`<button class="b2" onclick="toast('${GOV[g].label} 답례품 목록으로 이동')">답례품 보러가기</button><button class="b1" onclick="openPage('${g}')">자세히 보기 ›</button>`}</div>`;
   const h=bold()?`10만원 기부하면<br><em>+${won(MORE(g))}원</em> 더 받아요`:'10만원 기부하면<br>혜택이 하나 더 있어요';
   let head=`<h3>${h}</h3>`, body=bold()?picks(g)+rcpt(g):rcpt(g)+picks(g);
   if(useImg()){ body=b3(g)+picks(g)+`<div class="sfine" style="margin-top:-4px">10만원 기부 시 받는 혜택 합계 <b style="color:var(--ink)">${won(TOT(g))}원</b> · 세액공제는 연말정산·종합소득세 신고 시 적용</div>`;
