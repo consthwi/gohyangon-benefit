@@ -6,7 +6,7 @@
 <title>고향ON 추가혜택 프로토타입</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
-:root{--amber:#FFA300;--amber-d:#E08E00;--amber-bg:#FFF6E5;--hot:#FF4D1A;--ink:#1A1A1A;--ink2:#555;--ink3:#8A8A8A;--line:#ECECEC;--bg:#F4F4F2;--c-welfare:#2F7CF6;--c-onnuri:#FF7A00;--c-npay:#12B76A}
+:root{--amber:#FF6C00;--amber-d:#F05A00;--amber-bg:#FFF1E8;--hot:#FF4D1A;--ink:#1A1A1A;--ink2:#555;--ink3:#8A8A8A;--line:#ECECEC;--bg:#F4F4F2;--c-welfare:#2F7CF6;--c-onnuri:#FF7A00;--c-npay:#12B76A}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
 button,input,select{font-family:inherit;color:inherit}
@@ -23,7 +23,7 @@ button{cursor:pointer;border:0;background:none}
 .seg button{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:#fafafa}
 .seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .seg button:disabled{opacity:.35;cursor:not-allowed}
-.replay{font-size:12px;padding:6px 10px;border-radius:8px;border:1px dashed #C9A24D;background:#FFF9EC;color:#8A5A00;margin-top:6px}
+.replay{font-size:12px;padding:6px 10px;border-radius:8px;border:1px dashed #E8956A;background:#FFF5EE;color:#B23A0A;margin-top:6px}
 .promo{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 .promo .pr{display:grid;grid-template-columns:1fr 66px 64px 52px;gap:6px;align-items:center;padding:5px 0;font-size:11.5px}
 .promo .pr+.pr{border-top:1px solid #F2F2F2}
@@ -50,7 +50,7 @@ button{cursor:pointer;border:0;background:none}
 
 /* 공통 카드 */
 .card .thumb{aspect-ratio:1;border-radius:10px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:12px;color:rgba(255,255,255,.9);font-weight:600;text-align:center;padding:8px}
-.chip{position:absolute;left:8px;bottom:8px;background:var(--amber);color:#1A1A1A;font-size:11px;font-weight:800;padding:4px 7px 4px 6px;border-radius:6px;overflow:hidden;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(224,142,0,.35)}
+.chip{position:absolute;left:8px;bottom:8px;background:var(--amber);color:#1A1A1A;font-size:11px;font-weight:800;padding:4px 7px 4px 6px;border-radius:6px;overflow:hidden;display:flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(255,108,0,.35)}
 .chip svg{width:11px;height:11px}
 .chip::before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.85),transparent);transform:skewX(-20deg)}
 .chip.shine::before{animation:shine .9s ease-out .15s 1 both}
@@ -66,7 +66,7 @@ button{cursor:pointer;border:0;background:none}
 .pc .card .pr{font-size:13px}.pc .card .pr b{font-size:16px}
 
 /* v0.3 카드 티켓 리본 */
-.tix{position:absolute;left:0;top:10px;z-index:2;color:#fff;text-align:left;padding:5px 12px 6px 9px;border-radius:0 10px 10px 0;background:linear-gradient(100deg,#FF4D1A,#FF7A00 55%,#FFA300);box-shadow:0 3px 10px rgba(255,77,26,.45);line-height:1.05;overflow:hidden;animation:tixIn .6s cubic-bezier(.3,1.7,.5,1) both;
+.tix{position:absolute;left:0;top:10px;z-index:2;color:#fff;text-align:left;padding:5px 12px 6px 9px;border-radius:0 10px 10px 0;background:linear-gradient(100deg,#FF4D1A,#FF7A00 55%,#FF6C00);box-shadow:0 3px 10px rgba(255,77,26,.45);line-height:1.05;overflow:hidden;animation:tixIn .6s cubic-bezier(.3,1.7,.5,1) both;
   -webkit-mask:radial-gradient(circle at 100% 50%,transparent 4px,#000 4.5px);mask:radial-gradient(circle at 100% 50%,transparent 4px,#000 4.5px)}
 .tix small{display:block;font-size:9.5px;font-weight:700;opacity:.95;letter-spacing:.2px}
 .tix b{font-size:16px;font-weight:900;letter-spacing:-.4px}
@@ -95,7 +95,7 @@ button{cursor:pointer;border:0;background:none}
 .topbtn{position:absolute;right:14px;bottom:68px;width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:25;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink2)}
 
 /* v0.3 상단 띠 배너 */
-.tick{background:linear-gradient(90deg,#FF4D1A,#FF8A00 50%,#FFA300);color:#fff;font-size:12.5px;font-weight:800;height:32px;overflow:hidden;display:flex;align-items:center;cursor:pointer}
+.tick{background:linear-gradient(90deg,#FF4D1A,#FF6C00 50%,#FF6C00);color:#fff;font-size:12.5px;font-weight:800;height:32px;overflow:hidden;display:flex;align-items:center;cursor:pointer}
 .trk{display:flex;white-space:nowrap;animation:mq 24s linear infinite;will-change:transform}
 .trk span{padding:0 16px;display:inline-flex;align-items:center;gap:8px}
 .trk span::before{content:"";width:5px;height:5px;border-radius:50%;background:#fff;opacity:.75}
@@ -148,7 +148,7 @@ button{cursor:pointer;border:0;background:none}
 .fab2{position:absolute;z-index:26;display:flex;align-items:center;filter:drop-shadow(0 8px 14px rgba(0,0,0,.22));animation:pop .6s cubic-bezier(.3,1.6,.5,1) both}
 .mo .fab2{left:12px;bottom:66px}
 .pc .fab2{right:28px;bottom:28px;flex-direction:row-reverse}
-.fab2 .ball{width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFC75A,#FFA300 55%,#F08A00);display:flex;align-items:center;justify-content:center;position:relative;flex:none;animation:jellyLoop 4s ease-in-out 1.2s infinite;transform-origin:50% 90%}
+.fab2 .ball{width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFB27F,#FF6C00 55%,#F05A00);display:flex;align-items:center;justify-content:center;position:relative;flex:none;animation:jellyLoop 4s ease-in-out 1.2s infinite;transform-origin:50% 90%}
 .pc .fab2 .ball{width:76px;height:76px}
 .fab2 .ring{position:absolute;inset:0;border-radius:50%;border:3px solid var(--amber);animation:ring 2s ease-out infinite;pointer-events:none}
 @keyframes ring{from{transform:scale(1);opacity:.75}to{transform:scale(1.65);opacity:0}}
@@ -165,7 +165,7 @@ button{cursor:pointer;border:0;background:none}
 .fab2 .bubble::before{content:"";position:absolute;top:50%;width:12px;height:12px;background:#fff;transform:translateY(-50%) rotate(45deg);border-radius:2px}
 .mo .fab2 .bubble::before{left:-5px}
 .pc .fab2 .bubble::before{right:-5px}
-.fab2 .bubble small{display:block;font-size:10.5px;color:#A86800;font-weight:800}
+.fab2 .bubble small{display:block;font-size:10.5px;color:#D9480F;font-weight:800}
 .fab2 .bubble b{display:block;font-size:15px;font-weight:900;color:var(--ink);margin-top:1px}
 .fab2 .bubble b em{font-style:normal;color:var(--hot)}
 .pc .fab2 .bubble small{font-size:12px}.pc .fab2 .bubble b{font-size:18px}
@@ -212,7 +212,7 @@ button{cursor:pointer;border:0;background:none}
 .btns{display:flex;gap:8px;margin-top:14px}
 .btns button{flex:1;height:46px;border-radius:10px;font-size:14px;font-weight:700}
 .b1{background:var(--ink);color:#fff}.b2{background:#F1F1EF;color:var(--ink)}
-.fx-bold .b1{background:linear-gradient(100deg,#FF4D1A,#FF8A00);color:#fff}
+.fx-bold .b1{background:linear-gradient(100deg,#FF4D1A,#FF6C00);color:#fff}
 .govrow{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:8px;cursor:pointer}
 .govrow .g{font-size:14px;font-weight:700}.govrow .s{font-size:11.5px;color:var(--ink3);margin-top:2px}
 .govrow .a{font-size:15px;font-weight:800;color:var(--amber-d);text-align:right}
@@ -245,9 +245,9 @@ button{cursor:pointer;border:0;background:none}
 .wenv .tk b{display:block;font-size:16px;letter-spacing:-.5px;margin-top:3px}
 @keyframes tkUp{from{opacity:1;transform:translateY(70px) rotate(0)}to{opacity:1;transform:translateY(0) rotate(var(--r))}}
 /* v0.5-4 봉투 앞면에 찍힌 「고향ON 추가혜택」 */
-.wenv .elab{position:absolute;left:50%;bottom:11px;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:12.5px;font-weight:900;letter-spacing:-.2px;color:#8A5A10}
+.wenv .elab{position:absolute;left:50%;bottom:11px;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:12.5px;font-weight:900;letter-spacing:-.2px;color:#B23A0A}
 .wenv .elab em{font-style:normal;color:var(--amber-d)}
-.wenv .elab i{width:17px;height:17px;border-radius:50%;background:var(--amber);color:#fff;font-style:normal;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(224,142,0,.35)}
+.wenv .elab i{width:17px;height:17px;border-radius:50%;background:var(--amber);color:#fff;font-style:normal;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(255,108,0,.35)}
 .pc .wenv .elab{font-size:14px}
 .wenv.still .fl{animation:none;transform:rotateX(180deg);z-index:0}
 .wenv.still .tk{animation-duration:.01s;animation-delay:0s!important}
@@ -256,18 +256,18 @@ button{cursor:pointer;border:0;background:none}
 .wel{position:absolute;inset:0;z-index:50;background:rgba(10,10,10,.62);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
 .wel.on{opacity:1;pointer-events:auto}
 .wel.out{background:transparent;transition:background .3s}
-.wcard{width:100%;max-width:335px;background:linear-gradient(180deg,#FFF1D6,#fff 58%);border-radius:24px;padding:20px 20px 18px;text-align:center;position:relative;overflow:hidden;animation:wIn .5s cubic-bezier(.3,1.5,.5,1) both}
+.wcard{width:100%;max-width:335px;background:linear-gradient(180deg,#FFF1E8,#fff 58%);border-radius:24px;padding:20px 20px 18px;text-align:center;position:relative;overflow:hidden;animation:wIn .5s cubic-bezier(.3,1.5,.5,1) both}
 .pc .wcard{max-width:440px;padding:28px 32px 24px}
 @keyframes wIn{from{transform:scale(.7) translateY(30px);opacity:0}to{transform:none;opacity:1}}
 .wcard.fly{transition:transform .5s cubic-bezier(.6,0,.8,.4),opacity .45s;transform:translate(var(--fx),var(--fy)) scale(.06)!important;opacity:.2;animation:none}
 .wcard .wx{position:absolute;right:14px;top:14px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);font-size:13px;z-index:6}
-.wk{font-size:12.5px;font-weight:800;color:#B86E00;margin-top:30px}
+.wk{font-size:12.5px;font-weight:800;color:#D9480F;margin-top:30px}
 /* v0.5-3 D-day 칩 = 좌상단(닫기 ✕와 같은 줄), 「링크로 오셨네요」 = 그 아래 가운데 */
-.wintro{font-size:11px;color:#8C7B5E;line-height:1.45;margin-top:3px}.wintro b{color:#5A4520}
+.wintro{font-size:11px;color:#8A817C;line-height:1.45;margin-top:3px}.wintro b{color:#4A3A33}
 .pc .wintro{font-size:12.5px}
 .wnote{font-size:10px;color:#A09A90;margin-top:8px;line-height:1.4}
 .wcard .wdd{position:absolute;left:14px;top:16px;z-index:6}
-.pc .wintro{font-size:11px;color:#8C7B5E;line-height:1.45;margin-top:3px}.wintro b{color:#5A4520}
+.pc .wintro{font-size:11px;color:#8A817C;line-height:1.45;margin-top:3px}.wintro b{color:#4A3A33}
 .pc .wintro{font-size:12.5px}
 .wnote{font-size:10px;color:#A09A90;margin-top:8px;line-height:1.4}
 .wcard .wdd{left:20px;top:20px}.pc .wk{margin-top:34px;font-size:14px}
@@ -280,7 +280,7 @@ button{cursor:pointer;border:0;background:none}
 .wcard .wk{margin-top:28px}
 .wcard .wk0{height:30px}
 .wcard .b3>div{padding:9px 9px 10px}
-.wsum.top{margin:4px 0 0;white-space:nowrap;font-size:12px}.wsum.top b{font-size:29px;margin:0 1px}.wsum.top s{text-decoration:none;font-size:12px;color:#8C7B5E;font-weight:700;margin-left:3px}
+.wsum.top{margin:4px 0 0;white-space:nowrap;font-size:12px}.wsum.top b{font-size:29px;margin:0 1px}.wsum.top s{text-decoration:none;font-size:12px;color:#8A817C;font-weight:700;margin-left:3px}
 .pc .wsum.top{font-size:14px}.pc .wsum.top b{font-size:38px}
 .wsub{font-size:11.5px;color:var(--ink2);margin-top:4px;line-height:1.5}
 .wsub b{color:var(--hot)}
@@ -298,12 +298,12 @@ button{cursor:pointer;border:0;background:none}
 .gtabs button{flex:none;height:36px;padding:0 14px;border-radius:18px;font-size:13px;font-weight:700;background:#F3F3F1;color:var(--ink2);white-space:nowrap}
 .gtabs button.on{background:var(--ink);color:#fff}
 .gtabs button small{font-size:10.5px;font-weight:600;margin-left:4px;opacity:.75}
-.bhero{border-radius:16px;background:linear-gradient(160deg,#FFF3DB,#FFE3A8);padding:22px 18px 18px}
-.fx-bold .bhero{background:linear-gradient(165deg,#FFE9C2,#FFD27A 70%,#FFC453)}
+.bhero{border-radius:16px;background:linear-gradient(160deg,#FFF1E8,#FFE4D3);padding:22px 18px 18px}
+.fx-bold .bhero{background:linear-gradient(165deg,#FFE4D3,#FFBE94 70%,#FFB27F)}
 .mo .bhero{margin:14px 16px 0}
-.bhero .k{font-size:13px;font-weight:700;color:#8A5A00}
+.bhero .k{font-size:13px;font-weight:700;color:#B23A0A}
 .bhero h2{font-size:22px;font-weight:800;line-height:1.3;margin:6px 0 14px;word-break:keep-all}
-.bhero h2 em{font-style:normal;color:#C77700}
+.bhero h2 em{font-style:normal;color:#E04E00}
 .fx-bold .bhero h2{font-weight:900}
 .fx-bold .bhero h2 em{color:var(--hot);font-variant-numeric:tabular-nums}
 .bhero .rcpt{background:rgba(255,255,255,.8)}
@@ -332,17 +332,17 @@ button{cursor:pointer;border:0;background:none}
 .pstrip.big figure:first-child{flex:1.5}
 /* v0.5 혜택 3단 — 검정·빨강 면 제거, 흰 카드 + 앰버 한 톤. 혜택3만 연한 앰버로 살짝 띄움 */
 .b3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;text-align:left}
-.b3>div{position:relative;border-radius:14px;padding:10px 9px 9px;background:#fff;border:1px solid #EFE6D6;box-shadow:0 2px 6px rgba(140,100,30,.06);animation:tkIn .55s cubic-bezier(.3,1.7,.5,1) both;min-width:0}
+.b3>div{position:relative;border-radius:14px;padding:10px 9px 9px;background:#fff;border:1px solid #F2E4DA;box-shadow:0 2px 6px rgba(150,60,20,.06);animation:tkIn .55s cubic-bezier(.3,1.7,.5,1) both;min-width:0}
 .b3>div:nth-child(2){animation-delay:.12s}.b3>div:nth-child(3){animation-delay:.24s}
-.b3>div:not(:last-child)::after{content:'+';position:absolute;right:-11px;top:50%;transform:translateY(-50%);width:10px;text-align:center;font-size:13px;font-weight:800;color:#D9B77A}
-.b3 .n{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#FFF1D6;color:#B36F00;font-size:10px;font-weight:900;font-style:normal;margin-bottom:5px}
-.b3 small{display:block;font-size:10px;font-weight:700;color:#8C7B5E;white-space:nowrap}
+.b3>div:not(:last-child)::after{content:'+';position:absolute;right:-11px;top:50%;transform:translateY(-50%);width:10px;text-align:center;font-size:13px;font-weight:800;color:#F4A57A}
+.b3 .n{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#FFF1E8;color:#D9480F;font-size:10px;font-weight:900;font-style:normal;margin-bottom:5px}
+.b3 small{display:block;font-size:10px;font-weight:700;color:#8A817C;white-space:nowrap}
 .b3 b{display:block;font-size:18px;font-weight:900;letter-spacing:-.4px;margin-top:1px;white-space:nowrap;color:var(--ink)}
 .b3 i{display:block;font-style:normal;font-size:10px;color:#A09A90;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.b3 .k3{background:linear-gradient(160deg,#FFF8E8,#FFEFCF);border-color:#FFD27F}
+.b3 .k3{background:linear-gradient(160deg,#FFF5EE,#FFE4D3);border-color:#FFBE94}
 /* v0.5-5 혜택2(답례품) 카드 → 위 답례품 무대를 가리키는 화살표 (통통) */
-.b3.lk>div:nth-child(2){border-color:#FFD27F}
-.b3.lk>div:nth-child(2)::before{content:"";position:absolute;left:50%;top:-10px;margin-left:-8px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:9px solid var(--amber);filter:drop-shadow(0 -1px 1px rgba(224,142,0,.25));animation:arrUp 1.3s ease-in-out infinite}
+.b3.lk>div:nth-child(2){border-color:#FFBE94}
+.b3.lk>div:nth-child(2)::before{content:"";position:absolute;left:50%;top:-10px;margin-left:-8px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:9px solid var(--amber);filter:drop-shadow(0 -1px 1px rgba(255,108,0,.25));animation:arrUp 1.3s ease-in-out infinite}
 @keyframes arrUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @media (prefers-reduced-motion:reduce){.b3.lk>div:nth-child(2)::before{animation:none}}
 /* v0.5-7 첫 화면 등장 순서: 봉투(0.15~1s) → 합계(1s) → 답례품(1.05~) → 리본·이름표 → 혜택 카드 → 화살표 */
@@ -352,16 +352,16 @@ button{cursor:pointer;border:0;background:none}
 #wel .b3.lk>div:nth-child(2)::before{animation:arrIn .35s ease-out 2.2s both,arrUp 1.3s ease-in-out 2.55s infinite}
 @keyframes arrIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 /* v0.5-6 카드 = 「번호+제목」 한 줄 + 큰 값 (세 장 같은 구조) */
-.b3 .h{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:#8C7B5E;white-space:nowrap}
+.b3 .h{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:#8A817C;white-space:nowrap}
 .b3 .h .n{margin:0}
 .b3>div>b{margin-top:7px}
-.b3 .k3 .h{color:#8A5A10}.b3 .h em{font-style:normal;color:var(--amber-d)}
+.b3 .k3 .h{color:#B23A0A}.b3 .h em{font-style:normal;color:var(--amber-d)}
 .pc .b3 .h{font-size:12px}
-.b3 .k3t{font-size:15px;line-height:1.15;letter-spacing:-.4px;color:#8A5A10!important;margin-top:0}
-.b3 .k3t em{font-style:normal;color:#E06A00}
+.b3 .k3t{font-size:15px;line-height:1.15;letter-spacing:-.4px;color:#B23A0A!important;margin-top:0}
+.b3 .k3t em{font-style:normal;color:#FF4D1A}
 .pc /* v0.5-5 혜택2(답례품) 카드 → 위 답례품 무대를 가리키는 화살표 (통통) */
-.b3.lk>div:nth-child(2){border-color:#FFD27F}
-.b3.lk>div:nth-child(2)::before{content:"";position:absolute;left:50%;top:-10px;margin-left:-8px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:9px solid var(--amber);filter:drop-shadow(0 -1px 1px rgba(224,142,0,.25));animation:arrUp 1.3s ease-in-out infinite}
+.b3.lk>div:nth-child(2){border-color:#FFBE94}
+.b3.lk>div:nth-child(2)::before{content:"";position:absolute;left:50%;top:-10px;margin-left:-8px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:9px solid var(--amber);filter:drop-shadow(0 -1px 1px rgba(255,108,0,.25));animation:arrUp 1.3s ease-in-out infinite}
 @keyframes arrUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @media (prefers-reduced-motion:reduce){.b3.lk>div:nth-child(2)::before{animation:none}}
 /* v0.5-7 첫 화면 등장 순서: 봉투(0.15~1s) → 합계(1s) → 답례품(1.05~) → 리본·이름표 → 혜택 카드 → 화살표 */
@@ -371,20 +371,20 @@ button{cursor:pointer;border:0;background:none}
 #wel .b3.lk>div:nth-child(2)::before{animation:arrIn .35s ease-out 2.2s both,arrUp 1.3s ease-in-out 2.55s infinite}
 @keyframes arrIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 /* v0.5-6 카드 = 「번호+제목」 한 줄 + 큰 값 (세 장 같은 구조) */
-.b3 .h{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:#8C7B5E;white-space:nowrap}
+.b3 .h{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:#8A817C;white-space:nowrap}
 .b3 .h .n{margin:0}
 .b3>div>b{margin-top:7px}
-.b3 .k3 .h{color:#8A5A10}.b3 .h em{font-style:normal;color:var(--amber-d)}
+.b3 .k3 .h{color:#B23A0A}.b3 .h em{font-style:normal;color:var(--amber-d)}
 .pc .b3 .h{font-size:12px}
 .b3 .k3t{font-size:18px}
-.b3 .k3 .n{background:var(--amber);color:#fff}.b3 .k3 b{color:#E06A00}.b3 .k3 small{color:#A86800}
+.b3 .k3 .n{background:var(--amber);color:#fff}.b3 .k3 b{color:#FF4D1A}.b3 .k3 small{color:#D9480F}
 .pc .b3 small{font-size:11.5px}.pc .b3 b{font-size:22px}.pc .b3 i{font-size:11.5px}.pc .b3 .n{width:20px;height:20px;font-size:11px}
 /* v0.5 누끼 PNG 무대 — 실사 배경 없이 제품만 띄움. PNG가 아직 없으면 실사 컷을 원형 접시로 대신 보여줌 */
 .pstage{position:relative;height:172px;margin:6px 0 0}
 .pc .pstage{height:232px}
-.pstage .halo{position:absolute;left:50%;top:46%;width:210px;height:210px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#FFE6B3 0%,rgba(255,236,196,.55) 45%,rgba(255,246,228,0) 70%)}
+.pstage .halo{position:absolute;left:50%;top:46%;width:210px;height:210px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#FFE2CF 0%,rgba(255,226,207,.55) 45%,rgba(255,241,232,0) 70%)}
 .pc .pstage .halo{width:300px;height:300px}
-.pstage .floor{position:absolute;left:10%;right:10%;bottom:4px;height:20px;border-radius:50%;background:radial-gradient(ellipse,rgba(150,95,10,.20),rgba(150,95,10,0) 70%)}
+.pstage .floor{position:absolute;left:10%;right:10%;bottom:4px;height:20px;border-radius:50%;background:radial-gradient(ellipse,rgba(150,60,20,.20),rgba(150,60,20,0) 70%)}
 .pstage .pi{position:absolute;bottom:12px;margin:0;display:flex;justify-content:center;align-items:flex-end;animation:tkIn .6s cubic-bezier(.3,1.7,.5,1) both}
 .pstage .pc_{left:25%;width:50%;height:146px;z-index:3}
 .pstage .pl{left:0;width:38%;height:108px;bottom:22px;z-index:2;animation-delay:.12s}
@@ -397,15 +397,15 @@ button{cursor:pointer;border:0;background:none}
 @keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 /* v0.5-3 답례품명 = 제품 밑동에 붙은 흰 이름표(가운데는 바닥 쪽, 양옆은 한 단 위 → 겹치지 않음) */
 .pstage{margin-bottom:12px}
-.ptag{position:absolute;left:50%;bottom:0;transform:translateX(-50%);max-width:104%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(255,255,255,.95);border:1px solid #F1DDB5;color:#5A4520;font-size:10px;font-weight:700;letter-spacing:-.2px;line-height:1;padding:4px 8px;border-radius:999px;box-shadow:0 2px 6px rgba(120,80,10,.14);z-index:2;animation:tagIn .4s ease-out .5s both}
-.pstage .pc_ .ptag{bottom:-14px;font-size:11px;font-weight:800;color:#3A2A10;padding:5px 10px;border-color:#FFD27F}
+.ptag{position:absolute;left:50%;bottom:0;transform:translateX(-50%);max-width:104%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(255,255,255,.95);border:1px solid #F6DCCB;color:#4A3A33;font-size:10px;font-weight:700;letter-spacing:-.2px;line-height:1;padding:4px 8px;border-radius:999px;box-shadow:0 2px 6px rgba(150,60,20,.14);z-index:2;animation:tagIn .4s ease-out .5s both}
+.pstage .pc_ .ptag{bottom:-14px;font-size:11px;font-weight:800;color:#2A1F1A;padding:5px 10px;border-color:#FFBE94}
 .pc .ptag{font-size:11.5px}.pc .pstage .pc_ .ptag{font-size:13px}
 @keyframes tagIn{from{opacity:0;transform:translate(-50%,4px)}to{opacity:1;transform:translateX(-50%)}}
-.pnames{text-align:center;font-size:11px;color:#8C7B5E;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnames{text-align:center;font-size:11px;color:#8A817C;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pc .pnames{font-size:12.5px}
 @media (prefers-reduced-motion:reduce){.pstage .pi img{animation:none}}
 /* v0.5-2 답례품 리본 — 떠 있는 제품이 "답례품"임을 알려줌 (좌측 상단, 끝이 V자로 파인 리본 + 접힌 꼬리) */
-.prib{position:absolute;left:-4px;top:6px;z-index:5;display:flex;align-items:center;gap:5px;height:26px;padding:0 16px 0 8px;background:linear-gradient(100deg,#FF4D1A,#FF8A00);color:#fff;font-size:11.5px;font-weight:900;letter-spacing:-.2px;clip-path:polygon(0 0,100% 0,calc(100% - 9px) 50%,100% 100%,0 100%);box-shadow:0 3px 8px rgba(255,77,26,.3);animation:ribIn .5s cubic-bezier(.3,1.6,.5,1) .35s both}
+.prib{position:absolute;left:-4px;top:6px;z-index:5;display:flex;align-items:center;gap:5px;height:26px;padding:0 16px 0 8px;background:linear-gradient(100deg,#FF4D1A,#FF6C00);color:#fff;font-size:11.5px;font-weight:900;letter-spacing:-.2px;clip-path:polygon(0 0,100% 0,calc(100% - 9px) 50%,100% 100%,0 100%);box-shadow:0 3px 8px rgba(255,77,26,.3);animation:ribIn .5s cubic-bezier(.3,1.6,.5,1) .35s both}
 .prib::after{content:"";position:absolute}
 .pribw{position:absolute;left:-4px;top:6px;z-index:4}
 .pribw::after{content:"";position:absolute;left:0;top:26px;border-top:4px solid #B8320C;border-left:4px solid transparent}
@@ -414,7 +414,7 @@ button{cursor:pointer;border:0;background:none}
 .pc .prib{height:30px;font-size:13px;padding:0 18px 0 10px}.pc .prib svg{width:17px;height:17px}.pc .pribw::after{top:30px}
 @keyframes ribIn{from{transform:translateX(-14px);opacity:0}to{transform:none;opacity:1}}
 /* 선착순일 때만 보이는 칩 */
-.fcfs{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:11.5px;font-weight:800;color:#B35A00;background:#FFF1DC;border:1px solid #FFD49A;border-radius:999px;padding:4px 10px}
+.fcfs{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:11.5px;font-weight:800;color:#D9480F;background:#FFF1E8;border:1px solid #FFBE94;border-radius:999px;padding:4px 10px}
 .fcfs svg{width:12px;height:12px}
 .ddc{display:inline-flex;align-items:center;gap:5px;background:var(--hot);color:#fff;font-size:11px;font-weight:900;border-radius:999px;padding:3px 4px 3px 9px;vertical-align:middle}
 .ddc em{font-style:normal;background:#fff;color:var(--hot);border-radius:999px;padding:0 6px}
@@ -424,7 +424,7 @@ button{cursor:pointer;border:0;background:none}
 .cta{padding:12px 16px 14px;margin-top:18px}
 .mo .cta{position:sticky;bottom:0;background:linear-gradient(transparent,#fff 30%)}
 .cta button{width:100%;height:50px;border-radius:12px;background:var(--amber);font-size:15px;font-weight:800;color:#1A1A1A}
-.fx-bold .cta button{background:linear-gradient(100deg,#FF4D1A,#FF8A00);color:#fff;box-shadow:0 6px 16px rgba(255,77,26,.35)}
+.fx-bold .cta button{background:linear-gradient(100deg,#FF4D1A,#FF6C00);color:#fff;box-shadow:0 6px 16px rgba(255,77,26,.35)}
 .closedmsg{background:#fff;border-radius:12px;padding:14px;font-size:13px;line-height:1.6;color:var(--ink2)}
 .pc .bp .crumb{font-size:12.5px;color:var(--ink3);padding-top:24px}
 .pc .bp .ttl{font-size:30px;font-weight:800;margin:8px 0 4px}
@@ -486,13 +486,13 @@ button{cursor:pointer;border:0;background:none}
   </div>
 </div>
 <script>
-const COUPON='<svg viewBox="0 0 24 24" fill="none"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a2.5 2.5 0 0 0 0 5V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a2.5 2.5 0 0 0 0-5V8Z" fill="#1A1A1A"/><path d="M9.5 9.5v5M14.5 9.5v5" stroke="#FFA300" stroke-width="1.6" stroke-dasharray="1.6 1.6"/></svg>';
+const COUPON='<svg viewBox="0 0 24 24" fill="none"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a2.5 2.5 0 0 0 0 5V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a2.5 2.5 0 0 0 0-5V8Z" fill="#1A1A1A"/><path d="M9.5 9.5v5M14.5 9.5v5" stroke="#FF6C00" stroke-width="1.6" stroke-dasharray="1.6 1.6"/></svg>';
 /* 플로팅용 봉투 아이콘: 티켓 3장이 주기적으로 톡 튀어나온다 */
 const ENV=`<svg class="env" viewBox="0 0 64 64" aria-hidden="true">
 <g class="t t1"><rect x="11" y="15" width="15" height="24" rx="3" fill="#2F7CF6" transform="rotate(-14 18 27)"/></g>
 <g class="t t2"><rect x="24.5" y="9" width="15" height="26" rx="3" fill="#FF7A00"/></g>
 <g class="t t3"><rect x="38" y="15" width="15" height="24" rx="3" fill="#12B76A" transform="rotate(14 46 27)"/></g>
-<path d="M6 31 Q6 28 9 28 H55 Q58 28 58 31 V55 Q58 58 55 58 H9 Q6 58 6 55 Z" fill="#EFE4CF"/>
+<path d="M6 31 Q6 28 9 28 H55 Q58 28 58 31 V55 Q58 58 55 58 H9 Q6 58 6 55 Z" fill="#F2E4DA"/>
 <path d="M6 33 L32 48 L58 33 V55 Q58 58 55 58 H9 Q6 58 6 55 Z" fill="#FCF7EE"/></svg>`;
 /* 답례품 이미지 = 각 몰에 등록된 실제 상품 이미지(공개 CDN). 게이트 페이지(박정식 팀장안)와 같은 컷 */
 const IMG='https://image.benecafe.co.kr/cdnetbs/gohyangon/upload/PROD/2026/';
@@ -677,7 +677,7 @@ function countUp(root){
 function showWelcome(){
   const g=welGov(); if(!bold()||!g||S.view!=='list') return;
   const G=GOV[g], src='링크로 오셨네요!';
-  const cols=['#2F7CF6','#FF7A00','#12B76A','#FFA300','#FF4D1A'];
+  const cols=['#2F7CF6','#FF7A00','#12B76A','#FF6C00','#FF4D1A'];
   const cf=reduce?'':Array.from({length:18},(_,i)=>`<i class="cf" style="left:${5+Math.random()*90}%;background:${cols[i%5]};--d:${(.9+Math.random()*.5).toFixed(2)}s;--x:${Math.round(Math.random()*80-40)}px"></i>`).join('');
   const head=hasVis()?vis(g):`<h3>고향ON에서 기부하면<br><em>혜택이 하나 더</em> 있어요</h3>`;
   const wsum=`<div class="wsum${hasVis()?' top':''}">10만원 기부하면${hasVis()?'<s>최대</s>':''} <b data-from="130000" data-to="${130000+G.amt}" data-delay="1000">${won(130000+G.amt)}</b>원 혜택</div>`;
