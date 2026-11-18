@@ -349,7 +349,7 @@ body .dev{font-family:'Pretendard','Noto Sans KR',sans-serif}
 .dv-login{background:#0C0C0C;color:#fff;border-radius:999px;padding:7px 20px;font-size:14px}.dv-login.line{background:#fff;color:#0C0C0C;border:1.5px solid #0C0C0C}
 .dv-hero{background-size:cover;background-position:center;color:#fff}
 .mo .dv-hero{height:300px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 22px}
-.pc .dv-hero{height:420px;display:flex;align-items:center}
+.pc .dv-hero{height:342px;display:flex;align-items:center}
 .pc .dv-hin{width:1200px;margin:0 auto}
 .dv-pill{display:inline-block;background:#fff;color:#0C0C0C;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600}
 .dv-hh{font-weight:800;font-size:19px;line-height:1.4;margin-top:14px;letter-spacing:-.3px}
@@ -418,6 +418,9 @@ body .dev{font-family:'Pretendard','Noto Sans KR',sans-serif}
 /* MO 배너: 개발서버처럼 쿠폰 그림 위 · 글자 아래로 쌓기 */
 .mo .dv-ban{display:flex;flex-direction:column}
 .mo .dvb-art{position:static;order:-1;justify-content:center;height:70px;margin:0 0 10px}
+.dv-ban.sg{background:#FDF5EA}.dvb-img{position:absolute;right:56px;top:50%;transform:translateY(-50%);height:240px}.dvb-ar{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.45);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center}.dvb-ar.l{left:18px}.dvb-ar.r{right:18px}.dvb-dots{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:4px}.dvb-dots i{width:6px;height:6px;border-radius:3px;background:#D9D2C6}.dvb-dots i.on{width:20px;background:#222}
+.pc .dv-ban.sg{padding:48px 100px 52px;min-height:278px}.pc .dv-ban.sg .dvb-tag{font-size:19px;padding:6px 22px}.pc .dv-ban.sg .dvb-h{font-size:36px;margin-top:14px}.pc .dv-ban.sg .dvb-p{font-size:13px;margin-top:18px}
+.mo .dv-ban.sg .dvb-img{position:static;transform:none;order:-1;height:130px;align-self:center;margin-bottom:10px}.mo .dvb-ar{display:none}.mo .dv-ban.sg{padding-bottom:30px}
 .mo .dvb-p{max-width:none}.mo .dvb-tag{align-self:flex-start}
 /* v0.5 혜택 3단 — 검정·빨강 면 제거, 흰 카드 + 앰버 한 톤. 혜택3만 연한 앰버로 살짝 띄움 */
 .b3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;text-align:left}
@@ -661,9 +664,9 @@ function chip(g){ if(GOV[g].status!=='on') return '';
 /* ── v0.6 개발서버 화면 재현 (gohyangon-dev · gohyangon-seogu · gohyangon-yangju, 2026-11-18 실측) ── */
 const DA='assets/dev/';
 const MALL={
-  seogu:{logo:DA+'logo_seogu.png',hero:DA+'hero_seogu.jpg',pill:'전남광주통합특별시 서구',head:'당신의 선한 영향력이 빛나는 곳,<br>여기는 착한도시 서구입니다.',desc:'서구는 상무지구의 활기와 운천호수의 여유, 예술의 거리와 인문도시가 조화를 이루는 문화생활 중심지입니다. 당신의 기부는 이 활기찬 지역의 미래를 더 다채롭게 만듭니다.',short:'서구',loc:'전남광주통합특별시 서구',
-    gnb:['서구 이야기','답례품','기부사업','고향사랑 안내','이벤트'],
-    banner:`<div class="dvb-tag">전남광주통합특별시 서구 프로모션</div><div class="dvb-h">서구에 고향사랑기부하면<br><em>최대 25,000원</em> 추가 증정!</div><div class="dvb-p">연말정산 세액 공제와 3만원 상당의 답례품과 함께 풍성한 추가 혜택을 받아보세요</div><div class="dvb-art"><i class="cpn g">20,000원</i><i class="cpn o">25,000원</i></div>`},
+  seogu:{logo:DA+'logo_seogu.png',hero:DA+'hero_seogu_prod.jpg',pill:'전남광주통합특별시 서구',head:'당신의 선한 영향력이 빛나는 곳,<br>여기는 착한도시 서구입니다.',desc:'서구는 상무지구의 활기와 운천호수의 여유, 예술의 거리와 인문도시가 조화를 이루는 문화생활 중심지입니다. 당신의 기부는 이 활기찬 지역의 미래를 더 다채롭게 만듭니다.',short:'서구',loc:'전남광주통합특별시 서구',
+    gnb:['서구 이야기','답례품','기부사업','고향사랑안내','이벤트'],
+    banner:`<div class="dvb-tag">전남광주통합특별시 서구 프로모션</div><div class="dvb-h">서구에 고향사랑기부하면<br><em>최대 25,000원</em> 추가 증정!</div><div class="dvb-p">연말정산 세액 공제와 3만원 상당의 답례품과 함께 풍성한 추가 혜택을 받아보세요</div><img class="dvb-img" src="${DA}ban_seogu_prod.png" alt=""><span class="dvb-ar l">‹</span><span class="dvb-ar r">›</span><div class="dvb-dots"><i class="on"></i><i></i></div>`},
   yangju:{logo:DA+'logo_yangju.png',hero:DA+'hero_yangju.jpg',pill:'경기도 양주',head:'경기북부의 중심,<br>미래를 여는 양주',desc:'역사와 문화, 자연과 도시가 조화를 이루는 양주. 소중한 기부로 지역의 성장과 시민의 행복을 함께 만들어 주세요.',short:'양주',loc:'경기도 양주시',
     gnb:['양주 이야기','답례품','고향사랑 안내','이벤트'],
     banner:`<div class="dvb-tag txt">GRAND OPEN</div><div class="dvb-h">양주 고향<em>ON</em>,<br>드디어 오픈했어요!</div><div class="dvb-p">우리 동네의 마음을 답례품으로, 지금 만나보세요.</div><div class="dvb-art"><span class="mega">📣</span></div>`},
@@ -697,8 +700,8 @@ function listView(){
   if(IND()){ const g=S.mall, M=MALL[g], its=GOV[g].items, n=isPC()?4:4;
     const best=Array.from({length:n},(_,i)=>card(g,its[i%its.length],i+1)).join('');
     return `${dvHeader()}
-    <div class="dv-hero" style="background-image:linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),url('${M.hero}')"><div class="dv-hin"><span class="dv-pill">${M.pill}</span><div class="dv-hh">${M.head}</div><div class="dv-hp">${M.desc}</div></div></div>
-    ${W(`<div class="dv-ban bind" data-bo="기존 BO 배너관리 이미지 (개발서버 현행)">${M.banner}</div>
+    <div class="dv-hero" style="background-image:linear-gradient(rgba(0,0,0,${S.mall==='seogu'?'.1':'.45'}),rgba(0,0,0,${S.mall==='seogu'?'.1':'.45'})),url('${M.hero}')"><div class="dv-hin"><span class="dv-pill">${M.pill}</span><div class="dv-hh">${M.head}</div><div class="dv-hp">${M.desc}</div></div></div>
+    ${W(`<div class="dv-ban bind${S.mall==='seogu'?' sg':''}" data-bo="${S.mall==='seogu'?'기존 BO 배너관리 이미지 (운영서버 현행 · 운영자 캡쳐 1118)':'기존 BO 배너관리 이미지 (개발서버 현행)'}">${M.banner}</div>
     <div class="dv-sec"><div class="dv-st"><h2>${M.short} <em>인기 답례품</em> BEST 8</h2><span class="dv-all">${isPC()?'답례품 ':''}전체보기 ›</span></div><div class="grid dv-grid">${best}</div></div>`)}
     <div class="foot dv-foot"><div class="in"><b>이제너두</b><span>상담센터 1660-3275</span></div></div>`; }
   /* 허브 */
