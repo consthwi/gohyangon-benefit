@@ -397,6 +397,7 @@ button{cursor:pointer;border:0;background:none}
 .pstage .pr{right:0;width:38%;height:108px;bottom:22px;z-index:2;animation-delay:.22s}
 .pc .pstage .pc_{height:198px}.pc .pstage .pl,.pc .pstage .pr{height:148px;bottom:28px}
 .pstage .pi img{max-width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 10px 12px rgba(110,70,10,.22));animation:flt 3.2s ease-in-out infinite}
+.pstage .pi img{opacity:0;transition:opacity .2s}.pstage .pi img.ok{opacity:1}
 .pstage .pl img{animation-delay:-1s}.pstage .pr img{animation-delay:-2s}
 .pstage .pi.fb img{width:auto;aspect-ratio:1;object-fit:cover;border-radius:50%;border:4px solid #fff;box-shadow:0 8px 18px rgba(110,70,10,.22);filter:none}
 .pstage .pi.fb.pc_ img{height:88%}
@@ -532,9 +533,11 @@ const CLK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wid
 const fcfs=g=>GOV[g].cap?`선착순 ${won(GOV[g].cap)}명`:'';
 const fcfsChip=g=>GOV[g].cap?`<div class="fcfs bind" data-bo="participantGroup.totalParticipantLimit · endOnParticipantLimit=Y일 때만">${CLK}${fcfs(g)} · 마감 시 종료</div>`:'';
 const PNG=(g,i)=>`png/${g}_${i+1}.png`;
-function phFb(im){ im.onerror=null; im.closest('figure').classList.add('fb'); im.src=im.dataset.ph; }
+/* 깨진 이미지 순간 노출(대체 글자 깜빡임) 방지: 불러온 뒤에만 보이고, 한 번 실패한 PNG는 기억해 바로 실사 컷 사용 */
+const PNG_FAIL=new Set();
+function phFb(im){ im.onerror=null; PNG_FAIL.add(im.dataset.png); im.closest('figure').classList.add('fb'); im.src=im.dataset.ph; }
 function pstage(g){ const it=GOV[g].items.slice(0,3), cls=['pl','pc_','pr'], idx=[1,0,2];
-  return `<div class="pstage bind" data-bo="${GOV[g].label} 대표 답례품 PNG (가운데=1순위)"><div class="halo"></div><div class="floor"></div><div class="pribw"></div><div class="prib">${GIFT}기부하면 받는 혜택</div>${idx.map((k,j)=>it[k]?`<figure class="pi ${cls[j]}"><img src="${PNG(g,k)}" data-ph="${it[k][2]}" alt="${it[k][0]}" onerror="phFb(this)"><figcaption class="ptag" title="${it[k][0]}">${it[k][0]}</figcaption></figure>`:'').join('')}</div>`; }
+  return `<div class="pstage bind" data-bo="${GOV[g].label} 대표 답례품 PNG (가운데=1순위)"><div class="halo"></div><div class="floor"></div><div class="pribw"></div><div class="prib">${GIFT}기부하면 받는 혜택</div>${idx.map((k,j)=>it[k]?(PNG_FAIL.has(PNG(g,k))?`<figure class="pi ${cls[j]} fb"><img src="${it[k][2]}" alt="" onload="this.classList.add('ok')">`:`<figure class="pi ${cls[j]}"><img src="${PNG(g,k)}" data-png="${PNG(g,k)}" data-ph="${it[k][2]}" alt="" onload="this.classList.add('ok')" onerror="phFb(this)">`)+`<figcaption class="ptag" title="${it[k][0]}">${it[k][0]}</figcaption></figure>`:'').join('')}</div>`; }
 const vis=g=>S.img==='png'?pstage(g):pstrip(g,3,true);
 const hasVis=()=>S.img==='png'||S.img==='head';
 const heroBg=g=>`background:linear-gradient(180deg,rgba(255,241,214,.25) 0%,rgba(255,248,235,.94) 46%,#fff 70%),url('${GOV[g].items[0][2]}') center top/100% auto no-repeat`;
