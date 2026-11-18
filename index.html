@@ -225,6 +225,7 @@ button{cursor:pointer;border:0;background:none}
 .govrow.closed{background:#FAFAFA;cursor:default}.govrow.closed .g{color:var(--ink3)}
 .govrow.closed .a{color:var(--ink3);font-size:13px}
 .sfine{font-size:11px;color:var(--ink3);margin-top:4px;line-height:1.5}
+.s2r{margin:14px 0 4px}.sheet .fcfs{margin-top:10px}
 
 /* v0.3 티켓 (참고 이미지: 봉투 + 수단별 색 티켓) */
 .tkrow{display:flex;gap:8px;margin:2px 0 12px}
@@ -550,9 +551,9 @@ body .dev{font-family:'Pretendard','Noto Sans KR',sans-serif}
 <body>
 <div class="wrap">
   <div class="ctrl">
-    <h1>고향ON 추가혜택 프로토타입 v0.5</h1>
+    <h1>고향ON 추가혜택 프로토타입 v1 · v2</h1>
     <p class="sub">상무 지시(11/12) · 상무 피드백(11/17) 반영 · 내부 논의용<br>답례품 이미지 = 누끼 PNG 자리(<code>png/{seogu|yangju|yeongju}_{1~3}.png</code>, 없으면 실사 컷 원형 대체). ⚠️ 양주 수단은 <b>예시</b>, 금액은 볼트 기록 기준.</p>
-    <div class="grp"><div class="lab">버전</div><div class="seg" id="sVer"><button data-v="5" class="on">v0.5 누끼 PNG (현재)</button><button data-v="0">v0 헤드라인 (답례품 없음)</button></div><div class="sfine">v0 = 답례품 이미지 없이 헤드라인 문구가 들어간 버전(상무 1117 「지금 그대로도 좋다」 한 안)</div></div>
+    <div class="grp"><div class="lab">버전</div><div class="seg" id="sVer"><button data-v="5" class="on">v1 컨펌안 (혜택 페이지 있음)</button><button data-v="2">v2 공수 축소 (혜택 페이지 없음)</button><button data-v="0">v0 헤드라인 (답례품 없음)</button></div><div class="sfine">v1 = 구 v0.5 · v2 = 「혜택 자세히」 페이지를 빼고, 플로팅 패널을 영수증으로 바꾼 버전 · v0 = 답례품 이미지 없이 헤드라인 문구가 들어간 버전(상무 1117 「지금 그대로도 좋다」 한 안)</div></div>
     <div class="grp"><div class="lab">⓪ 강조 강도</div><div class="seg" id="sFx"><button data-v="bold" class="on">강하게 (v0.3~)</button><button data-v="calm">차분하게 (v0.2)</button></div></div>
     <div class="grp"><div class="lab">⓪-2 답례품 이미지 (상무 1117)</div><div class="seg" id="sImg"><button data-v="png" class="on">누끼 PNG (v0.5)</button><button data-v="head">실사 띠 (v0.4)</button><button data-v="bg">실사 배경</button><button data-v="none">없음 (v0.3)</button></div></div>
     <div class="grp"><div class="lab">① 기기</div><div class="seg" id="sDev"><button data-v="mo" class="on">MO</button><button data-v="pc">PC</button></div></div>
@@ -635,7 +636,7 @@ const heroBg=g=>`background:linear-gradient(180deg,rgba(255,241,214,.25) 0%,rgba
 const $=id=>document.getElementById(id);
 const won=n=>Number(n).toLocaleString('ko-KR');
 const man=n=>{const v=n/10000; return (Number.isInteger(v)?v:v.toFixed(1).replace(/\.0$/,''))+'만'};
-const isPC=()=>S.dev==='pc', bold=()=>S.fx==='bold';
+const isPC=()=>S.dev==='pc', bold=()=>S.fx==='bold', V2=()=>S.ver==='2';
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* 수단 → 티켓 색·짧은 이름 */
 const tcol=n=>n.includes('복지')?'var(--c-welfare)':n.includes('네이버')?'var(--c-npay)':'var(--c-onnuri)';
@@ -726,6 +727,9 @@ function picks(g){
   return `<div class="picks"><div class="lab">내가 고를 수 있는 고향ON 추가혜택 <span style="color:#8A8A8A;font-weight:500">(택1)</span></div>
   ${optList(g).map((o,i)=>`<div class="pick bind" data-bo="연계 경품 · FO 표시명/금액"><span>${o[0]}${S.mem==='welfare'&&i===0?'<span class="tag">우리 회사</span>':''}</span><b>${won(o[1])}원</b></div>`).join('')}</div>`;}
 function sheetOne(g){
+  if(V2()) return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="shd">${bold()?`<span class="ddc">${ddTxt()}</span>`:'<span></span>'}<span class="sgov">${GOV[g].label}</span></div>
+  ${hasVis()?vis(g):`<h3>10만원 기부하면<br><em>+${won(MORE(g))}원</em> 더 받아요</h3>`}<div class="s2r">${rcpt(g)}</div>${fcfsChip(g)}
+  <div class="btns"><button class="b1" onclick="toast('${GOV[g].label} 답례품 목록으로 이동')">답례품 보러가기</button></div>`;
   const h=bold()?`10만원 기부하면<br><em>+${won(MORE(g))}원</em> 더 받아요`:'10만원 기부하면<br>혜택이 하나 더 있어요';
   let head=`<h3>${h}</h3>`, body=bold()?picks(g)+rcpt(g):rcpt(g)+picks(g);
   if(useImg()){ body=b3(g)+picks(g)+`<div class="sfine" style="margin-top:-4px">10만원 기부 시 받는 혜택 합계 <b style="color:var(--ink)">${won(TOT(g))}원</b> · 세액공제는 연말정산·종합소득세 신고 시 적용</div>`;
@@ -738,7 +742,7 @@ function sheetList(){
     return `<div class="govrow" onclick="openSheet('${g}')"><div><div class="g">${G.label}</div>${UP(g)?`<div class="s">적립금 ${man(G.amt)}원 + 증량 ${man(UP(g))}원</div>`:''}${G.cap?`<div class="s">${fcfs(g)}</div>`:''}</div><div class="a bind" data-bo="${G.label} · gifts[enabled].amount 최댓값 + 답례품 증량">+${won(MORE(g))}원<small>자세히 ›</small></div></div>`;}).join('');
   return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON에서만</div><h3>${bold()?`지금 <em>${live().length}곳</em>에서<br>추가혜택을 드려요`:'고향ON 추가혜택'}</h3>${rows}
   <div class="sfine">기부하는 지자체마다 1번씩 받을 수 있어요 · 금액과 혜택은 지자체마다 달라요</div>
-  <div class="btns"><button class="b1" onclick="openPage(shown()[0])">혜택 한눈에 보기 ›</button></div>`;}
+  ${V2()?'':'<div class="btns"><button class="b1" onclick="openPage(shown()[0])">혜택 한눈에 보기 ›</button></div>'}`;}
 function envBig(g,still){
   const L=optList(g).slice(0,3), n=L.length;
   const pos=n===1?[[50,0]]:n===2?[[36,-8],[64,8]]:[[24,-12],[50,0],[76,12]];
@@ -812,7 +816,7 @@ function showWelcome(){
     ${envBig(g,false)}
     ${hasVis()?wsum+head:head+wsum}
     ${sub}
-    <div class="btns"><button class="b2" onclick="closeWelcome();openPage('${g}')">혜택 자세히</button><button class="b1" onclick="closeWelcome()">답례품 보러가기</button></div>
+    <div class="btns"><button class="b2" onclick="${V2()?`welToSheet('${g}')`:`closeWelcome();openPage('${g}')`}">혜택 자세히</button><button class="b1" onclick="closeWelcome()">답례품 보러가기</button></div>
     ${fcfsChip(g)}</div>`;
   $('wel').classList.remove('out'); $('wel').classList.add('on'); countUp($('wel')); S.welSeen=true;
 }
@@ -871,7 +875,8 @@ function noteUpdate(){
 function openSheet(g){ $('sheet').innerHTML=g?sheetOne(g):sheetList(); $('sheet').style.cssText=(g&&useImg()&&S.img==='bg')?heroBg(g)+';padding-top:150px':''; $('dim').classList.add('on'); $('sheet').classList.add('on'); $('sheet').scrollTop=0; countUp($('sheet')); }
 function closeSheet(){ $('dim').classList.remove('on'); $('sheet').classList.remove('on'); }
 function tapCtx(){ const g=ctxGov(); if(g!==undefined) openSheet(g); }
-function openPage(g){ S.view='page'; S.tab=g; render(); }
+function openPage(g){ if(V2()){ openSheet(g); return; } S.view='page'; S.tab=g; render(); }
+function welToSheet(g){ const w=$('wel'); w.classList.remove('on','out'); w.innerHTML=''; openSheet(g); }
 function back(){ S.view='list'; render(); }
 function hideFab(){ $('fab').dataset.hidden='1'; $('fab').classList.add('hide'); toast('오늘 하루 숨겨요'); }
 function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),1400); }
@@ -887,7 +892,7 @@ function seg(id,key){ document.querySelectorAll('#'+id+' button').forEach(b=>b.o
   $('fab').dataset.hidden=''; render(); if((key==='fx'||key==='img'||key==='mem'||key==='mall')&&bold()&&welGov()) showWelcome(); }); }
 ['sVer:ver','sTop:top','sFx:fx','sImg:img','sDev:dev','sMall:mall','sMem:mem','sBind:bind'].forEach(p=>{const[a,b]=p.split(':');seg(a,b)});
 window.addEventListener('resize',fit);
-{ const q=new URLSearchParams(location.search); if(q.get('v')==='0'){ S.ver='0'; S.img='none'; syncSeg('sVer','0'); syncSeg('sImg',S.img); } }
+{ const q=new URLSearchParams(location.search); if(q.get('v')==='0'){ S.ver='0'; S.img='none'; syncSeg('sVer','0'); syncSeg('sImg',S.img); } if(q.get('v')==='2'){ S.ver='2'; syncSeg('sVer','2'); } }
 render(); setTimeout(showWelcome,300);
 </script>
 </body>
