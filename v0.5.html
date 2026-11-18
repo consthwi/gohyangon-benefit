@@ -192,6 +192,10 @@ button{cursor:pointer;border:0;background:none}
 .sheet .grab{width:38px;height:4px;border-radius:2px;background:#DDD;margin:0 auto 14px}
 .sheet .close{position:absolute;right:14px;top:14px;width:28px;height:28px;border-radius:50%;background:#F3F3F1;font-size:13px;display:none}
 .pc .sheet .close{display:block}
+/* v0.5-18 패널 머리: D-day 칩 좌상단 · 지자체명 우상단 */
+.sheet .shd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.sheet .sgov{font-size:12px;font-weight:700;color:#8A817C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .sheet .shd{padding-right:36px}.pc .sheet .sgov{font-size:13px}
 .eyebrow{font-size:11px;font-weight:700;color:var(--amber-d);letter-spacing:.3px}
 .sheet h3{font-size:18px;font-weight:800;margin:4px 0 14px;line-height:1.35}
 .sheet h3 em{font-style:normal;color:var(--hot)}
@@ -616,7 +620,7 @@ function sheetOne(g){
   let head=`<h3>${h}</h3>`, body=bold()?picks(g)+rcpt(g):rcpt(g)+picks(g);
   if(useImg()){ body=b3(g)+picks(g)+`<div class="sfine" style="margin-top:-4px">10만원 기부 시 받는 혜택 합계 <b style="color:var(--ink)">${won(TOT(g))}원</b> · 세액공제는 연말정산·종합소득세 신고 시 적용</div>`;
     head=hasVis()?vis(g):`<h3>${h}</h3>`; }
-  return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON 추가혜택 · ${GOV[g].label} ${bold()?`<span class="ddc">${ddTxt()}</span>`:''}</div>
+  return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="shd">${bold()?`<span class="ddc">${ddTxt()}</span>`:'<span></span>'}<span class="sgov">${GOV[g].label}</span></div>
   ${head}${body}
   <div class="btns"><button class="b2" onclick="toast('${GOV[g].label} 답례품 목록으로 이동')">답례품 보러가기</button><button class="b1" onclick="openPage('${g}')">자세히 보기 ›</button></div>`;}
 function sheetList(){
