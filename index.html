@@ -474,6 +474,7 @@ button{cursor:pointer;border:0;background:none}
     <div class="grp"><div class="lab">⑤ 프로모션 상태 (BO 값 바꿔보기)</div>
       <div class="promo" id="promo"></div>
       <div style="font-size:10.5px;color:#8A8A8A;margin-top:5px;line-height:1.5">진행 = 정상 노출 · 인원 마감 = 칩·플로팅에서 빠지고 혜택 페이지에 「마감」 표시 · 종료 = 모든 화면에서 사라짐<br>칸 = 상태 · 추가혜택 금액 · <b>선착순 인원</b>(비우면 인원 제한 없음 → 「선착순」 문구 안 보임)</div></div>
+    <div class="grp"><div class="lab">⑦ 상단 띠 배너</div><div class="seg" id="sTop"><button data-v="off" class="on">끄기 (기본)</button><button data-v="on">켜기</button></div></div>
     <div class="grp"><div class="lab">⑥ BO 연동 칸 표시</div><div class="seg" id="sBind"><button data-v="off" class="on">끄기</button><button data-v="on">켜기</button></div></div>
     <div class="note" id="note"></div>
   </div>
@@ -516,7 +517,7 @@ const GOV={
     cap:0,items:[['영주사과 5+1kg','#9E2A2A',IMG+'11/10/UFJPRC8yMDI2LzExLzEw-6c4ac8c4-a58d-45a5-806c-9e8a07e38b12'],['1++ 한우 구이용','#6B2B2B',IMG+'11/13/UFJPRC8yMDI2LzExLzEz-c2004cfa-5183-402e-a4ef-1b72ba1dd1d9'],['풍기인삼 선물세트','#5B4B2B',IMG+'11/11/UFJPRC8yMDI2LzExLzEx-2f602fd0-c6db-47bc-8ed2-827437387a5f']]}
 };
 const ORDER=['seogu','yangju','yeongju'];
-const S={ver:'5',fx:'bold',img:'png',dev:'mo',mall:'seogu',mem:'normal',inflow:'link',bind:'off',view:'list',tab:null,welSeen:false};
+const S={ver:'5',top:'off',fx:'bold',img:'png',dev:'mo',mall:'seogu',mem:'normal',inflow:'link',bind:'off',view:'list',tab:null,welSeen:false};
 /* 2026 세액공제 마감(12/31)까지 남은 날 — 실제 날짜로만 계산 */
 function dday(){const t=new Date();return Math.max(0,Math.ceil((new Date(2026,11,31)-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5))}
 const ddTxt=()=>dday()<=10?`2026 마지막 기회 <em>D-${dday()}</em>`:`2026 세액공제 마감 <em>D-${dday()}</em>`;
@@ -571,7 +572,7 @@ function card(g,it){
   ${S.mall==='hub'?`<div class="gov">${GOV[g].label}</div>`:''}<div class="nm">${it[0]}</div><div class="pr">기부금 <b>100,000원</b></div></div>`;}
 function allCards(){ let c=''; pool().forEach(g=>GOV[g].items.forEach(it=>c+=card(g,it))); return c; }
 function ticker(){
-  if(!bold()) return ''; const L=live(); if(!L.length) return '';
+  if(!bold()||S.top!=='on') return ''; const L=live(); if(!L.length) return '';
   let items;
   if(S.mall==='seogu'){ const a=GOV.seogu.amt;
     items=[ddTxt(),`고향ON 추가혜택 진행 중`,`10만원 기부하면 적립금·포인트 <em>+${won(a)}원</em> 더`,`세액공제 10만원 + 답례품 3만원 + 추가혜택 ${man(a)}원`]; }
@@ -770,7 +771,7 @@ function seg(id,key){ document.querySelectorAll('#'+id+' button').forEach(b=>b.o
   if(key==='mall'){S.view='list';S.inflow=S.mall==='seogu'?'link':'none';}
   if(key==='ver'){ S.img=S.ver==='0'?'none':'png'; syncSeg('sImg',S.img); }
   $('fab').dataset.hidden=''; render(); if((key==='fx'||key==='img'||key==='mem')&&bold()&&welGov()) showWelcome(); }); }
-['sVer:ver','sFx:fx','sImg:img','sDev:dev','sMall:mall','sMem:mem','sBind:bind'].forEach(p=>{const[a,b]=p.split(':');seg(a,b)});
+['sVer:ver','sTop:top','sFx:fx','sImg:img','sDev:dev','sMall:mall','sMem:mem','sBind:bind'].forEach(p=>{const[a,b]=p.split(':');seg(a,b)});
 window.addEventListener('resize',fit);
 { const q=new URLSearchParams(location.search); if(q.get('v')==='0'){ S.ver='0'; S.img='none'; syncSeg('sVer','0'); syncSeg('sImg',S.img); } }
 render(); setTimeout(showWelcome,300);
