@@ -455,13 +455,13 @@ const useImg=()=>S.fx==='bold'&&S.img!=='none';
 function pstrip(g,n=3,big){ return `<div class="pstrip${big?' big':''} bind" data-bo="${GOV[g].label} 대표 답례품 (BO 노출 순서)">${GOV[g].items.slice(0,n).map(it=>`<figure><img src="${it[2]}" alt="${it[0]}"><figcaption>${it[0]}</figcaption></figure>`).join('')}</div>`; }
 /* 혜택1·2·3 (이벤트 페이지에서 쓰던 구성 그대로) */
 function b3(g){ const a=GOV[g].amt;
-  return `<div class="b3"><div class="k1"><i class="n">1</i><small>세액공제</small><b>100%</b><i>10만원까지</i></div><div><i class="n">2</i><small>답례품</small><b>3만원</b><i>기부금의 30%</i></div><div class="k3 bind" data-bo="1위 프로모션 금액"><i class="n">3</i><small>고향ON 추가혜택</small><b>+${man(a)}원</b><i>고향ON에서만</i></div></div>`; }
+  return `<div class="b3"><div class="k1"><i class="n">1</i><small>세액공제</small><b>100%</b><i>10만원까지</i></div><div><i class="n">2</i><small>답례품</small><b>3만원</b><i>기부금의 30%</i></div><div class="k3 bind" data-bo="gifts[enabled].amount 최댓값 · 유입코드·고객사로 고른 프로모션"><i class="n">3</i><small>고향ON 추가혜택</small><b>+${man(a)}원</b><i>고향ON에서만</i></div></div>`; }
 /* v0.5 누끼 PNG — 운영자가 png/{지자체}_{순번}.png 로 넣으면 자동 교체. 없으면 실사 컷을 원형 접시로 */
 const GIFT=`<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="2"/><path d="M2 9h20M12 9v12"/><path d="M12 9c-1.5-3-5-4-5.5-2S9 9 12 9zM12 9c1.5-3 5-4 5.5-2S15 9 12 9z"/></svg>`;
 const CLK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
 /* 선착순 인원(cap) — 0이면 인원 제한 없음 → 아무것도 안 보임 */
 const fcfs=g=>GOV[g].cap?`선착순 ${won(GOV[g].cap)}명`:'';
-const fcfsChip=g=>GOV[g].cap?`<div class="fcfs bind" data-bo="${GOV[g].label} 선착순 인원">${CLK}${fcfs(g)} · 마감 시 종료</div>`:'';
+const fcfsChip=g=>GOV[g].cap?`<div class="fcfs bind" data-bo="participantGroup.totalParticipantLimit · endOnParticipantLimit=Y일 때만">${CLK}${fcfs(g)} · 마감 시 종료</div>`:'';
 const PNG=(g,i)=>`png/${g}_${i+1}.png`;
 function phFb(im){ im.onerror=null; im.closest('figure').classList.add('fb'); im.src=im.dataset.ph; }
 function pstage(g){ const it=GOV[g].items.slice(0,3), cls=['pl','pc_','pr'], idx=[1,0,2];
@@ -545,7 +545,7 @@ function sheetOne(g){
   <div class="btns"><button class="b2" onclick="toast('${GOV[g].label} 답례품 목록으로 이동')">답례품 보러가기</button><button class="b1" onclick="openPage('${g}')">자세히 보기 ›</button></div>`;}
 function sheetList(){
   const rows=shown().map(g=>{const G=GOV[g]; if(G.status==='full') return `<div class="govrow closed"><div><div class="g">${G.label}</div><div class="s">추가혜택 인원 마감</div></div><div class="a">마감</div></div>`;
-    return `<div class="govrow" onclick="openSheet('${g}')"><div><div class="g">${G.label}</div>${G.cap?`<div class="s">${fcfs(g)}</div>`:''}</div><div class="a bind" data-bo="${G.label} 1위 프로모션">+${won(G.amt)}원<small>자세히 ›</small></div></div>`;}).join('');
+    return `<div class="govrow" onclick="openSheet('${g}')"><div><div class="g">${G.label}</div>${G.cap?`<div class="s">${fcfs(g)}</div>`:''}</div><div class="a bind" data-bo="${G.label} · gifts[enabled].amount 최댓값">+${won(G.amt)}원<small>자세히 ›</small></div></div>`;}).join('');
   return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON에서만</div><h3>${bold()?`지금 <em>${live().length}곳</em>에서<br>추가혜택을 드려요`:'고향ON 추가혜택'}</h3>${rows}
   <div class="sfine">기부하는 지자체마다 1번씩 받을 수 있어요 · 금액과 혜택은 지자체마다 달라요</div>
   <div class="btns"><button class="b1" onclick="openPage(shown()[0])">혜택 한눈에 보기 ›</button></div>`;}
@@ -562,7 +562,7 @@ function pageParts(g){
   const hero=closed?`<div class="bhero closed"><div class="k">고향ON 추가혜택 · ${G.label}</div><h2>추가혜택이<br><em>마감</em>되었어요</h2><div class="closedmsg">준비된 인원이 모두 찼어요. 답례품 기부와 세액공제는 그대로 받을 수 있어요.</div></div>`
     :useImg()?`<div class="bhero" style="${S.img==='bg'?heroBg(g)+';padding-top:'+(isPC()?260:150)+'px':''}"><div class="k">고향ON 추가혜택 · ${G.label} <span class="ddc">${ddTxt()}</span></div>${hasVis()?vis(g):''}<h2 style="margin-top:12px">10만원 기부하면<br><em data-from="130000" data-to="${130000+G.amt}">${won(130000+G.amt)}원</em> 혜택</h2>${b3(g)}<div style="height:12px"></div>${rcpt(g)}</div>`
     :`<div class="bhero"><div class="k">고향ON 추가혜택 · ${G.label}</div>${bold()?envBig(g,false):''}<h2>10만원 기부하면<br><em data-from="130000" data-to="${130000+G.amt}">${won(130000+G.amt)}원</em> 혜택</h2>${rcpt(g)}</div>`;
-  const opts=closed?'':`<div class="blk"><h3>추가혜택 고르기 <span style="font-size:12px;color:#8A8A8A;font-weight:500">결제 화면에서 1개</span></h3>${S.mem==='guest'?'<div class="login" style="margin-bottom:8px">아래는 일반 회원 기준이에요. 로그인하면 내 혜택으로 바뀌어요.</div>':''}${optList(g).map(o=>`<div class="opt bind" style="--c:${tcol(o[0])}" data-bo="연계 경품 행"><div class="t"><span>${o[0]}</span><b>${won(o[1])}원</b></div><div class="d">${o[2]}</div></div>`).join('')}</div>`;
+  const opts=closed?'':`<div class="blk"><h3>추가혜택 고르기 <span style="font-size:12px;color:#8A8A8A;font-weight:500">결제 화면에서 1개</span></h3>${S.mem==='guest'?'<div class="login" style="margin-bottom:8px">아래는 일반 회원 기준이에요. 로그인하면 내 혜택으로 바뀌어요.</div>':''}${optList(g).map(o=>`<div class="opt bind" style="--c:${tcol(o[0])}" data-bo="gifts[sortOrder] displayName · amount · deliveryMessage"><div class="t"><span>${o[0]}</span><b>${won(o[1])}원</b></div><div class="d">${o[2]}</div></div>`).join('')}</div>`;
   const steps=closed?'':`<div class="blk"><h3>받는 방법</h3><div class="steps"><div class="step"><div><b>답례품 고르고 10만원 이상 기부</b><span>일반기부로 진행돼요</span></div></div><div class="step"><div><b>결제 화면에서 추가혜택 선택</b><span>적립금·포인트 중 1개를 골라요</span></div></div><div class="step"><div><b>지급 후 사용</b><span class="bind" data-bo="연계 경품 · 지급 시점/사용처/유효기간">수단별 지급 시점·사용처는 위 안내를 따라요</span></div></div></div></div>`;
   const prods=`<div class="blk"><h3>${G.label} 답례품</h3><div class="hs">${G.items.map(it=>card(g,it)).join('')}</div></div>`;
   const warn=`<div class="blk"><h3>꼭 확인하세요</h3><div class="warn bind" data-bo="지급 조건 · 참여 제한 그룹">· 10만원 이상 기부 시 받을 수 있어요<br>${G.cap?`· ${fcfs(g)} · 인원이 차면 일찍 끝나요<br>`:''}· 지자체 프로모션마다 1인 1회<br>· 이미 받으신 분은 결제 화면에 혜택 선택이 나타나지 않아요 (기부는 그대로 가능)<br>· 혜택을 선택하지 않으면 지급되지 않아요<br>· 프로모션 내용은 지자체 사정에 따라 바뀌거나 일찍 끝날 수 있어요</div></div>`;
