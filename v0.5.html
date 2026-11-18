@@ -334,6 +334,90 @@ button{cursor:pointer;border:0;background:none}
 .pstrip figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 7px 6px;font-size:10.5px;font-weight:800;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7));text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pc .pstrip figcaption{font-size:12.5px}
 .pstrip.big figure:first-child{flex:1.5}
+/* ── v0.6 개발서버 화면 재현 ── */
+body .dev{font-family:'Pretendard','Noto Sans KR',sans-serif}
+.dv-hdr .row{display:flex;align-items:center;justify-content:space-between}
+.mo .dv-hdr{padding:12px 16px}
+.dv-logo{height:22px;display:block}.dv-logo.hub{height:24px}
+.pc .dv-logo{height:28px}.pc .dv-logo.hub{height:34px}
+.dv-gov{display:flex;align-items:center;gap:8px}.dv-gov img{height:15px}.pc .dv-gov img{height:16px}
+.pc .dv-hdr .top{height:84px;gap:44px}
+.dv-gnb{display:flex;gap:40px;font-size:15px;font-weight:600;color:#0C0C0C}.dv-gnb.hub{gap:38px}.dv-gnb .cat{color:#FF6C00}
+.dv-util{margin-left:auto;display:flex;align-items:center;gap:20px}
+.dv-ico{font-size:22px;color:#222;line-height:1}
+.dv-login{background:#0C0C0C;color:#fff;border-radius:999px;padding:7px 20px;font-size:14px}.dv-login.line{background:#fff;color:#0C0C0C;border:1.5px solid #0C0C0C}
+.dv-hero{background-size:cover;background-position:center;color:#fff}
+.mo .dv-hero{height:300px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 22px}
+.pc .dv-hero{height:420px;display:flex;align-items:center}
+.pc .dv-hin{width:1200px;margin:0 auto}
+.dv-pill{display:inline-block;background:#fff;color:#0C0C0C;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600}
+.dv-hh{font-weight:800;font-size:19px;line-height:1.4;margin-top:14px;letter-spacing:-.3px}
+.pc .dv-hh{font-size:34px}
+.dv-hp{font-size:12px;line-height:1.65;margin-top:10px;opacity:.95}.pc .dv-hp{font-size:15px;max-width:620px}
+.dv-ban{position:relative;background:#FFF2CC;border-radius:18px;overflow:hidden}
+.mo .dv-ban{margin:22px 16px 0;padding:22px 20px 22px}
+.pc .dv-ban{margin-top:56px;padding:40px 180px;min-height:250px}
+.dvb-tag{display:inline-block;background:#FF6C00;color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:4px 10px}
+.dvb-tag.txt{background:none;color:#FF6C00;padding:0;font-size:15px;font-weight:800}
+.dvb-h{font-size:19px;font-weight:800;line-height:1.35;margin-top:10px;color:#0C0C0C}.dvb-h em{font-style:normal;color:#FF6C00}
+.pc .dvb-h{font-size:34px}
+.dvb-p{font-size:11.5px;color:#8A7A5A;margin-top:8px;line-height:1.5;max-width:230px}.pc .dvb-p{font-size:15px;max-width:none}
+.dvb-art{position:absolute;right:14px;top:14px;display:flex;gap:0}
+.pc .dvb-art{right:160px;top:50%;transform:translateY(-50%)}
+.cpn{font-style:normal;display:block;width:78px;height:44px;border-radius:8px;color:#0C0C0C;font-weight:900;font-size:13px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;box-shadow:0 4px 10px rgba(0,0,0,.12)}
+.cpn.g{background:#22D46A;transform:rotate(-12deg)}.cpn.o{background:#FFB21F;transform:rotate(10deg) translate(-12px,10px)}
+.pc .cpn{width:150px;height:84px;font-size:24px}
+.mega{font-size:54px;display:block}.pc .mega{font-size:120px}
+.mo .dv-sec{padding:30px 16px 6px}.pc .dv-sec{padding:64px 0 0}
+.dv-st{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.dv-st h2{font-size:17px;font-weight:700;color:#0C0C0C;margin:0}.dv-st h2 em{font-style:normal;color:#E8890A}
+.pc .dv-st h2{font-size:32px;font-weight:600}
+.dv-all{background:#FFA000;color:#fff;font-size:11.5px;font-weight:700;border-radius:999px;padding:5px 11px}.dv-all.txt{background:none;color:#8A8A8A;font-weight:500;padding:0}
+.pc .dv-all{font-size:15px;padding:8px 16px}
+.dv-card .dv-th{position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden}
+.dv-card .dv-th img{width:100%;height:100%;object-fit:cover;display:block}
+.dv-best{position:absolute;left:8px;top:8px;width:38px;height:38px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;color:#0C0C0C;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.dv-best i{font-style:normal;font-size:5px;letter-spacing:-.5px}.dv-best small{font-size:7px}.dv-best b{font-size:13px;font-weight:800}
+.pc .dv-best{width:62px;height:62px}.pc .dv-best small{font-size:11px}.pc .dv-best b{font-size:22px}.pc .dv-best i{font-size:8px}
+.dv-ev{display:inline-block;margin-top:8px;background:#FF3838;color:#fff;font-size:10px;font-weight:600;border-radius:11px;padding:2px 7px}
+.dv-card .nm{font-size:13px;font-weight:500;color:#222;margin-top:6px;height:auto;max-height:36px;line-height:1.4;overflow:hidden}
+.pc .dv-card .nm{font-size:17px}
+.dv-pr{font-size:12px;margin-top:4px;color:#0C0C0C}.dv-pr b{font-size:15px;font-weight:800}.pc .dv-pr b{font-size:19px}
+.dv-yl{font-size:10.5px;color:#FF8800;background:#FFF9E9;border-radius:20px;padding:2px 7px;margin-left:3px;white-space:nowrap}
+.dv-loc{display:flex;align-items:center;gap:3px;font-size:11px;color:#767676;margin-top:5px}.pc .dv-loc{font-size:14px}
+.mo .dv-grid{grid-template-columns:1fr 1fr;gap:20px 12px}
+.dv-hubhero{padding:14px 16px 0}.pc .dv-hubhero{padding:56px 0 0;display:flex;gap:24px}
+.dv-evs{position:relative;flex:1;border-radius:18px;background:#F4F4F2;color:#9A9A9A;font-size:15px;display:flex;align-items:center;justify-content:center}
+.dv-hhc{position:relative;height:270px;border-radius:18px;background-size:cover;background-position:center;color:#fff;padding:0 20px 26px;display:flex;flex-direction:column;justify-content:flex-end}
+.pc .dv-hhc{height:460px;padding:0 48px 48px;width:880px}
+.dv-hhc .dv-hh{font-size:26px;font-weight:700;margin:0}.pc .dv-hhc .dv-hh{font-size:36px}
+.dv-cnt{position:absolute;right:14px;top:14px;background:rgba(0,0,0,.45);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:4px 10px}
+.pc .dv-cnt{top:auto;bottom:30px;right:28px;font-size:15px;padding:7px 16px}
+.dv-live{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;border:1px solid #E8E8E8;border-radius:18px;font-size:11.5px;color:#333}
+.mo .dv-live{margin:22px 16px 0;padding:14px 16px}.pc .dv-live{margin-top:56px;padding:22px 40px;border-radius:999px;font-size:15px}
+.dv-lt{color:#FF6C00;font-weight:700;width:100%}.pc .dv-lt{width:auto}
+.dv-lb b{font-weight:700;margin-right:4px}.dv-ago{margin-left:auto;color:#9A9A9A}
+.dv-regs{display:flex;gap:12px;overflow-x:auto;margin-right:-16px;padding-right:16px}.pc .dv-regs{gap:20px;margin:0}
+.dv-reg{flex:none;width:200px}.pc .dv-reg{width:260px}
+.dv-ri{height:110px;border-radius:16px;background-size:cover;background-position:center}.pc .dv-ri{height:150px}
+.dv-rn{font-size:14px;font-weight:700;margin-top:8px}.dv-rs{font-size:11.5px;color:#8A8A8A;margin-top:2px}.dv-rc{font-size:11px;font-weight:600;margin-top:4px}
+.dv-hsc{display:flex;gap:12px;overflow-x:auto;margin-right:-16px;padding-right:16px}.dv-hsc .dv-card{flex:none;width:150px}
+.pc .dv-hsc{gap:20px;margin:0}.pc .dv-hsc .dv-card{width:228px}
+.dv-foot .in{display:flex;gap:16px;align-items:center;color:#767676;font-size:12px}.dv-foot b{color:#0C0C0C}
+.mo .dv-foot{margin-top:40px;padding:22px 16px 80px;background:#F7F7F7}
+.tabbar .ti{background:none!important;width:22px;height:22px;border-radius:0}
+.tabbar .ti::before{display:block;text-align:center;font-style:normal;font-size:17px;line-height:22px;color:#333}
+.ti0::before{content:"☰"}.ti1::before{content:"⌕"}.ti2::before{content:"⌂"}.ti3::before{content:"🎁";filter:grayscale(1)}.ti4::before{content:"⏻"}
+.tabbar div{color:#333}
+.dv-regs,.dv-hsc{scrollbar-width:none}.dv-regs::-webkit-scrollbar,.dv-hsc::-webkit-scrollbar{display:none}
+.ti5::before{content:"⌖";font-size:19px}
+/* 개발서버 카드: BEST 배지가 좌상단이므로 추가혜택 리본은 사진 아래쪽 */
+.dv-th .tix{top:auto;bottom:10px}.pc .dv-th .tix{top:auto;bottom:14px}
+.dv-th .chip{left:8px;bottom:8px;top:auto}
+/* MO 배너: 개발서버처럼 쿠폰 그림 위 · 글자 아래로 쌓기 */
+.mo .dv-ban{display:flex;flex-direction:column}
+.mo .dvb-art{position:static;order:-1;justify-content:center;height:70px;margin:0 0 10px}
+.mo .dvb-p{max-width:none}.mo .dvb-tag{align-self:flex-start}
 /* v0.5 혜택 3단 — 검정·빨강 면 제거, 흰 카드 + 앰버 한 톤. 혜택3만 연한 앰버로 살짝 띄움 */
 .b3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;text-align:left}
 .b3>div{position:relative;border-radius:14px;padding:10px 9px 9px;background:#fff;border:1px solid #F2E4DA;box-shadow:0 2px 6px rgba(150,60,20,.06);animation:tkIn .55s cubic-bezier(.3,1.7,.5,1) both;min-width:0}
@@ -472,7 +556,7 @@ button{cursor:pointer;border:0;background:none}
     <div class="grp"><div class="lab">⓪ 강조 강도</div><div class="seg" id="sFx"><button data-v="bold" class="on">강하게 (v0.3~)</button><button data-v="calm">차분하게 (v0.2)</button></div></div>
     <div class="grp"><div class="lab">⓪-2 답례품 이미지 (상무 1117)</div><div class="seg" id="sImg"><button data-v="png" class="on">누끼 PNG (v0.5)</button><button data-v="head">실사 띠 (v0.4)</button><button data-v="bg">실사 배경</button><button data-v="none">없음 (v0.3)</button></div></div>
     <div class="grp"><div class="lab">① 기기</div><div class="seg" id="sDev"><button data-v="mo" class="on">MO</button><button data-v="pc">PC</button></div></div>
-    <div class="grp"><div class="lab">② 몰</div><div class="seg" id="sMall"><button data-v="seogu" class="on">독립몰 (서구)</button><button data-v="hub">허브</button></div></div>
+    <div class="grp"><div class="lab">② 몰</div><div class="seg" id="sMall"><button data-v="seogu" class="on">독립몰 (서구)</button><button data-v="yangju">독립몰 (양주)</button><button data-v="hub">허브</button></div></div>
     <div class="grp"><div class="lab">③ 회원 상태</div><div class="seg" id="sMem"><button data-v="guest">비로그인</button><button data-v="normal" class="on">일반 회원</button><button data-v="welfare">복지관 회원</button></div></div>
     <div class="grp"><div class="lab">④ 유입 경로</div><div class="seg" id="sIn"></div><button class="replay" id="replay">▶ 링크 유입 첫 화면 다시 보기</button></div>
     <div class="grp"><div class="lab">⑤ 프로모션 상태 (BO 값 바꿔보기)</div>
@@ -557,48 +641,74 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const tcol=n=>n.includes('복지')?'var(--c-welfare)':n.includes('네이버')?'var(--c-npay)':'var(--c-onnuri)';
 const tname=n=>n.includes('복지')?'복지 적립금':n.includes('네이버')?'네이버페이':'온누리 적립금';
 /* 상태 판정 */
-const pool=()=>S.mall==='seogu'?['seogu']:ORDER;
+const IND=()=>S.mall!=='hub';
+const pool=()=>IND()?[S.mall]:ORDER;
 const shown=()=>pool().filter(g=>GOV[g].status!=='end');
 const live=()=>pool().filter(g=>GOV[g].status==='on');
 function ctxGov(){
   const L=live(); if(!L.length) return undefined;
-  if(S.mall==='seogu') return 'seogu';
+  if(IND()) return S.mall;
   if(GOV[S.inflow] && GOV[S.inflow].status==='on') return S.inflow;
   if(L.length===1) return L[0];
   return null;
 }
-function welGov(){ if(S.inflow==='none') return null; if(S.mall==='seogu') return GOV.seogu.status==='on'?'seogu':null; return GOV[S.inflow]&&GOV[S.inflow].status==='on'?S.inflow:null; }
+function welGov(){ if(S.inflow==='none') return null; if(IND()) return GOV[S.mall].status==='on'?S.mall:null; return GOV[S.inflow]&&GOV[S.inflow].status==='on'?S.inflow:null; }
 function chip(g){ if(GOV[g].status!=='on') return '';
   if(bold()) return `<span class="tix bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션"><small>고향ON 추가혜택</small><b>+${won(MORE(g))}원</b></span>`;
   return `<span class="chip shine bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션">${COUPON}+${man(MORE(g))} 추가혜택</span>`;}
-function card(g,it){
-  return `<div class="card"><div class="thumb ph" style="background:${it[1]} url('${it[2]}')"><span class="nmx">${it[0]}</span>${chip(g)}</div>
-  ${S.mall==='hub'?`<div class="gov">${GOV[g].label}</div>`:''}<div class="nm">${it[0]}</div><div class="pr">기부금 <b>100,000원</b></div></div>`;}
-function allCards(){ let c=''; pool().forEach(g=>GOV[g].items.forEach(it=>c+=card(g,it))); return c; }
+/* ── v0.6 개발서버 화면 재현 (gohyangon-dev · gohyangon-seogu · gohyangon-yangju, 2026-11-18 실측) ── */
+const DA='assets/dev/';
+const MALL={
+  seogu:{logo:DA+'logo_seogu.png',hero:DA+'hero_seogu.jpg',pill:'전남광주통합특별시 서구',head:'당신의 선한 영향력이 빛나는 곳,<br>여기는 착한도시 서구입니다.',desc:'서구는 상무지구의 활기와 운천호수의 여유, 예술의 거리와 인문도시가 조화를 이루는 문화생활 중심지입니다. 당신의 기부는 이 활기찬 지역의 미래를 더 다채롭게 만듭니다.',short:'서구',loc:'전남광주통합특별시 서구',
+    gnb:['서구 이야기','답례품','기부사업','고향사랑 안내','이벤트'],
+    banner:`<div class="dvb-tag">전남광주통합특별시 서구 프로모션</div><div class="dvb-h">서구에 고향사랑기부하면<br><em>최대 25,000원</em> 추가 증정!</div><div class="dvb-p">연말정산 세액 공제와 3만원 상당의 답례품과 함께 풍성한 추가 혜택을 받아보세요</div><div class="dvb-art"><i class="cpn g">20,000원</i><i class="cpn o">25,000원</i></div>`},
+  yangju:{logo:DA+'logo_yangju.png',hero:DA+'hero_yangju.jpg',pill:'경기도 양주',head:'경기북부의 중심,<br>미래를 여는 양주',desc:'역사와 문화, 자연과 도시가 조화를 이루는 양주. 소중한 기부로 지역의 성장과 시민의 행복을 함께 만들어 주세요.',short:'양주',loc:'경기도 양주시',
+    gnb:['양주 이야기','답례품','고향사랑 안내','이벤트'],
+    banner:`<div class="dvb-tag txt">GRAND OPEN</div><div class="dvb-h">양주 고향<em>ON</em>,<br>드디어 오픈했어요!</div><div class="dvb-p">우리 동네의 마음을 답례품으로, 지금 만나보세요.</div><div class="dvb-art"><span class="mega">📣</span></div>`},
+  yeongju:{loc:'경상북도 영주시'}
+};
+const GOVLOGO=`<span class="dv-gov"><img src="${DA}logo_mois.png" alt="행정안전부"><img src="${DA}logo_dso.png" alt="디지털서비스개방"></span>`;
+const PIN=`<svg viewBox="0 0 24 24" width="12" height="12" fill="#9A9A9A"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>`;
+function card(g,it,rank){
+  const best=rank?`<span class="dv-best${rank<=3?' t3':''}">${rank<=3?'<i>★★★</i>':''}<small>BEST</small><b>${rank}</b></span>`:'';
+  const up=GOV[g].up?'<span class="dv-ev">증량 이벤트</span>':'';
+  return `<div class="card dv-card"><div class="dv-th" style="background:${it[1]}"><img src="${it[2]}" alt="" loading="lazy">${best}${chip(g)}</div>
+  ${up}<div class="nm">${it[0]}</div><div class="dv-pr"><b>100,000</b>원 <span class="dv-yl">기부시 증정</span></div><div class="dv-loc">${PIN}${(MALL[g]||{}).loc||GOV[g].label}</div></div>`;}function allCards(){ let c=''; pool().forEach(g=>GOV[g].items.forEach(it=>c+=card(g,it))); return c; }
 function ticker(){
   if(!bold()||S.top!=='on') return ''; const L=live(); if(!L.length) return '';
   let items;
-  if(S.mall==='seogu'){ const a=GOV.seogu.amt;
+  if(IND()){ const a=MORE(S.mall);
     items=[ddTxt(),`고향ON 추가혜택 진행 중`,`10만원 기부하면 적립금·포인트 <em>+${won(a)}원</em> 더`,`세액공제 10만원 + 답례품 3만원 + 추가혜택 ${man(a)}원`]; }
   else { items=L.map(g=>`${GOV[g].label} 기부하면 <em>+${won(MORE(g))}원</em>${GOV[g].cap?' · '+fcfs(g):''}`).concat(['지자체마다 1번씩 받을 수 있어요']); items.unshift(ddTxt()); }
   const one=items.map(t=>`<span>${t}</span>`).join('');
   return `<div class="tick bind" data-bo="띠 배너 · 진행 중 1위 프로모션" onclick="tapCtx()"><div class="trk">${one}${one}</div></div>`;
 }
+function dvHeader(){
+  if(IND()){ const M=MALL[S.mall];
+    if(!isPC()) return `<div class="hdr dv-hdr"><div class="row"><img class="dv-logo" src="${M.logo}" alt="고향ON ${M.short}">${GOVLOGO}</div>${ticker()}</div>`;
+    return `<div class="hdr dv-hdr"><div class="in"><div class="top"><img class="dv-logo" src="${M.logo}" alt="고향ON ${M.short}"><div class="dv-gnb">${M.gnb.map(x=>`<span>${x}</span>`).join('')}</div><div class="dv-util">${GOVLOGO}<span class="dv-ico">⌕</span><span class="dv-login">${S.mem==='guest'?'로그인':'마이페이지'}</span></div></div></div>${ticker()}</div>`; }
+  if(!isPC()) return `<div class="hdr dv-hdr"><div class="row"><img class="dv-logo hub" src="${DA}logo_hub.svg" alt="고향ON">${GOVLOGO}</div>${ticker()}</div>`;
+  return `<div class="hdr dv-hdr"><div class="in"><div class="top"><img class="dv-logo hub" src="${DA}logo_hub.svg" alt="고향ON"><div class="dv-gnb hub"><span class="cat">☰ 카테고리</span><span>답례품</span><span>지자체</span><span>지정기부사업</span><span>이벤트</span><span>고향사랑안내</span></div><div class="dv-util">${GOVLOGO}<span class="dv-ico">⌕</span><span class="dv-login line">${S.mem==='guest'?'로그인':'마이페이지'}</span></div></div></div>${ticker()}</div>`;
+}
 function listView(){
-  const logo=S.mall==='seogu'?'<div class="logo">고향<i>ON</i><small>서구</small></div>':'<div class="logo">고향<i>ON</i></div>';
-  const heroT=S.mall==='seogu'?['서구가 전하는 이야기','메인 비주얼 배너 영역 (기존)']:['고향사랑기부, 고향ON에서','허브 메인 비주얼 배너 영역 (기존)'];
-  const c=allCards();
-  if(!isPC()) return `<div class="hdr"><div class="row">${logo}<span style="font-size:12px;color:#8A8A8A">${S.mem==='guest'?'로그인':'마이'}</span></div><div class="search">답례품을 검색해 보세요</div>${ticker()}</div>
-    <div class="hero"><b>${heroT[0]}</b><p>${heroT[1]}</p></div>
-    <div class="sec"><h2>인기 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div>
-    <div class="sec"><h2>추천 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div>`;
-  const gnb=S.mall==='seogu'?['서구 이야기','답례품','기부사업','고향사랑 안내','이벤트']:['지자체','답례품','지정기부','고향사랑 안내','혜택·이벤트'];
-  return `<div class="hdr"><div class="in"><div class="top">${logo}<div class="search">답례품을 검색해 보세요</div><div class="util"><span>${S.mem==='guest'?'로그인':'마이페이지'}</span><span>고객센터</span></div></div>
-    <div class="gnb">${gnb.map(x=>`<span>${x}</span>`).join('')}</div></div>${ticker()}</div>
-    <div class="in"><div class="hero"><b>${heroT[0]}</b><p>${heroT[1]}</p></div>
-    <div class="sec"><h2>인기 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div>
-    <div class="sec"><h2>추천 답례품 <span>전체보기 ›</span></h2><div class="grid">${c}</div></div></div>
-    <div class="foot"><div class="in">푸터 영역 (기존)</div></div>`;
+  const W=s=>isPC()?`<div class="in">${s}</div>`:s;
+  if(IND()){ const g=S.mall, M=MALL[g], its=GOV[g].items, n=isPC()?4:4;
+    const best=Array.from({length:n},(_,i)=>card(g,its[i%its.length],i+1)).join('');
+    return `${dvHeader()}
+    <div class="dv-hero" style="background-image:linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),url('${M.hero}')"><div class="dv-hin"><span class="dv-pill">${M.pill}</span><div class="dv-hh">${M.head}</div><div class="dv-hp">${M.desc}</div></div></div>
+    ${W(`<div class="dv-ban bind" data-bo="기존 BO 배너관리 이미지 (개발서버 현행)">${M.banner}</div>
+    <div class="dv-sec"><div class="dv-st"><h2>${M.short} <em>인기 답례품</em> BEST 8</h2><span class="dv-all">${isPC()?'답례품 ':''}전체보기 ›</span></div><div class="grid dv-grid">${best}</div></div>`)}
+    <div class="foot dv-foot"><div class="in"><b>이제너두</b><span>상담센터 1660-3275</span></div></div>`; }
+  /* 허브 */
+  const mix=[]; ORDER.forEach(g=>GOV[g].items.slice(0,2).forEach(it=>mix.push([g,it])));
+  const regs=[['yangju','경기 양주','아름다운 변화 양주',DA+'region_yangju.jpg',5],['seogu','전남광주통합특별시 서구','함께서구 우뚝서구',DA+'region_seogu.jpg',8],['yeongju','경북 영주','',GOV.yeongju.items[0][2],3]];
+  return `${dvHeader()}
+  ${W(`<div class="dv-hubhero"><div class="dv-hhc" style="background-image:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,.05)),url('${DA}hero_hub.jpg')"><div class="dv-hh">고향에 마음을 보내면,<br>고향의 맛이 돌아옵니다.</div><div class="dv-hp">10만원 기부하면 전액 세액공제 + 3만원 답례품</div><span class="dv-cnt">1 / 2</span></div>${isPC()?'<div class="dv-evs"><span>이벤트 배너 (기존)</span><span class="dv-cnt">1 / 3</span></div>':''}</div>
+  <div class="dv-live"><span class="dv-lt">ⓘ 지금 전국에서 기부 중</span><span class="dv-lb"><b>남도젓갈 4종세트</b> 전남광주통합특별시 서구에서 답례품으로 기부했어요.</span><span class="dv-ago">1일 전</span></div>
+  <div class="dv-sec"><div class="dv-st"><h2>어느 고향에 마음을 보낼까요?</h2><span class="dv-all txt">지자체 전체보기 →</span></div>
+  <div class="dv-regs">${regs.map(r=>`<div class="dv-reg"><div class="dv-ri" style="background-image:url('${r[3]}')"></div><div class="dv-rn">${r[1]}</div>${r[2]?`<div class="dv-rs">${r[2]}</div>`:''}<div class="dv-rc">답례품 ${r[4]} · 지정기부 0</div></div>`).join('')}</div></div>
+  <div class="dv-sec"><div class="dv-st"><h2>지금 많이보는 답례품</h2></div><div class="dv-hsc">${mix.map(([g,it])=>card(g,it)).join('')}</div></div>`)}
+  <div class="foot dv-foot"><div class="in"><b>이제너두</b><span>상담센터 1660-3275</span></div></div>`;
 }
 function rcpt(g){ const p=GOV[g].amt;
   return `<div class="rcpt"><div class="r"><span>세액공제 (10만원 기부 시)</span><span>100,000원</span></div>
@@ -652,8 +762,7 @@ function pageParts(g){
 function pageView(g){
   const P=pageParts(g);
   if(!isPC()) return `<div class="bp"><div class="bhdr"><button class="back" onclick="back()">‹</button>고향ON 추가혜택</div>${tabsHtml(g)}${P.hero}${P.opts}${P.steps}${P.prods}${P.warn}${P.cta}</div>`;
-  const logo=S.mall==='seogu'?'<div class="logo">고향<i>ON</i><small>서구</small></div>':'<div class="logo">고향<i>ON</i></div>';
-  return `<div class="hdr"><div class="in"><div class="top">${logo}<div class="search">답례품을 검색해 보세요</div><div class="util"><span>마이페이지</span><span>고객센터</span></div></div></div></div>
+  return `${dvHeader()}
   <div class="in bp"><div class="crumb"><a onclick="back()" style="cursor:pointer">홈</a> › 고향ON 추가혜택</div>
   <div class="ttl">고향ON <em>추가혜택</em></div><div class="lead">고향ON에서 기부하면 세액공제·답례품에 더해 받을 수 있는 혜택이에요.</div>${tabsHtml(g)}
   <div class="two"><div>${P.hero}</div><div>${P.opts}${P.steps}</div></div>${P.prods.replace('class="blk"','class="blk" style="padding-top:30px"')}${P.warn}${P.cta}</div>
@@ -720,14 +829,14 @@ function closeWelcome(){
 }
 /* ── 조작 ── */
 function renderInflow(){
-  const opts=S.mall==='seogu'?[['none','직접 방문'],['link','문자·복지몰 링크']]:[['none','직접 방문'],['yeongju','경북 영주 문자 링크'],['yangju','경기 양주 문자 링크']];
-  if(!opts.some(o=>o[0]===S.inflow)) S.inflow=S.mall==='seogu'?'link':'none';
+  const opts=IND()?[['none','직접 방문'],['link','문자·복지몰 링크']]:[['none','직접 방문'],['yeongju','경북 영주 문자 링크'],['yangju','경기 양주 문자 링크']];
+  if(!opts.some(o=>o[0]===S.inflow)) S.inflow=IND()?'link':'none';
   $('sIn').innerHTML=opts.map(o=>`<button data-v="${o[0]}" class="${o[0]===S.inflow?'on':''}">${o[1]}</button>`).join('');
   $('sIn').querySelectorAll('button').forEach(b=>b.onclick=()=>{ S.inflow=b.dataset.v; S.view='list'; $('fab').dataset.hidden=''; render(); if(S.inflow!=='none') showWelcome(); });
   $('replay').style.display=bold()&&welGov()?'inline-block':'none';
 }
 function renderPromo(){
-  $('promo').innerHTML=ORDER.map(g=>`<div class="pr ${S.mall==='seogu'&&g!=='seogu'?'dis':''}"><span>${GOV[g].label}</span>
+  $('promo').innerHTML=ORDER.map(g=>`<div class="pr ${IND()&&g!==S.mall?'dis':''}"><span>${GOV[g].label}</span>
   <select data-g="${g}" class="pst"><option value="on" ${GOV[g].status==='on'?'selected':''}>진행</option><option value="full" ${GOV[g].status==='full'?'selected':''}>인원 마감</option><option value="end" ${GOV[g].status==='end'?'selected':''}>종료</option></select>
   <input data-g="${g}" class="pam" type="number" step="5000" min="0" value="${GOV[g].amt}" title="추가혜택 금액"><input data-g="${g}" class="pcap" type="number" step="100" min="0" value="${GOV[g].cap||''}" placeholder="제한X" title="선착순 인원 (비우면 인원 제한 없음)"></div>`).join('');
   document.querySelectorAll('.pst').forEach(el=>el.onchange=()=>{GOV[el.dataset.g].status=el.value; if(S.view==='page'&&!shown().includes(S.tab)) S.view='list'; render(false);});
@@ -739,8 +848,9 @@ function fit(){ const d=$('dev'),st=$('stage');
   else { d.style.transform=''; st.style.width=''; st.style.height=''; } }
 function render(resetScroll=true){
   const d=$('dev'); d.className='dev '+S.dev+(S.bind==='on'?' bind-on':'')+(bold()?' fx-bold':'');
-  $('pcbar').style.display=isPC()?'flex':'none'; $('tabbar').style.display=isPC()?'none':'flex'; $('topbtn').style.display=isPC()?'none':'flex';
-  $('url').textContent=(S.mall==='seogu'?'seogu.gohyangon.co.kr':'gohyangon.co.kr')+(S.view==='page'?'/event/benefit':(S.inflow!=='none'?'/?inflowPathTpCd=…':''));
+  $('pcbar').style.display=isPC()?'flex':'none'; $('tabbar').style.display=isPC()?'none':'flex';
+  $('tabbar').innerHTML=(IND()?['카테고리','상품검색','홈','답례품',S.mem==='guest'?'로그인':'마이']:['카테고리','검색','홈','지자체',S.mem==='guest'?'로그인':'마이']).map((x,i)=>`<div class="${i===2?'on':''}"><i class="ti ti${!IND()&&i===3?5:i}"></i>${x}</div>`).join(''); $('topbtn').style.display=isPC()?'none':'flex';
+  $('url').textContent=(IND()?S.mall+'.gohyangon.co.kr':'www.gohyangon.co.kr')+(S.view==='page'?'/event/benefit':(S.inflow!=='none'?'/?inflowPathTpCd=…':''));
   const y=$('scr').scrollTop; $('scr').innerHTML=S.view==='page'?pageView(S.tab):listView(); $('scr').scrollTop=resetScroll?0:y;
   $('wel').classList.remove('on'); $('wel').innerHTML='';
   renderFab(); closeSheet(); renderPromo(); renderInflow(); noteUpdate(); fit();
@@ -750,7 +860,7 @@ function noteUpdate(){
   const g=ctxGov(); let t='';
   if(bold()) t='<b>강하게 (v0.3)</b><br>· <b>링크로 들어오면 첫 화면</b>: 봉투가 열리고 혜택 티켓이 튀어나와요. 합계 숫자가 130,000원에서 올라가요. 닫으면 카드가 플로팅 속으로 빨려 들어가요 (세션당 1번)<br>· <b>상단 띠 배너</b>: 혜택 문구가 계속 흘러가요. 누르면 패널이 열려요<br>· <b>카드</b>: 주황 티켓 리본 「+25,000원」이 미끄러져 들어오고, 몇 초마다 빛이 지나가요<br>· <b>플로팅</b>: 봉투 버튼이 말랑하게 출렁이고, 티켓이 톡 튀어나와요. 말풍선에 금액을 보여줘요<br>· 패널·혜택 페이지는 참고 이미지처럼 <b>수단별 색 티켓</b>(복지=파랑·온누리=주황·네이버페이=초록)으로 보여줘요<br><br>';
   if(g===undefined) t+='<b>진행 중인 프로모션 없음</b>: 플로팅·띠 배너·카드 리본이 모두 사라져요.';
-  else if(S.mall==='seogu') t+='<b>독립몰</b>: 지자체·프로모션이 1개라 모든 카드와 플로팅이 같은 금액이에요.';
+  else if(IND()) t+='<b>독립몰</b>: 지자체·프로모션이 1개라 모든 카드와 플로팅이 같은 금액이에요.';
   else if(g&&S.inflow===g) t+=`<b>허브 · ${GOV[g].label} 링크 유입</b>: 첫 화면과 플로팅이 이 지자체 금액으로 고정돼요. 카드는 각자 자기 지자체 금액이에요.`;
   else if(g) t+=`<b>허브 · 진행 중 1곳</b>: ${GOV[g].label} 금액을 바로 보여줘요.`;
   else t+=`<b>허브 · 직접 방문</b>: ${bold()?'말풍선이 지자체별 금액을 하나씩 돌려가며 보여줘요':'플로팅은 「고향ON 추가혜택 · N곳」'}. 합산 「최대 N원」은 쓰지 않아요.`;
@@ -772,9 +882,9 @@ let lastY=0; $('scr').addEventListener('scroll',e=>{ if(S.view!=='list')return; 
 function syncSeg(id,v){ document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.toggle('on',x.dataset.v===v)); }
 function seg(id,key){ document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{ if(b.disabled)return;
   document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); S[key]=b.dataset.v;
-  if(key==='mall'){S.view='list';S.inflow=S.mall==='seogu'?'link':'none';}
+  if(key==='mall'){S.view='list';S.inflow=IND()?'link':'none';}
   if(key==='ver'){ S.img=S.ver==='0'?'none':'png'; syncSeg('sImg',S.img); }
-  $('fab').dataset.hidden=''; render(); if((key==='fx'||key==='img'||key==='mem')&&bold()&&welGov()) showWelcome(); }); }
+  $('fab').dataset.hidden=''; render(); if((key==='fx'||key==='img'||key==='mem'||key==='mall')&&bold()&&welGov()) showWelcome(); }); }
 ['sVer:ver','sTop:top','sFx:fx','sImg:img','sDev:dev','sMall:mall','sMem:mem','sBind:bind'].forEach(p=>{const[a,b]=p.split(':');seg(a,b)});
 window.addEventListener('resize',fit);
 { const q=new URLSearchParams(location.search); if(q.get('v')==='0'){ S.ver='0'; S.img='none'; syncSeg('sVer','0'); syncSeg('sImg',S.img); } }
