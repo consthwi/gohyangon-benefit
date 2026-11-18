@@ -247,7 +247,7 @@ button{cursor:pointer;border:0;background:none}
 /* v0.5-4 봉투 앞면에 찍힌 「고향ON 추가혜택」 */
 .wenv .elab{position:absolute;left:50%;bottom:11px;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:12.5px;font-weight:900;letter-spacing:-.2px;color:#8A5A10}
 .wenv .elab em{font-style:normal;color:var(--amber-d)}
-.wenv .elab i{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFC44D,#E08E00);box-shadow:inset 0 -1px 0 rgba(0,0,0,.15)}
+.wenv .elab i{width:17px;height:17px;border-radius:50%;background:var(--amber);color:#fff;font-style:normal;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(224,142,0,.35)}
 .pc .wenv .elab{font-size:14px}
 .wenv.still .fl{animation:none;transform:rotateX(180deg);z-index:0}
 .wenv.still .tk{animation-duration:.01s;animation-delay:0s!important}
@@ -263,14 +263,21 @@ button{cursor:pointer;border:0;background:none}
 .wcard .wx{position:absolute;right:14px;top:14px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);font-size:13px;z-index:6}
 .wk{font-size:12.5px;font-weight:800;color:#B86E00;margin-top:30px}
 /* v0.5-3 D-day 칩 = 좌상단(닫기 ✕와 같은 줄), 「링크로 오셨네요」 = 그 아래 가운데 */
+.wintro{font-size:11px;color:#8C7B5E;line-height:1.45;margin-top:3px}.wintro b{color:#5A4520}
+.pc .wintro{font-size:12.5px}
+.wnote{font-size:10px;color:#A09A90;margin-top:8px;line-height:1.4}
 .wcard .wdd{position:absolute;left:14px;top:16px;z-index:6}
-.pc .wcard .wdd{left:20px;top:20px}.pc .wk{margin-top:34px;font-size:14px}
+.pc .wintro{font-size:11px;color:#8C7B5E;line-height:1.45;margin-top:3px}.wintro b{color:#5A4520}
+.pc .wintro{font-size:12.5px}
+.wnote{font-size:10px;color:#A09A90;margin-top:8px;line-height:1.4}
+.wcard .wdd{left:20px;top:20px}.pc .wk{margin-top:34px;font-size:14px}
 .wcard h3{font-size:22px;font-weight:900;line-height:1.3;margin-top:2px;word-break:keep-all}
 .pc .wcard h3{font-size:26px}
 .wcard h3 em{font-style:normal;color:var(--hot)}
 .wsum{margin-top:10px;font-size:13px;font-weight:700;color:var(--ink2)}
 .wsum b{font-size:34px;font-weight:900;color:var(--ink);letter-spacing:-1px;margin:0 2px;font-variant-numeric:tabular-nums}
-.wsum.top{margin:8px 0 2px}
+.wsum.top{margin:8px 0 2px;white-space:nowrap;font-size:12px}.wsum.top b{font-size:29px;margin:0 1px}.wsum.top s{text-decoration:none;font-size:11px;color:#B86E00;background:#FFF1D6;border-radius:6px;padding:2px 5px;margin-left:3px;vertical-align:4px}
+.pc .wsum.top{font-size:14px}.pc .wsum.top b{font-size:38px}
 .wsub{font-size:11.5px;color:var(--ink2);margin-top:4px;line-height:1.5}
 .wsub b{color:var(--hot)}
 .wfine{font-size:10.5px;color:var(--ink3);margin-top:10px;line-height:1.5}
@@ -329,9 +336,19 @@ button{cursor:pointer;border:0;background:none}
 .b3 b{display:block;font-size:18px;font-weight:900;letter-spacing:-.4px;margin-top:1px;white-space:nowrap;color:var(--ink)}
 .b3 i{display:block;font-style:normal;font-size:10px;color:#A09A90;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .b3 .k3{background:linear-gradient(160deg,#FFF8E8,#FFEFCF);border-color:#FFD27F}
+/* v0.5-5 혜택2(답례품) 카드 → 위 답례품 무대를 가리키는 화살표 (통통) */
+.b3.lk>div:nth-child(2){border-color:#FFD27F}
+.b3.lk>div:nth-child(2)::before{content:"";position:absolute;left:50%;top:-10px;margin-left:-8px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:9px solid var(--amber);filter:drop-shadow(0 -1px 1px rgba(224,142,0,.25));animation:arrUp 1.3s ease-in-out infinite}
+@keyframes arrUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media (prefers-reduced-motion:reduce){.b3.lk>div:nth-child(2)::before{animation:none}}
 .b3 .k3t{font-size:15px;line-height:1.15;letter-spacing:-.4px;color:#8A5A10!important;margin-top:0}
 .b3 .k3t em{font-style:normal;color:#E06A00}
-.pc .b3 .k3t{font-size:18px}
+.pc /* v0.5-5 혜택2(답례품) 카드 → 위 답례품 무대를 가리키는 화살표 (통통) */
+.b3.lk>div:nth-child(2){border-color:#FFD27F}
+.b3.lk>div:nth-child(2)::before{content:"";position:absolute;left:50%;top:-10px;margin-left:-8px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:9px solid var(--amber);filter:drop-shadow(0 -1px 1px rgba(224,142,0,.25));animation:arrUp 1.3s ease-in-out infinite}
+@keyframes arrUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media (prefers-reduced-motion:reduce){.b3.lk>div:nth-child(2)::before{animation:none}}
+.b3 .k3t{font-size:18px}
 .b3 .k3 .n{background:var(--amber);color:#fff}.b3 .k3 b{color:#E06A00}.b3 .k3 small{color:#A86800}
 .pc .b3 small{font-size:11.5px}.pc .b3 b{font-size:22px}.pc .b3 i{font-size:11.5px}.pc .b3 .n{width:20px;height:20px;font-size:11px}
 /* v0.5 누끼 PNG 무대 — 실사 배경 없이 제품만 띄움. PNG가 아직 없으면 실사 컷을 원형 접시로 대신 보여줌 */
@@ -473,7 +490,7 @@ const useImg=()=>S.fx==='bold'&&S.img!=='none';
 function pstrip(g,n=3,big){ return `<div class="pstrip${big?' big':''} bind" data-bo="${GOV[g].label} 대표 답례품 (BO 노출 순서)">${GOV[g].items.slice(0,n).map(it=>`<figure><img src="${it[2]}" alt="${it[0]}"><figcaption>${it[0]}</figcaption></figure>`).join('')}</div>`; }
 /* 혜택1·2·3 (이벤트 페이지에서 쓰던 구성 그대로) */
 function b3(g){ const a=GOV[g].amt;
-  return `<div class="b3"><div class="k1"><i class="n">1</i><small>세액공제</small><b>100%</b><i>10만원까지</i></div><div><i class="n">2</i><small>답례품</small><b>3만원</b><i>기부금의 30%</i></div><div class="k3 bind" data-bo="gifts[enabled].amount 최댓값 · 유입코드·고객사로 고른 프로모션"><i class="n">3</i><b class="k3t">고향<em>ON</em><br>추가혜택</b><i>결제 시 선택</i></div></div>`; }
+  return `<div class="b3${hasVis()?' lk':''}"><div class="k1"><i class="n">1</i><small>세액공제</small><b>100%</b><i>연말정산 공제</i></div><div><i class="n">2</i><small>답례품</small><b>3만원</b><i>원하는 상품 1개</i></div><div class="k3 bind" data-bo="gifts[enabled].amount 최댓값 · 유입코드·고객사로 고른 프로모션"><i class="n">3</i><b class="k3t">고향<em>ON</em><br>추가혜택</b><i>결제 시 선택</i></div></div>`; }
 /* v0.5 누끼 PNG — 운영자가 png/{지자체}_{순번}.png 로 넣으면 자동 교체. 없으면 실사 컷을 원형 접시로 */
 const GIFT=`<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="2"/><path d="M2 9h20M12 9v12"/><path d="M12 9c-1.5-3-5-4-5.5-2S9 9 12 9zM12 9c1.5-3 5-4 5.5-2S15 9 12 9z"/></svg>`;
 const CLK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
@@ -483,7 +500,7 @@ const fcfsChip=g=>GOV[g].cap?`<div class="fcfs bind" data-bo="participantGroup.t
 const PNG=(g,i)=>`png/${g}_${i+1}.png`;
 function phFb(im){ im.onerror=null; im.closest('figure').classList.add('fb'); im.src=im.dataset.ph; }
 function pstage(g){ const it=GOV[g].items.slice(0,3), cls=['pl','pc_','pr'], idx=[1,0,2];
-  return `<div class="pstage bind" data-bo="${GOV[g].label} 대표 답례품 PNG (가운데=1순위)"><div class="halo"></div><div class="floor"></div><div class="pribw"></div><div class="prib">${GIFT}기부하면 받는 답례품</div>${idx.map((k,j)=>it[k]?`<figure class="pi ${cls[j]}"><img src="${PNG(g,k)}" data-ph="${it[k][2]}" alt="${it[k][0]}" onerror="phFb(this)"><figcaption class="ptag" title="${it[k][0]}">${it[k][0]}</figcaption></figure>`:'').join('')}</div>`; }
+  return `<div class="pstage bind" data-bo="${GOV[g].label} 대표 답례품 PNG (가운데=1순위)"><div class="halo"></div><div class="floor"></div><div class="pribw"></div><div class="prib">${GIFT}기부하면 받는 혜택</div>${idx.map((k,j)=>it[k]?`<figure class="pi ${cls[j]}"><img src="${PNG(g,k)}" data-ph="${it[k][2]}" alt="${it[k][0]}" onerror="phFb(this)"><figcaption class="ptag" title="${it[k][0]}">${it[k][0]}</figcaption></figure>`:'').join('')}</div>`; }
 const vis=g=>S.img==='png'?pstage(g):pstrip(g,3,true);
 const hasVis=()=>S.img==='png'||S.img==='head';
 const heroBg=g=>`background:linear-gradient(180deg,rgba(255,241,214,.25) 0%,rgba(255,248,235,.94) 46%,#fff 70%),url('${GOV[g].items[0][2]}') center top/100% auto no-repeat`;
@@ -571,7 +588,7 @@ function envBig(g,still){
   const L=optList(g).slice(0,3), n=L.length;
   const pos=n===1?[[50,0]]:n===2?[[36,-8],[64,8]]:[[24,-12],[50,0],[76,12]];
   const tks=L.map((o,i)=>`<div class="tk" style="--c:${tcol(o[0])};--r:${pos[i][1]}deg;left:${pos[i][0]}%;animation-delay:${.45+i*.12}s"><small>${tname(o[0])}</small><b>${won(o[1])}</b></div>`).join('');
-  return `<div class="wenv${still?' still':''}"><div class="bk"></div>${tks}<div class="fl"></div><div class="fr"></div><div class="elab"><i></i><span>고향<em>ON</em> 추가혜택</span></div></div>`;
+  return `<div class="wenv${still?' still':''}"><div class="bk"></div>${tks}<div class="fl"></div><div class="fr"></div><div class="elab"><i>3</i><span>고향<em>ON</em> 추가혜택</span></div></div>`;
 }
 function tabsHtml(g){ if(S.mall!=='hub') return '';
   return `<div class="gtabs">${shown().map(k=>`<button class="${k===g?'on':''}" onclick="openPage('${k}')">${GOV[k].label}${GOV[k].status==='full'?'<small>마감</small>':''}</button>`).join('')}</div>`;}
@@ -634,15 +651,15 @@ function showWelcome(){
   const cols=['#2F7CF6','#FF7A00','#12B76A','#FFA300','#FF4D1A'];
   const cf=reduce?'':Array.from({length:18},(_,i)=>`<i class="cf" style="left:${5+Math.random()*90}%;background:${cols[i%5]};--d:${(.9+Math.random()*.5).toFixed(2)}s;--x:${Math.round(Math.random()*80-40)}px"></i>`).join('');
   const head=hasVis()?vis(g):`<h3>고향ON에서 기부하면<br><em>혜택이 하나 더</em> 있어요</h3>`;
-  const wsum=`<div class="wsum${hasVis()?' top':''}">10만원 기부하면 <b data-from="130000" data-to="${130000+G.amt}" data-delay="1000">${won(130000+G.amt)}</b>원 혜택</div>`;
+  const wsum=`<div class="wsum${hasVis()?' top':''}">10만원 기부하면${hasVis()?'<s>최대</s>':''} <b data-from="130000" data-to="${130000+G.amt}" data-delay="1000">${won(130000+G.amt)}</b>원 혜택</div>`;
   const sub=S.img==='none'?`<div class="wsub">세액공제 100,000 + 답례품 30,000 + <b>추가혜택 ${won(G.amt)}</b></div>`:b3(g);
   $('wel').innerHTML=`<div class="wcard" id="wcard" style="${S.img==='bg'?heroBg(g)+';padding-top:120px':''}">${cf}<button class="wx" onclick="closeWelcome()">✕</button>
-    <span class="ddc wdd">${ddTxt()}</span><div class="wk">${src}</div>
+    <span class="ddc wdd">${ddTxt()}</span><div class="wk">${src}</div><div class="wintro">고향사랑기부 = 응원하고 싶은 지역에 기부하고<br><b>세액공제 · 답례품</b>을 함께 받는 제도</div>
     ${envBig(g,false)}
     ${hasVis()?wsum+head:head+wsum}
     ${sub}
     <div class="btns"><button class="b2" onclick="closeWelcome();openPage('${g}')">혜택 자세히</button><button class="b1" onclick="closeWelcome()">답례품 보러가기</button></div>
-    ${fcfsChip(g)}</div>`;
+    ${fcfsChip(g)}${hasVis()?'<div class="wnote">※ 세액공제는 납부할 세금이 있을 때 적용돼요</div>':''}</div>`;
   $('wel').classList.remove('out'); $('wel').classList.add('on'); countUp($('wel')); S.welSeen=true;
 }
 function closeWelcome(){
