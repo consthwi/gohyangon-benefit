@@ -533,7 +533,7 @@ const CLK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wid
 const fcfs=g=>GOV[g].cap?`선착순 ${won(GOV[g].cap)}명`:'';
 const fcfsChip=g=>GOV[g].cap?`<div class="fcfs bind" data-bo="participantGroup.totalParticipantLimit · endOnParticipantLimit=Y일 때만">${CLK}${fcfs(g)} · 마감 시 종료</div>`:'';
 /* 답례품 증량(공급사 제공) — 영주 = 3만원 답례품 +1만원 증량(1109 영주시 · 운영자 1118) → 합계에 포함 */
-const UP=g=>GOV[g].up||0, TOT=g=>130000+UP(g)+GOV[g].amt;
+const UP=g=>GOV[g].up||0, TOT=g=>130000+UP(g)+GOV[g].amt, MORE=g=>GOV[g].amt+UP(g); /* MORE = 카드·플로팅·띠배너의 「더 받는」 금액(적립금 + 답례품 증량) */
 const PNG=(g,i)=>`png/${g}_${i+1}.png`;
 /* 깨진 이미지 순간 노출(대체 글자 깜빡임) 방지: 불러온 뒤에만 보이고, 한 번 실패한 PNG는 기억해 바로 실사 컷 사용 */
 const PNG_FAIL=new Set();
@@ -564,8 +564,8 @@ function ctxGov(){
 }
 function welGov(){ if(S.inflow==='none') return null; if(S.mall==='seogu') return GOV.seogu.status==='on'?'seogu':null; return GOV[S.inflow]&&GOV[S.inflow].status==='on'?S.inflow:null; }
 function chip(g){ if(GOV[g].status!=='on') return '';
-  if(bold()) return `<span class="tix bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션"><small>고향ON 추가혜택</small><b>+${won(GOV[g].amt)}원</b></span>`;
-  return `<span class="chip shine bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션">${COUPON}+${man(GOV[g].amt)} 추가혜택</span>`;}
+  if(bold()) return `<span class="tix bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션"><small>고향ON 추가혜택</small><b>+${won(MORE(g))}원</b></span>`;
+  return `<span class="chip shine bind" data-bo="카드 문구 · ${GOV[g].label} 1위 프로모션">${COUPON}+${man(MORE(g))} 추가혜택</span>`;}
 function card(g,it){
   return `<div class="card"><div class="thumb ph" style="background:${it[1]} url('${it[2]}')"><span class="nmx">${it[0]}</span>${chip(g)}</div>
   ${S.mall==='hub'?`<div class="gov">${GOV[g].label}</div>`:''}<div class="nm">${it[0]}</div><div class="pr">기부금 <b>100,000원</b></div></div>`;}
@@ -575,7 +575,7 @@ function ticker(){
   let items;
   if(S.mall==='seogu'){ const a=GOV.seogu.amt;
     items=[ddTxt(),`고향ON 추가혜택 진행 중`,`10만원 기부하면 적립금·포인트 <em>+${won(a)}원</em> 더`,`세액공제 10만원 + 답례품 3만원 + 추가혜택 ${man(a)}원`]; }
-  else { items=L.map(g=>`${GOV[g].label} 기부하면 <em>+${won(GOV[g].amt)}원</em>${GOV[g].cap?' · '+fcfs(g):''}`).concat(['지자체마다 1번씩 받을 수 있어요']); items.unshift(ddTxt()); }
+  else { items=L.map(g=>`${GOV[g].label} 기부하면 <em>+${won(MORE(g))}원</em>${GOV[g].cap?' · '+fcfs(g):''}`).concat(['지자체마다 1번씩 받을 수 있어요']); items.unshift(ddTxt()); }
   const one=items.map(t=>`<span>${t}</span>`).join('');
   return `<div class="tick bind" data-bo="띠 배너 · 진행 중 1위 프로모션" onclick="tapCtx()"><div class="trk">${one}${one}</div></div>`;
 }
@@ -611,7 +611,7 @@ function picks(g){
   return `<div class="picks"><div class="lab">내가 고를 수 있는 고향ON 추가혜택 <span style="color:#8A8A8A;font-weight:500">(택1)</span></div>
   ${optList(g).map((o,i)=>`<div class="pick bind" data-bo="연계 경품 · FO 표시명/금액"><span>${o[0]}${S.mem==='welfare'&&i===0?'<span class="tag">우리 회사</span>':''}</span><b>${won(o[1])}원</b></div>`).join('')}</div>`;}
 function sheetOne(g){
-  const h=bold()?`10만원 기부하면<br><em>+${won(GOV[g].amt)}원</em> 더 받아요`:'10만원 기부하면<br>혜택이 하나 더 있어요';
+  const h=bold()?`10만원 기부하면<br><em>+${won(MORE(g))}원</em> 더 받아요`:'10만원 기부하면<br>혜택이 하나 더 있어요';
   let head=`<h3>${h}</h3>`, body=bold()?picks(g)+rcpt(g):rcpt(g)+picks(g);
   if(useImg()){ body=b3(g)+picks(g)+`<div class="sfine" style="margin-top:-4px">10만원 기부 시 받는 혜택 합계 <b style="color:var(--ink)">${won(TOT(g))}원</b> · 세액공제는 연말정산·종합소득세 신고 시 적용</div>`;
     head=hasVis()?vis(g):`<h3>${h}</h3>`; }
@@ -620,7 +620,7 @@ function sheetOne(g){
   <div class="btns"><button class="b2" onclick="toast('${GOV[g].label} 답례품 목록으로 이동')">답례품 보러가기</button><button class="b1" onclick="openPage('${g}')">자세히 보기 ›</button></div>`;}
 function sheetList(){
   const rows=shown().map(g=>{const G=GOV[g]; if(G.status==='full') return `<div class="govrow closed"><div><div class="g">${G.label}</div><div class="s">추가혜택 인원 마감</div></div><div class="a">마감</div></div>`;
-    return `<div class="govrow" onclick="openSheet('${g}')"><div><div class="g">${G.label}</div>${G.cap?`<div class="s">${fcfs(g)}</div>`:''}</div><div class="a bind" data-bo="${G.label} · gifts[enabled].amount 최댓값">+${won(G.amt)}원<small>자세히 ›</small></div></div>`;}).join('');
+    return `<div class="govrow" onclick="openSheet('${g}')"><div><div class="g">${G.label}</div>${UP(g)?`<div class="s">적립금 ${man(G.amt)}원 + 증량 ${man(UP(g))}원</div>`:''}${G.cap?`<div class="s">${fcfs(g)}</div>`:''}</div><div class="a bind" data-bo="${G.label} · gifts[enabled].amount 최댓값 + 답례품 증량">+${won(MORE(g))}원<small>자세히 ›</small></div></div>`;}).join('');
   return `<div class="grab"></div><button class="close" onclick="closeSheet()">✕</button><div class="eyebrow">고향ON에서만</div><h3>${bold()?`지금 <em>${live().length}곳</em>에서<br>추가혜택을 드려요`:'고향ON 추가혜택'}</h3>${rows}
   <div class="sfine">기부하는 지자체마다 1번씩 받을 수 있어요 · 금액과 혜택은 지자체마다 달라요</div>
   <div class="btns"><button class="b1" onclick="openPage(shown()[0])">혜택 한눈에 보기 ›</button></div>`;}
@@ -641,7 +641,7 @@ function pageParts(g){
   const steps=closed?'':`<div class="blk"><h3>받는 방법</h3><div class="steps"><div class="step"><div><b>답례품 고르고 10만원 이상 기부</b><span>일반기부로 진행돼요</span></div></div><div class="step"><div><b>결제 화면에서 추가혜택 선택</b><span>적립금·포인트 중 1개를 골라요</span></div></div><div class="step"><div><b>지급 후 사용</b><span class="bind" data-bo="연계 경품 · 지급 시점/사용처/유효기간">수단별 지급 시점·사용처는 위 안내를 따라요</span></div></div></div></div>`;
   const prods=`<div class="blk"><h3>${G.label} 답례품</h3><div class="hs">${G.items.map(it=>card(g,it)).join('')}</div></div>`;
   const warn=`<div class="blk"><h3>꼭 확인하세요</h3><div class="warn bind" data-bo="지급 조건 · 참여 제한 그룹">· 10만원 이상 기부 시 받을 수 있어요<br>${G.cap?`· ${fcfs(g)} · 인원이 차면 일찍 끝나요<br>`:''}· 지자체 프로모션마다 1인 1회<br>· 이미 받으신 분은 결제 화면에 혜택 선택이 나타나지 않아요 (기부는 그대로 가능)<br>· 혜택을 선택하지 않으면 지급되지 않아요<br>· 프로모션 내용은 지자체 사정에 따라 바뀌거나 일찍 끝날 수 있어요</div></div>`;
-  const cta=`<div class="cta"><button onclick="toast('${G.label} 답례품 목록으로 이동')">${bold()&&!closed?`답례품 고르고 +${man(G.amt)}원 받기`:`${G.label} 답례품 보러가기`}</button></div>`;
+  const cta=`<div class="cta"><button onclick="toast('${G.label} 답례품 목록으로 이동')">${bold()&&!closed?`답례품 고르고 +${man(MORE(g))}원 받기`:`${G.label} 답례품 보러가기`}</button></div>`;
   return {hero,opts,steps,prods,warn,cta};
 }
 function pageView(g){
@@ -661,15 +661,15 @@ function renderFab(){
   if(S.view==='page'||g===undefined||f.dataset.hidden==='1'){f.className='fab hide';return}
   if(bold()){
     f.className='fab2';
-    const bdg=g?`+${man(GOV[g].amt)}`:`${live().length}곳`;
-    const line=g?`<em>+${won(GOV[g].amt)}원</em> 더 받기`:`<span class="rot" id="rot"></span>`;
+    const bdg=g?`+${man(MORE(g))}`:`${live().length}곳`;
+    const line=g?`<em>+${won(MORE(g))}원</em> 더 받기`:`<span class="rot" id="rot"></span>`;
     f.innerHTML=`<span class="ball"><span class="ring"></span>${ENV}<span class="bdg">${bdg}</span></span><span class="bubble bind" data-bo="${g?'1위 프로모션 금액':'진행 중 지자체 순환'}"><small>고향ON 추가혜택</small><b>${line}</b><span class="x" onclick="event.stopPropagation();hideFab()">✕</span></span>`;
-    if(!g){ const L=live(); let i=0; const put=()=>{const el=$('rot'); if(!el)return; const k=L[i%L.length]; el.outerHTML=`<span class="rot" id="rot">${GOV[k].label.replace('전남광주통합특별시 ','')} <em>+${man(GOV[k].amt)}원</em></span>`; i++;};
+    if(!g){ const L=live(); let i=0; const put=()=>{const el=$('rot'); if(!el)return; const k=L[i%L.length]; el.outerHTML=`<span class="rot" id="rot">${GOV[k].label.replace('전남광주통합특별시 ','')} <em>+${man(MORE(k))}원</em></span>`; i++;};
       put(); if(!reduce) rotT=setInterval(put,2200); }
   } else {
     f.className='fab';
-    const txt=g?`고향ON 추가혜택 <em>+${man(GOV[g].amt)}</em>`:'고향ON 추가혜택';
-    const bdg=g?`+${man(GOV[g].amt)}`:`${live().length}곳`;
+    const txt=g?`고향ON 추가혜택 <em>+${man(MORE(g))}</em>`:'고향ON 추가혜택';
+    const bdg=g?`+${man(MORE(g))}`:`${live().length}곳`;
     f.innerHTML=`<span class="ic">${COUPON}<span class="bdg">${bdg}</span></span><span class="tx bind" data-bo="${g?'카드 문구 (플로팅 공용)':'진행 중 지자체 수'}">${txt}</span>${!g?`<span class="bdg2" style="font-size:11px;font-weight:800;background:var(--amber);color:#1A1A1A;border-radius:9px;padding:1px 7px">${live().length}곳</span>`:''}<span class="x" onclick="event.stopPropagation();hideFab()">✕</span>`;
   }
   f.style.animation='none'; void f.offsetWidth; f.style.animation='';
