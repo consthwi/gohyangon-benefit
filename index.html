@@ -551,9 +551,9 @@ body .dev{font-family:'Pretendard','Noto Sans KR',sans-serif}
 <body>
 <div class="wrap">
   <div class="ctrl">
-    <h1>고향ON 추가혜택 프로토타입 v1 · v2 · v-1</h1>
+    <h1>고향ON 추가혜택 프로토타입 v2 · v1 · v-1</h1>
     <p class="sub">상무 지시(11/12) · 상무 피드백(11/17) 반영 · 내부 논의용<br>답례품 이미지 = 누끼 PNG 자리(<code>png/{seogu|yangju|yeongju}_{1~3}.png</code>, 없으면 실사 컷 원형 대체). ⚠️ 양주 수단은 <b>예시</b>, 금액은 볼트 기록 기준.</p>
-    <div class="grp"><div class="lab">버전</div><div class="seg" id="sVer"><button data-v="5" class="on">v1 컨펌안 (혜택 페이지 있음)</button><button data-v="2">v2 공수 축소 (혜택 페이지 없음)</button><button data-v="m1">v-1 최소 공수 (공통 패널 1개)</button><button data-v="0">v0 헤드라인 (답례품 없음)</button></div><div class="sfine">v1 = 구 v0.5 · v2 = 「혜택 자세히」 페이지를 빼고, 플로팅 패널을 영수증으로 바꾼 버전 · v-1 = 유입경로·회원·몰 구분 없이 영수증 패널 1개만(첫 진입 자동 열림 = 플로팅 클릭과 같은 패널, 허브만 지자체 탭) · v0 = 답례품 이미지 없이 헤드라인 문구가 들어간 버전(상무 1117 「지금 그대로도 좋다」 한 안)</div></div>
+    <div class="grp"><div class="lab">버전</div><div class="seg" id="sVer"><button data-v="5" class="on">v2 최종_컨펌요청안 (혜택 페이지 있음)</button><button data-v="2">v1 공수 축소 (혜택 페이지 없음)</button><button data-v="m1">v-1 최소 공수 (공통 패널 1개)</button><button data-v="0">v0 헤드라인 (답례품 없음)</button></div><div class="sfine">v2 최종_컨펌요청안 = 구 v0.5 · v1 공수 축소 = 「혜택 자세히」 페이지를 빼고 플로팅 패널만 남긴 버전 · v-1 = 유입경로·회원·몰 구분 없이 영수증 패널 1개만(첫 진입 자동 열림 = 플로팅 클릭과 같은 패널, 허브만 지자체 탭) · v0 = 답례품 이미지 없이 헤드라인 문구가 들어간 버전(상무 1117 「지금 그대로도 좋다」 한 안)</div></div>
     <div class="grp"><div class="lab">⓪ 강조 강도</div><div class="seg" id="sFx"><button data-v="bold" class="on">강하게 (v0.3~)</button><button data-v="calm">차분하게 (v0.2)</button></div></div>
     <div class="grp"><div class="lab">⓪-2 답례품 이미지 (상무 1117)</div><div class="seg" id="sImg"><button data-v="png" class="on">누끼 PNG (v0.5)</button><button data-v="head">실사 띠 (v0.4)</button><button data-v="bg">실사 배경</button><button data-v="none">없음 (v0.3)</button></div></div>
     <div class="grp"><div class="lab">① 기기</div><div class="seg" id="sDev"><button data-v="mo" class="on">MO</button><button data-v="pc">PC</button></div></div>
@@ -895,7 +895,7 @@ function seg(id,key){ document.querySelectorAll('#'+id+' button').forEach(b=>b.o
   $('fab').dataset.hidden=''; render(); if((key==='fx'||key==='img'||key==='mem'||key==='mall'||key==='ver')&&bold()&&welGov()) showWelcome(); }); }
 ['sVer:ver','sTop:top','sFx:fx','sImg:img','sDev:dev','sMall:mall','sMem:mem','sBind:bind'].forEach(p=>{const[a,b]=p.split(':');seg(a,b)});
 window.addEventListener('resize',fit);
-{ const q=new URLSearchParams(location.search); if(q.get('v')==='0'){ S.ver='0'; S.img='none'; syncSeg('sVer','0'); syncSeg('sImg',S.img); } if(q.get('v')==='2'){ S.ver='2'; syncSeg('sVer','2'); } if(q.get('v')==='-1'){ S.ver='m1'; syncSeg('sVer','m1'); } }
+{ const q=new URLSearchParams(location.search); if(q.get('v')==='0'){ S.ver='0'; S.img='none'; syncSeg('sVer','0'); syncSeg('sImg',S.img); } if(q.get('v')==='1'){ S.ver='2'; syncSeg('sVer','2'); } if(q.get('v')==='-1'){ S.ver='m1'; syncSeg('sVer','m1'); } }
 render(); setTimeout(showWelcome,300);
 </script>
 </body>
