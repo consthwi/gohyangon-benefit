@@ -258,7 +258,7 @@ function lnb(){ const r=route()[0];
   $('lnb').innerHTML=`<h4>기부관리</h4><div class="gap"></div><a class="dim">기부 내역 조회</a><a class="dim">지정기부별 기부금 현황 조회</a><a class="dim">자치단체별 기부금 현황 조회</a><div class="gap"></div>
   <h4>프로모션 지급 관리</h4><div class="gap"></div>${a('promo','프로모션 설정')}${a('group','프로모션 그룹 설정')}${a('benefit','추가혜택 노출 설정','<span class="nw">신규</span>')}<div class="gap"></div>
   <h4>프로토타입 안내</h4><div class="gap"></div>${a('place','① 어디서 관리할까')}${a('spec','② 개발 전달 사양')}<div class="gap"></div>
-  <a onclick="resetAll()" style="opacity:.75">↺ 초기값으로 되돌리기</a><a href="../index.html?v=-1" target="_blank" style="opacity:.75">↗ FO 프로토타입 열기</a>`; }
+  <a onclick="resetAll()" style="opacity:.75">↺ 초기값으로 되돌리기</a><a href="../fo.html?v=-1" target="_blank" style="opacity:.75">↗ FO 프로토타입 열기</a><a href="../" style="opacity:.75">← FO / BO 선택</a>`; }
 function resetAll(){ if(!confirm('프로토타입 값을 처음 상태(개발서버 실측값)로 되돌릴까요?')) return; S=SEED(); try{ localStorage.removeItem(KEY); localStorage.removeItem(FOKEY); }catch(e){} toast('초기값으로 되돌렸어요'); render(); }
 function render(){ lnb(); const [v,id]=route();
   const map={benefit:id?vBenefitDetail:vBenefit,promo:id?vPromoDetail:vPromo,group:vGroup,place:vPlace,spec:vSpec};
@@ -451,7 +451,7 @@ function renderPv(){ const pv=$('pv'); const hub=PV.mall==='hub';
   pv.innerHTML=`<h5>FO 미리보기 <span style="font-weight:400;font-size:11.5px;color:#666">MO · 개발서버와 같은 구성</span></h5><div class="psub">왼쪽 값을 바꾸면 바로 바뀝니다.</div>
    <div class="seg"><button class="${hub?'on':''}" data-act="pvmall" data-m="hub">허브</button>${S.govs.map(g=>`<button class="${PV.mall===g.lgvr?'on':''}" data-act="pvmall" data-m="${g.lgvr}">독립몰 ${esc(g.tab)}</button>`).join('')}<button data-act="${open?'pvclose':'pvopen'}" style="margin-left:auto">${open?'패널 닫기':'패널 열기'}</button></div>
    <div class="ph"><div class="scr"><div class="hd">${hub?'고향온':esc((pool[0]||{g:{tab:''}}).g.tab)+' 고향ON'}</div><div class="sec">${hub?'지금 많이 보는 답례품':'인기 답례품 BEST'}</div><div class="cards">${cards}</div></div>${fab}<div class="dimv ${open?'on':''}" data-act="pvclose"></div><div class="sheet ${open?'on':''}">${sheet}</div></div>
-   <div class="pvnote">${!c.use?'⚠️ 공통 「기능 사용」이 꺼져 있어 리본·플로팅·패널이 모두 사라진 상태입니다.':!shown.length?'노출 중인 지자체가 없어 리본·플로팅이 사라진 상태입니다.':`플로팅: ${live.length?(live.length>1?live.length+'곳에서 더 받기':'+'+won(live[0].d.more)+'원 더 받기'):'숨김(노출 중 0곳)'} · 버튼 이동: ${cur?(hub?'/localGov/'+cur.g.hub:(cur.g.mallLink||'답례품 전체 목록')):''}`}<br><a href="../index.html?v=-1" target="_blank">↗ 같은 값으로 FO 프로토타입(v-1) 열기</a></div>`; }
+   <div class="pvnote">${!c.use?'⚠️ 공통 「기능 사용」이 꺼져 있어 리본·플로팅·패널이 모두 사라진 상태입니다.':!shown.length?'노출 중인 지자체가 없어 리본·플로팅이 사라진 상태입니다.':`플로팅: ${live.length?(live.length>1?live.length+'곳에서 더 받기':'+'+won(live[0].d.more)+'원 더 받기'):'숨김(노출 중 0곳)'} · 버튼 이동: ${cur?(hub?'/localGov/'+cur.g.hub:(cur.g.mallLink||'답례품 전체 목록')):''}`}<br><a href="../fo.html?v=-1" target="_blank">↗ 같은 값으로 FO 프로토타입(v-1) 열기</a></div>`; }
 
 /* ───────── 이벤트 ───────── */
 function setPath(path,v){ const k=path.split('.'); let o=S; for(let i=0;i<k.length-1;i++) o=o[k[i]]; o[k[k.length-1]]=v; }
