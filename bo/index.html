@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>고향ON BO 프로토타입 — 추가혜택 노출 설정 v0.1</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font:13px/1.5 'Malgun Gothic','맑은 고딕','Pretendard',sans-serif;color:#222;background:#fff}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:#2b6fd6}
+/* ── BO 틀 (개발 BO 실측 1118 화면과 같은 톤) ── */
+.top{position:fixed;left:0;right:0;top:0;height:54px;background:#3b3b3b;color:#fff;display:flex;align-items:center;z-index:50}
+.top .logo{width:200px;padding-left:22px;font-size:19px;font-weight:700;flex:none}
+.top nav{display:flex;flex:1;min-width:0;overflow:hidden;height:100%}
+.top nav span{padding:0 15px;display:flex;align-items:center;font-weight:700;font-size:13.5px;white-space:nowrap}
+.top nav span.on{background:#000}
+.top .who{padding:0 18px;font-size:12px;white-space:nowrap;opacity:.9}
+.proto{background:#FF6C00;color:#fff;border-radius:3px;padding:2px 7px;font-size:11px;font-weight:700;margin-left:8px}
+.lnb{position:fixed;left:0;top:54px;bottom:0;width:200px;background:#4a4a4a;color:#fff;overflow-y:auto;z-index:40}
+.lnb h4{margin:0;padding:15px 20px;background:#333;font-size:14px}
+.lnb a{display:block;padding:6px 20px;color:#fff;text-decoration:none;font-weight:700;font-size:12.5px;cursor:pointer}
+.lnb a.dim{opacity:.45;cursor:default}
+.lnb a.on{color:#8ab4ff}
+.lnb .gap{height:10px}
+.lnb .nw{background:#FF6C00;border-radius:3px;font-size:10px;padding:1px 5px;margin-left:5px;color:#fff}
+.main{margin:54px 0 0 200px;padding:22px 448px 80px 24px;min-height:100%}
+.main.nopv{padding-right:24px}
+h2.pt{display:inline-block;margin:0 0 6px;padding-bottom:6px;border-bottom:2px solid #333;font-size:17px}
+.pdesc{color:#555;margin:8px 0 18px;max-width:900px}
+h3.st{margin:26px 0 8px;font-size:14.5px;display:flex;align-items:center;gap:8px}
+.tg{display:inline-block;border-radius:3px;font-size:11px;font-weight:700;padding:1px 6px;line-height:1.5;white-space:nowrap;vertical-align:1px}
+.tg.new{background:#FFF1E8;color:#D9480F;border:1px solid #FFBE94}
+.tg.auto{background:#EAF2FF;color:#1D5FD0;border:1px solid #B9D3FF}
+.tg.calc{background:#F0F0F0;color:#555;border:1px solid #D5D5D5}
+.tg.warn{background:#FFF6D6;color:#8A5A00;border:1px solid #F0D27A}
+.tg.on{background:#E7F7EE;color:#0B7A43;border:1px solid #A9DFC1}
+.tg.full{background:#F0F0F0;color:#555;border:1px solid #CCC}
+.tg.end{background:#FDECEC;color:#B42318;border:1px solid #F3B8B3}
+.legend{display:flex;gap:14px;flex-wrap:wrap;background:#FAFAFA;border:1px solid #E5E5E5;padding:9px 12px;margin:0 0 16px;font-size:12px;color:#444}
+table{border-collapse:collapse;width:100%}
+.ft{border-top:2px solid #666}
+.ft th{width:150px;background:#F5F5F5;text-align:left;padding:10px 14px;border-bottom:1px solid #E3E3E3;font-weight:700;vertical-align:middle}
+.ft td{padding:9px 14px;border-bottom:1px solid #E3E3E3;vertical-align:middle}
+.ft td .hint{color:#666;font-size:12px;margin-top:4px}
+.lt{border-top:2px solid #666}
+.lt th{background:#F7F7F7;padding:9px 6px;border:1px solid #E3E3E3;border-top:0;font-weight:700;font-size:12.5px}
+.lt td{padding:9px 6px;border:1px solid #E3E3E3;text-align:center;font-size:12.5px}
+.lt td.l{text-align:left}
+.lt tr.sel td{background:#FFF8F2}
+input[type=text],input[type=number],input[type=datetime-local],select,textarea{border:1px solid #BDBDBD;border-radius:2px;padding:4px 7px;background:#fff;height:28px}
+textarea{height:auto;width:100%;max-width:640px}
+input[type=number]{width:110px;text-align:right}
+input.w{width:100%;max-width:420px}
+input[readonly],.ro{background:#F3F6FB;border:1px dashed #B9D3FF;color:#1D4E9E;border-radius:2px;padding:4px 8px;display:inline-block;min-height:28px}
+.btn{border:1px solid #999;background:#fff;border-radius:3px;padding:4px 11px;cursor:pointer;font-weight:700;font-size:12.5px;height:28px;white-space:nowrap}
+.btn.blue{background:#2b6fd6;border-color:#2b6fd6;color:#fff}
+.btn.gray{background:#8c8c8c;border-color:#8c8c8c;color:#fff}
+.btn.sm{height:24px;padding:1px 7px;font-size:12px}
+.btn:disabled{opacity:.35;cursor:default}
+.bar{display:flex;justify-content:space-between;align-items:center;margin:14px 0 8px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sw{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.note{background:#FFFBEA;border:1px solid #F0D27A;padding:10px 13px;margin:12px 0;font-size:12.5px;color:#5A4500;max-width:900px}
+.note b{color:#3D2E00}
+.info{background:#F3F6FB;border:1px solid #C9DAF5;padding:10px 13px;margin:12px 0;font-size:12.5px;color:#1F3B66;max-width:900px}
+.means i,.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+.means span{display:inline-block;margin-right:10px;white-space:nowrap}
+.slot{display:flex;gap:10px;flex-wrap:wrap}
+.slot>div{border:1px solid #DDD;padding:8px;width:176px;background:#fff}
+.slot img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#EEE;margin:6px 0}
+.slot select{width:100%}
+.slot small{color:#666}
+pre{background:#1F2430;color:#E6E6E6;padding:14px;overflow:auto;font:12px/1.55 Consolas,'D2Coding',monospace;border-radius:4px;max-height:520px}
+code{background:#F0F0F0;padding:1px 4px;border-radius:2px;font:12px Consolas,monospace}
+.cmp td,.cmp th{text-align:left;vertical-align:top;padding:9px 10px}
+.cmp th{text-align:center}
+.cmp .pick td{background:#FFF8F2}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:rgba(20,20,20,.9);color:#fff;padding:9px 16px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:99}
+.toast.on{opacity:1}
+/* ── 오른쪽 FO 미리보기 ── */
+.pv{position:fixed;right:0;top:54px;bottom:0;width:424px;border-left:1px solid #DDD;background:#F1F1EF;padding:12px 14px;overflow-y:auto;z-index:30}
+.pv.off{display:none}
+.pv h5{margin:0 0 4px;font-size:13.5px;display:flex;justify-content:space-between;align-items:center}
+.pv .psub{font-size:11.5px;color:#666;margin-bottom:8px}
+.seg{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.seg button{border:1px solid #BBB;background:#fff;border-radius:14px;padding:3px 10px;font-size:12px;cursor:pointer;font-weight:700}
+.seg button.on{background:#222;border-color:#222;color:#fff}
+.ph{position:relative;width:360px;height:700px;margin:0 auto;background:#fff;border:8px solid #1b1b1b;border-radius:30px;overflow:hidden;font-family:'Pretendard','Malgun Gothic',sans-serif;color:#1a1a1a}
+.ph .scr{position:absolute;inset:0;overflow-y:auto;padding-bottom:70px}
+.ph .hd{height:46px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;border-bottom:1px solid #EEE}
+.ph .sec{padding:14px 14px 4px;font-weight:800;font-size:15px}
+.ph .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 14px}
+.ph .card .im{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#EEE}
+.ph .card .im img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .card .nm{font-size:12.5px;font-weight:600;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph .card .lo{font-size:11px;color:#8A8A8A}
+.prmtnBadge{position:absolute;left:0;bottom:10px;padding:5px 12px 6px 9px;border-radius:0 9px 9px 0;background:linear-gradient(100deg,#FF4D1A,#FF7A00 55%,#FF6C00);box-shadow:0 3px 10px rgba(255,77,26,.45);color:#fff;line-height:1.1;white-space:nowrap}
+.prmtnBadge small{display:block;font-size:9.5px;font-weight:700;opacity:.95}
+.prmtnBadge b{font-size:14px;font-weight:900}
+.fab{position:absolute;left:12px;bottom:14px;display:flex;align-items:center;gap:0;z-index:5;cursor:pointer}
+.fab .ball{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#FF4D1A,#FF7A00);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(255,77,26,.45);position:relative}
+.fab .ball svg{width:34px;height:34px}
+.fab .ball em{position:absolute;right:-4px;top:-4px;background:#1a1a1a;color:#fff;font-style:normal;font-size:10px;font-weight:800;border-radius:999px;padding:1px 6px}
+.fab .bub{margin-left:8px;background:#fff;border-radius:12px;padding:6px 12px;box-shadow:0 4px 14px rgba(0,0,0,.18);line-height:1.2}
+.fab .bub small{display:block;font-size:10px;color:#8A817C;font-weight:700}
+.fab .bub b{font-size:13.5px}.fab .bub b em{font-style:normal;color:#FF4D1A}
+.dimv{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:6;display:none}
+.dimv.on{display:block}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:7;background:#fff;border-radius:18px 18px 0 0;padding:16px 16px 14px;max-height:94%;overflow-y:auto;transform:translateY(105%);transition:transform .28s}
+.sheet.on{transform:none}
+.sheet .x{position:absolute;right:12px;top:12px;width:26px;height:26px;border:0;border-radius:50%;background:#F3F3F1;color:#555;font-size:12px;cursor:pointer}
+.sheet .hdr{display:flex;justify-content:space-between;align-items:center;padding-right:34px;gap:8px}
+.dday{display:inline-flex;align-items:center;gap:5px;padding:3px 4px 3px 9px;border-radius:999px;background:#FF4D1A;color:#fff;font-size:11px;font-weight:900;white-space:nowrap}
+.dday em{font-style:normal;background:#fff;color:#FF4D1A;border-radius:999px;padding:0 6px}
+.sheet .gov{color:#8A817C;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabs{display:flex;gap:6px;margin:8px 0 4px}
+.tabs button{flex:1;padding:7px 4px;border:1.5px solid #E6E1DC;border-radius:10px;background:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.tabs button.on{border-color:#FF4D1A;background:#FF4D1A;color:#fff}
+.tabs button small{font-size:10px;font-weight:700;opacity:.8;margin-left:3px}
+.stage{position:relative;height:186px;margin:6px 0 16px}
+.tabs{position:relative;z-index:6}
+.stage .halo{pointer-events:none;position:absolute;left:50%;top:46%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,#FFE2CF 0%,rgba(255,226,207,.55) 45%,rgba(255,241,232,0) 70%);transform:translate(-50%,-50%)}
+.stage .rib{position:absolute;left:-4px;top:4px;z-index:5;height:26px;padding:0 16px 0 9px;display:flex;align-items:center;background:linear-gradient(100deg,#FF4D1A,#FF6C00);color:#fff;font-size:11.5px;font-weight:900;clip-path:polygon(0 0,100% 0,calc(100% - 9px) 50%,100% 100%,0 100%)}
+.stage figure{position:absolute;bottom:10px;margin:0;display:flex;justify-content:center;align-items:flex-end}
+.stage figure img{height:88%;aspect-ratio:1;object-fit:cover;border:4px solid #fff;border-radius:50%;box-shadow:0 8px 18px rgba(110,70,10,.22)}
+.stage .c{left:25%;width:50%;height:158px;z-index:3}
+.stage .l{left:0;width:38%;height:116px;bottom:24px;z-index:2}
+.stage .r{right:0;width:38%;height:116px;bottom:24px;z-index:2}
+.stage figcaption{position:absolute;left:50%;bottom:0;transform:translateX(-50%);max-width:104%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(255,255,255,.95);border:1px solid #F6DCCB;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:700;color:#4A3A33;line-height:1.2}
+.stage .c figcaption{bottom:-13px;font-size:11px;font-weight:800;border-color:#FFBE94}
+.rcpt{background:#FAFAF7;border-radius:12px;padding:14px 14px 12px;font-size:13px}
+.rcpt .r1{display:flex;justify-content:space-between;padding:4px 0;color:#555}
+.rcpt .plus{margin:2px -6px;padding:5px 6px;border-radius:8px;background:#FFEDE5;color:#1a1a1a;font-weight:700}
+.rcpt .plus b{color:#FF4D1A}
+.rcpt .t1{margin-left:5px;padding:0 5px;border:1px solid #FFC9B3;border-radius:6px;background:#fff;color:#FF4D1A;font-size:10px}
+.rcpt .sub{margin:3px 0 2px 8px;padding:2px 0 2px 10px;border-left:2px solid #FFD9C7;font-size:12px;color:#555}
+.rcpt .sub div{display:flex;justify-content:space-between;padding:2px 0}
+.rcpt .sum{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px;padding-top:8px;border-top:1.5px dashed #D6D6D0;font-weight:800}
+.rcpt .sum b{font-size:20px;color:#FF4D1A}
+.rcpt .fine{margin-top:6px;font-size:10.5px;color:#8A817C;line-height:1.45}
+.fcfs{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:11.5px;font-weight:800;color:#D9480F;background:#FFF1E8;border:1px solid #FFBE94;border-radius:999px;padding:4px 10px}
+.cta{display:block;margin-top:12px;height:46px;line-height:46px;text-align:center;border-radius:12px;background:linear-gradient(100deg,#FF4D1A,#FF6C00);color:#fff;font-weight:800;font-size:14.5px}
+.closed{background:#F5F5F3;border-radius:12px;padding:16px;font-size:13px;color:#555;line-height:1.6;margin-top:10px}
+.pvnote{font-size:11.5px;color:#555;margin:10px 4px 0;line-height:1.6}
+@media (max-width:1180px){.pv{display:none}.main{padding-right:24px}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="logo">고향온</div>
+  <nav><span>상품관리</span><span>주문관리</span><span>회원관리</span><span class="on">기부관리</span><span>고객사관리</span><span>협력사관리</span><span>쇼핑몰관리</span><span>고객센터</span><span>시스템관리</span><span>자치단체관리</span><span>지정기부관리</span></nav>
+  <div class="who">[관리자] 고향온 운영자님<span class="proto">프로토타입 v0.1 · 개발 전달용</span></div>
+</div>
+<div class="lnb" id="lnb"></div>
+<div class="main" id="main"></div>
+<div class="pv" id="pv"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   고향ON BO 프로토타입 — 추가혜택 노출 설정 v0.1 (2026-11-26)
+   · 프로모션 8건·그룹 3건 = 개발 BO 실측값(2026-11-18, gohyangon-dev /bo/donationPromotion)
+   · 지자체별 노출 설정 초기값 = 개발서버 FO에 박혀 있는 값(2026-11-26 실측)
+   · 저장소 = 브라우저 localStorage (서버 없음)
+   ===================================================================== */
+const KEY='ghon.benefit.bo.v1', FOKEY='ghon.benefit.fo';
+const IMG='https://image.benecafe.co.kr/cdnetbs/gohyangon/upload/PROD/2026/';
+const TYPE={ '1001':['온누리시장 적립금','onnuri'],'1002':['네이버페이 포인트','npay'],'1003':['복지관 적립금 (단일)','welfare'],'1004':['복지관 적립금 (그룹)','welfare'],'1005':['복지관 적립금 (단일-KTM)','welfare'],'1006':['복지관 적립금 (그룹-KTM)','welfare'],'9999':['기타','etc'] };
+const KIND={ welfare:['복지 적립금','#2F7CF6'], onnuri:['온누리 적립금','#FF7A00'], npay:['네이버페이','#12B76A'], etc:['기타 혜택','#888'] };
+const KORDER=['welfare','onnuri','npay','etc'];
+const STAT={'1001':'준비','1002':'진행','1003':'종료'};
+/* 지자체별 대표 답례품 후보 = 혜택 강조 UI 프로토타입·개발서버에 실제 쓰인 상품만 (실제 BO에서는 상품 검색 팝업) */
+const CAT={
+ '12240':[['한우 1등급 꽃등심 400g',IMG+'08/18/UFJPRC8yMDI2LzA4LzE4-4453912d-a8da-48e6-bb5a-3527709554e8','#7A2E2E'],['포기김치 3+1kg',IMG+'07/09/UFJPRC8yMDI2LzA3LzA5-f39d91a8-ec5d-4334-90c8-2b4b383aca56','#A6402B'],['냉장한돈세트',IMG+'07/09/UFJPRC8yMDI2LzA3LzA5-7feec85c-7109-42d9-bfb4-b8ce4c009a26','#8C4A3A'],['생오겹살 1.4kg',IMG+'07/09/UFJPRC8yMDI2LzA3LzA5-945bf763-d56a-49c1-87bd-ccc3e40089a7','#6E3B2E']],
+ '41630':[['양주골쌀 10kg',IMG+'10/26/UFJPRC8yMDI2LzEwLzI2-3ce63a31-e3db-4823-a778-64001841bdfe','#7C6A3A'],['한돈 선물세트',IMG+'10/27/UFJPRC8yMDI2LzEwLzI3-4f73698d-d5a6-46f2-ba94-2fbc0bcea10c','#5A4A2E'],['참·들기름 세트',IMG+'10/28/UFJPRC8yMDI2LzEwLzI4-e2b36b20-c95a-4d36-a94c-43953992d43d','#6A5A2E']],
+ '47210':[['영주사과 5+1kg',IMG+'11/10/UFJPRC8yMDI2LzExLzEw-6c4ac8c4-a58d-45a5-806c-9e8a07e38b12','#9E2A2A'],['1++ 한우 구이용',IMG+'11/13/UFJPRC8yMDI2LzExLzEz-c2004cfa-5183-402e-a4ef-1b72ba1dd1d9','#6B2B2B'],['풍기인삼 선물세트',IMG+'11/11/UFJPRC8yMDI2LzExLzEx-2f602fd0-c6db-47bc-8ed2-827437387a5f','#5B4B2B']]
+};
+const G=(t,nm,amt,ext,auto=true,on=true)=>({t,nm,amt,ext,auto,on});
+const SEED=()=>({
+ common:{use:true,badge:true,fab:true,autoOpen:true,autoOnce:'session',fabHide:'midnight',dday:true,ddayDate:'2026-12-31',base:100000,tax:100000,
+   fine:'세액공제는 연말정산·종합소득세 신고 시 적용 · 추가혜택은 결제 화면에서 1개 선택',btn:'답례품 보러가기',closedMsg:'추가혜택이 마감되었어요. 답례품 기부와 세액공제는 그대로 받을 수 있어요.'},
+ govs:[
+  {lgvr:'12240',hub:'100100543',key:'seogu',nm:'전남광주통합특별시 서구',tab:'서구',panel:'전남광주통합특별시 서구',use:true,gift:30000,up:0,prods:[0,1,2],excl:[],mallLink:'/product/list?dispCatNo=100100127'},
+  {lgvr:'41630',hub:'100100393',key:'yangju',nm:'경기도 양주시',tab:'양주',panel:'경기 양주',use:true,gift:30000,up:0,prods:[0,1,2],excl:[],mallLink:''},
+  {lgvr:'47210',hub:'100100463',key:'yeongju',nm:'경상북도 영주시',tab:'영주',panel:'경북 영주',use:true,gift:30000,up:10000,prods:[0,1,2],excl:[],mallLink:''}
+ ],
+ groups:[
+  {no:2,nm:'[서구] 기본 프로모션 그룹',limit:0,endOn:false,count:30},
+  {no:1,nm:'[양주시] 300명 선착순 프로모션',limit:4,endOn:true,count:1},
+  {no:3,nm:'[영주] 오픈 기념 프로모션',limit:0,endOn:false,count:3}
+ ],
+ promos:[
+  {no:5,cd:'PRM-2026-003',nm:'복리후생관 프로모션',lgvr:'12240',disp:'1002',inflow:'COMMON',prio:1,stat:'1002',strt:'2026-10-01T09:00',end:'2026-12-31T23:59',grp:2,ver:14,headline:'고향ON 10만원 기부 시 최대 145,000원 혜택!',
+   gifts:[G('1004','{복지몰} 적립금',25000,'1771'),G('1002','네이버페이 포인트',20000,'NPAY-2026-01',false),G('1001','온누리시장 적립금',25000,'9')]},
+  {no:2,cd:'PRM-2026-002',nm:'[KTM] 고향ON 오픈 기념 프로모션',lgvr:'12240',disp:'1002',inflow:'QAY',prio:1,stat:'1002',strt:'2026-08-03T12:06',end:'2026-12-31T12:00',grp:2,ver:41,headline:'천사기저귀 사업 지정기부 프로모션 진행 중 (추후 확장 고려함, 9/30 사용x)',
+   gifts:[G('1004','{복지몰} 적립금',25000,'1771'),G('1006','M마켓 적립금',25000,'1772'),G('1001','온누리시장 적립금',25000,'9'),G('1002','네이버페이 포인트',20000,'NPAY-2026-01',false)]},
+  {no:1,cd:'PRM-2026-001',nm:'고향ON 오픈 기념 프로모션',lgvr:'12240',disp:'1001',inflow:'',prio:1,stat:'1002',strt:'2026-01-01T00:00',end:'2026-12-31T23:59',grp:2,ver:27,headline:'고향ON 10만원 기부 시 최대 145,000원 혜택!',
+   gifts:[G('1001','온누리시장 적립금',25000,'9'),G('1002','네이버페이 포인트',20000,'NPAY-2026-01',false)]},
+  {no:12,cd:'PRM-2026-005',nm:'[복지관] 고향ON 오픈 기념 프로모션 - 양주시',lgvr:'41630',disp:'1002',inflow:'COMMON',prio:2,stat:'1002',strt:'2026-11-03T19:52',end:'2026-12-31T19:52',grp:1,ver:15,headline:'',
+   gifts:[G('1004','{복지몰} 적립금',15000,'1771'),G('1001','온누리시장 적립금',15000,'10')]},
+  {no:6,cd:'PRM-2026-004',nm:'고향ON 오픈 기념 프로모션 - 양주시',lgvr:'41630',disp:'1001',inflow:'',prio:2,stat:'1002',strt:'2026-11-04T19:24',end:'2026-12-31T19:24',grp:1,ver:11,headline:'고향ON 10만원 기부 시 총 145,000원 혜택!',
+   gifts:[G('1001','온누리시장 적립금',15000,'9')]},
+  {no:15,cd:'PRM-2026-009',nm:'[KTM] 고향ON 오픈 기념 프로모션',lgvr:'47210',disp:'1002',inflow:'QAY',prio:3,stat:'1002',strt:'2026-11-11T00:01',end:'2026-12-31T12:00',grp:3,ver:3,headline:'답례품 UP + 추가혜택 10,000원!',
+   gifts:[G('1003','M마켓 적립금',10000,'SA4022026113162412'),G('1003','복지몰 적립금',10000,'SA4022026113162411'),G('1001','온누리시장 적립금',10000,'14'),G('1002','네이버페이 포인트',10000,'NPAY-2026-01',false)]},
+  {no:14,cd:'PRM-2026-008',nm:'[복지관] 고향ON 오픈 기념 프로모션 - 영주시',lgvr:'47210',disp:'1002',inflow:'COMMON',prio:3,stat:'1002',strt:'2026-11-11T00:01',end:'2026-12-31T12:00',grp:3,ver:2,headline:'답례품 UP + 추가혜택 10,000원!',
+   gifts:[G('1003','복지몰 적립금',10000,'SA4022026113162411'),G('1001','온누리시장 적립금',10000,'14'),G('1002','네이버페이 포인트',10000,'NPAY-2026-01',false)]},
+  {no:13,cd:'PRM-2026-006',nm:'고향ON 오픈 기념 프로모션',lgvr:'47210',disp:'1001',inflow:'',prio:3,stat:'1002',strt:'2026-11-11T16:59',end:'2026-12-31T16:59',grp:3,ver:2,headline:'답례품 UP + 추가혜택 10,000원!',
+   gifts:[G('1001','온누리시장 적립금',10000,'14'),G('1002','네이버페이 포인트',10000,'NPAY-2026-01',false)]}
+ ]
+});
+let S; try{ S=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){} if(!S||!S.govs) S=SEED();
+const PV={mall:'hub',tab:null,open:true,show:true};
+const $=id=>document.getElementById(id);
+const won=n=>Number(n||0).toLocaleString('ko-KR');
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),1800); }
+
+/* ───────── 계산 규칙 (개발 전달 핵심) ───────── */
+const grpOf=p=>S.groups.find(g=>g.no===p.grp);
+function effStat(p){ if(p.stat!=='1002') return p.stat; const n=new Date(); if(new Date(p.end)<n) return '1003'; if(new Date(p.strt)>n) return '1001'; return '1002'; }
+function isFull(p){ const g=grpOf(p); return !!(g&&g.endOn&&g.limit>0&&g.count>=g.limit); }
+function derive(g){
+  const all=S.promos.filter(p=>p.lgvr===g.lgvr);
+  const inc=all.filter(p=>!g.excl.includes(p.no));
+  const live=inc.filter(p=>effStat(p)==='1002');
+  const open=live.filter(p=>!isFull(p));
+  const src=open.length?open:live;
+  const m={};
+  src.forEach(p=>p.gifts.filter(x=>x.on).forEach(x=>{ const k=(TYPE[x.t]||TYPE['9999'])[1]; m[k]=Math.max(m[k]||0,+x.amt||0); }));
+  const means=KORDER.filter(k=>m[k]>0).map(k=>({k,nm:KIND[k][0],col:KIND[k][1],amt:m[k]}));
+  const amt=means.reduce((a,b)=>Math.max(a,b.amt),0);
+  let cap=0; src.forEach(p=>{ const G=grpOf(p); if(G&&G.endOn&&G.limit>0) cap=cap?Math.min(cap,G.limit):G.limit; });
+  let state=(!S.common.use||!g.use)?'off':(open.length&&amt>0?'on':live.length?'full':'end');
+  return {all,inc,live,open,means,amt,cap,state,more:amt+(+g.up||0),total:(+S.common.tax||0)+(+g.gift||0)+(+g.up||0)+amt};
+}
+const STATE={on:['노출 중','on'],full:['인원 마감','full'],end:['숨김 · 진행 프로모션 없음','end'],off:['숨김 · 사용 안 함','end']};
+const stTag=s=>`<span class="tg ${STATE[s][1]}">${STATE[s][0]}</span>`;
+const meansHtml=d=>d.means.length?`<span class="means">${d.means.map(m=>`<span><i style="background:${m.col}"></i>${m.nm} ${won(m.amt)}</span>`).join('')}</span>`:'<span style="color:#999">없음</span>';
+function dday(){ const t=new Date(), e=new Date(S.common.ddayDate+'T00:00'); return Math.max(0,Math.ceil((e-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5)); }
+
+/* FO 프로토타입(../index.html)이 읽어 가는 값 */
+function foPayload(){ const o={ts:Date.now(),order:[],govs:{}};
+  S.govs.forEach(g=>{ const d=derive(g), c=CAT[g.lgvr]; o.order.push(g.key);
+    const items=g.prods.map(i=>c[i]).concat(c.filter((x,i)=>!g.prods.includes(i))).map(x=>[x[0],x[2],x[1]]);
+    o.govs[g.key]={label:g.panel,amt:d.amt,up:+g.up||0,cap:d.cap,status:d.state==='on'?'on':d.state==='full'?'full':'end',items,means:d.means.map(m=>[m.nm,m.amt,m.k])}; });
+  return o; }
+function save(msg){ try{ localStorage.setItem(KEY,JSON.stringify(S)); localStorage.setItem(FOKEY,JSON.stringify(foPayload())); }catch(e){} if(msg) toast(msg); }
+
+/* ───────── 라우팅 ───────── */
+const route=()=>(location.hash.replace(/^#/,'')||'benefit').split('/');
+function go(h){ location.hash=h; }
+window.addEventListener('hashchange',render);
+function lnb(){ const r=route()[0];
+  const a=(h,t,x='')=>`<a class="${r===h?'on':''}" onclick="go('${h}')">${t}${x}</a>`;
+  $('lnb').innerHTML=`<h4>기부관리</h4><div class="gap"></div><a class="dim">기부 내역 조회</a><a class="dim">지정기부별 기부금 현황 조회</a><a class="dim">자치단체별 기부금 현황 조회</a><div class="gap"></div>
+  <h4>프로모션 지급 관리</h4><div class="gap"></div>${a('promo','프로모션 설정')}${a('group','프로모션 그룹 설정')}${a('benefit','추가혜택 노출 설정','<span class="nw">신규</span>')}<div class="gap"></div>
+  <h4>프로토타입 안내</h4><div class="gap"></div>${a('place','① 어디서 관리할까')}${a('spec','② 개발 전달 사양')}<div class="gap"></div>
+  <a onclick="resetAll()" style="opacity:.75">↺ 초기값으로 되돌리기</a><a href="../index.html?v=-1" target="_blank" style="opacity:.75">↗ FO 프로토타입 열기</a>`; }
+function resetAll(){ if(!confirm('프로토타입 값을 처음 상태(개발서버 실측값)로 되돌릴까요?')) return; S=SEED(); try{ localStorage.removeItem(KEY); localStorage.removeItem(FOKEY); }catch(e){} toast('초기값으로 되돌렸어요'); render(); }
+function render(){ lnb(); const [v,id]=route();
+  const map={benefit:id?vBenefitDetail:vBenefit,promo:id?vPromoDetail:vPromo,group:vGroup,place:vPlace,spec:vSpec};
+  const y=window.scrollY; $('main').innerHTML=(map[v]||vBenefit)(id); window.scrollTo(0,y); renderPv(); }
+
+/* ───────── 화면 1. 추가혜택 노출 설정 (목록 + 공통 설정) ───────── */
+const LEG=`<div class="legend"><span><span class="tg new">신규</span> 이번에 새로 만드는 칸 (지금은 화면 코드에 박혀 있음)</span><span><span class="tg auto">자동</span> 프로모션 설정·그룹 설정에서 가져오는 값 (여기서 못 고침)</span><span><span class="tg calc">계산</span> 위 값으로 계산해 보여주는 값</span></div>`;
+const chk=(p,v,t)=>`<label class="sw"><input type="checkbox" data-p="${p}" data-t="b" ${v?'checked':''}> ${t}</label>`;
+function vBenefit(){ const c=S.common;
+  return `<h2 class="pt">추가혜택 노출 설정</h2>
+  <p class="pdesc">답례품 카드의 「고향ON 추가혜택 +금액」 리본, 화면 구석의 플로팅 버튼, 눌렀을 때 열리는 혜택 패널에 나오는 내용을 관리합니다. <b>금액·수단·선착순·마감은 프로모션 설정에서 자동으로 따라오고</b>, 이 화면에서는 프로모션에 없는 값(대표 답례품·증량·표기명·순서·켜고 끄기)만 넣습니다.</p>${LEG}
+  <h3 class="st">공통 설정 <span class="tg new">신규</span></h3>
+  <table class="ft">
+   <tr><th>기능 사용</th><td>${chk('common.use',c.use,'추가혜택 강조 UI 사용')}<div class="hint">끄면 허브·독립몰 모든 화면에서 리본·플로팅·패널이 한 번에 사라집니다. (배포 없이 즉시 내리기)</div></td></tr>
+   <tr><th>노출 요소</th><td><div class="row">${chk('common.badge',c.badge,'답례품 카드 리본')} ${chk('common.fab',c.fab,'플로팅 버튼')} ${chk('common.dday',c.dday,'세액공제 마감 D-day 칩')}</div><div class="hint">플로팅은 답례품 상세·결제·마이페이지에서는 원래 나오지 않습니다(화면 고정 규칙).</div></td></tr>
+   <tr><th>첫 진입 자동 열림</th><td><div class="row">${chk('common.autoOpen',c.autoOpen,'첫 진입 시 패널 자동 열기')} <select data-p="common.autoOnce"><option value="session" ${c.autoOnce==='session'?'selected':''}>접속(세션)마다 1번</option><option value="day" ${c.autoOnce==='day'?'selected':''}>하루 1번</option></select></div><div class="hint">현재 개발서버 = 켜짐 · 세션 1번 · 지자체 상세(/localGov)에서는 자동으로 안 열림.</div></td></tr>
+   <tr><th>플로팅 닫기(✕)</th><td><select data-p="common.fabHide"><option value="midnight" ${c.fabHide==='midnight'?'selected':''}>그날 자정까지 숨김</option><option value="session" ${c.fabHide==='session'?'selected':''}>이번 접속 동안만 숨김</option></select></td></tr>
+   <tr><th>D-day 기준일</th><td><input type="text" data-p="common.ddayDate" value="${esc(c.ddayDate)}" style="width:120px"> <span class="hint">세액공제 마감일(YYYY-MM-DD). 프로모션 종료일과 별개입니다. 오늘 기준 <b>D-${dday()}</b> · D-10부터 「마지막 기회」로 바뀜.</span></td></tr>
+   <tr><th>영수증 기준 금액</th><td><div class="row">세액공제 <input type="number" step="10000" data-p="common.tax" data-t="n" value="${c.tax}"> 원 <span class="hint">(10만원 기부 시 · 지자체 공통)</span></div></td></tr>
+   <tr><th>안내 문구</th><td><input class="w" style="max-width:640px" type="text" data-p="common.fine" value="${esc(c.fine)}"><div class="hint">영수증 맨 아래 작은 글씨.</div></td></tr>
+   <tr><th>버튼 이름</th><td><input type="text" data-p="common.btn" value="${esc(c.btn)}" style="width:200px"></td></tr>
+   <tr><th>마감 안내 문구</th><td><input class="w" style="max-width:640px" type="text" data-p="common.closedMsg" value="${esc(c.closedMsg)}"><div class="hint">선착순 인원이 다 찬 지자체의 패널에 금액 대신 나옵니다.</div></td></tr>
+  </table>
+  <div class="bar"><h3 class="st" style="margin:0">지자체별 노출 설정 <span style="font-weight:400;color:#666">총 ${S.govs.length}건 · 프로모션이 등록된 지자체가 자동으로 올라옵니다</span></h3></div>
+  <table class="lt"><tr><th style="width:74px">허브 탭<br>순서 <span class="tg new">신규</span></th><th>자치단체</th><th>탭 / 패널 표기 <span class="tg new">신규</span></th><th>사용 <span class="tg new">신규</span></th><th>추가혜택 <span class="tg auto">자동</span></th><th>수단 <span class="tg auto">자동</span></th><th>답례품 증량 <span class="tg new">신규</span></th><th>선착순 <span class="tg auto">자동</span></th><th>카드 리본 <span class="tg calc">계산</span></th><th>합계 <span class="tg calc">계산</span></th><th>FO 상태 <span class="tg calc">계산</span></th><th>관리</th></tr>
+  ${S.govs.map((g,i)=>{ const d=derive(g); return `<tr class="${PV.mall===g.lgvr||PV.tab===g.lgvr?'sel':''}"><td><button class="btn sm" data-act="mv" data-i="${i}" data-d="-1" ${i?'':'disabled'}>▲</button> <button class="btn sm" data-act="mv" data-i="${i}" data-d="1" ${i<S.govs.length-1?'':'disabled'}>▼</button></td>
+   <td class="l">${g.nm}<br><small style="color:#888">${g.lgvr} · FO ${g.hub}</small></td><td>${esc(g.tab)} / ${esc(g.panel)}</td><td><input type="checkbox" data-p="govs.${i}.use" data-t="b" ${g.use?'checked':''}></td>
+   <td><b>+${won(d.amt)}원</b></td><td class="l">${meansHtml(d)}</td><td>${g.up?'+'+won(g.up)+'원':'-'}</td><td>${d.cap?`${won(d.cap)}명`:'-'}</td><td>${d.state==='on'?'+'+won(d.more)+'원':'-'}</td><td>${won(d.total)}원</td><td>${stTag(d.state)}</td>
+   <td><button class="btn sm" onclick="go('benefit/${g.lgvr}')">수정</button> <button class="btn sm" data-act="pv" data-g="${g.lgvr}">미리보기</button></td></tr>`; }).join('')}</table>
+  <div class="info"><b>FO에 어떻게 나오나</b> — 노출 중인 지자체가 0곳이면 플로팅·리본이 모두 사라지고, 1곳이면 플로팅에 「+금액 더 받기」, 2곳 이상이면 「N곳에서 더 받기」가 나옵니다. 독립몰은 자기 지자체 1건만 씁니다(탭 없음).</div>`; }
+
+/* ───────── 화면 2. 지자체별 상세 ───────── */
+function vBenefitDetail(id){ const i=S.govs.findIndex(g=>g.lgvr===id); if(i<0) return vBenefit(); const g=S.govs[i], d=derive(g), c=CAT[g.lgvr], P=`govs.${i}`;
+  if(PV.mall!=='hub'&&PV.mall!==g.lgvr) PV.mall=g.lgvr; PV.tab=g.lgvr;
+  const pos=['① 가운데 (대표)','② 왼쪽','③ 오른쪽'];
+  return `<h2 class="pt">추가혜택 노출 설정 — ${g.nm}</h2> ${stTag(d.state)}
+  <p class="pdesc">이 지자체의 혜택 패널 1장에 들어가는 값입니다. 채널별 프로모션(기본·복지관·KT M)이 여러 건이어도 <b>패널은 지자체당 1장</b>이라 여기서 한 번만 넣습니다.</p>${LEG}
+  <h3 class="st">기본</h3>
+  <table class="ft">
+   <tr><th>자치단체</th><td>${g.nm} <span style="color:#888">(프로모션 자치단체 코드 ${g.lgvr} · FO 지자체 번호 ${g.hub})</span></td></tr>
+   <tr><th>사용 <span class="tg new">신규</span></th><td>${chk(P+'.use',g.use,'이 지자체 추가혜택 노출')}<div class="hint">프로모션은 그대로 두고(결제 화면 혜택 선택은 유지) 강조 UI만 내릴 때 끕니다.</div></td></tr>
+   <tr><th>탭 표기명 <span class="tg new">신규</span></th><td><input type="text" data-p="${P}.tab" value="${esc(g.tab)}" style="width:140px"> <span class="hint">허브 패널 위 탭(짧게 2~4자)</span></td></tr>
+   <tr><th>패널 표기명 <span class="tg new">신규</span></th><td><input class="w" type="text" data-p="${P}.panel" value="${esc(g.panel)}"> <div class="hint">패널 오른쪽 위 지자체명. 비우면 자치단체명을 씁니다. (서구는 대외 공식명 「전남광주통합특별시 서구」)</div></td></tr>
+  </table>
+  <h3 class="st">대표 답례품 3개 <span class="tg new">신규</span></h3>
+  <div class="slot">${g.prods.map((pi,s)=>`<div><b>${pos[s]}</b><img src="${c[pi][1]}" alt=""><select data-act="prod" data-i="${i}" data-s="${s}">${c.map((x,k)=>`<option value="${k}" ${k===pi?'selected':''}>${esc(x[0])}</option>`).join('')}</select><small>표시 이름 = 상품명(짧은 이름 칸이 있으면 그 값)</small></div>`).join('')}</div>
+  <div class="hint" style="color:#666;margin-top:6px">실제 BO에서는 <b>상품 검색 팝업</b>으로 이 지자체의 판매 중 답례품에서 고릅니다. 고른 상품이 판매중지·품절이 되면 FO에서 그 자리만 빠지고, 3개가 모두 빠지면 답례품 무대를 숨깁니다. 누끼(배경 없는) PNG는 선택 등록 — 없으면 상품 대표 이미지를 원형으로 보여줍니다(현재 개발서버 방식).</div>
+  <h3 class="st">영수증</h3>
+  <table class="ft">
+   <tr><th>세액공제 <span class="tg calc">공통</span></th><td><span class="ro">${won(S.common.tax)}원</span> <span class="hint">공통 설정 값</span></td></tr>
+   <tr><th>답례품 금액 <span class="tg new">신규</span></th><td><input type="number" step="1000" data-p="${P}.gift" data-t="n" value="${g.gift}"> 원 <span class="hint">「답례품 (기부금의 30%)」 줄. 기본 30,000원</span></td></tr>
+   <tr><th>답례품 증량 <span class="tg new">신규</span></th><td><input type="number" step="1000" data-p="${P}.up" data-t="n" value="${g.up}"> 원 <span class="hint">공급사가 얹어 주는 증량분(영주 = 10,000원). 0이면 줄이 안 나옵니다. <b>카드 리본·합계에 더해집니다.</b></span></td></tr>
+   <tr><th>고향ON 추가혜택 <span class="tg auto">자동</span></th><td><span class="ro">+${won(d.amt)}원</span> <span class="hint">아래 집계 대상 프로모션의 「사용」 경품 금액 중 가장 큰 값</span></td></tr>
+   <tr><th>수단별 금액 <span class="tg auto">자동</span></th><td>${meansHtml(d)}<div class="hint">경품 유형 코드로 3가지로 묶습니다 — 복지관 적립금(1003~1006, M마켓 포함) → 「복지 적립금」 · 온누리시장 적립금(1001) → 「온누리 적립금」 · 네이버페이 포인트(1002) → 「네이버페이」. 같은 묶음은 가장 큰 금액 1줄.</div></td></tr>
+   <tr><th>선착순 칩 <span class="tg auto">자동</span></th><td><span class="ro">${d.cap?`선착순 ${won(d.cap)}명 · 마감 시 종료`:'표시 안 함'}</span> <span class="hint">참여 제한 그룹이 「도달 시 종료」일 때만 제한 인원을 보여줍니다.</span></td></tr>
+   <tr><th>카드 리본 금액 <span class="tg calc">계산</span></th><td><span class="ro">+${won(d.more)}원</span> <span class="hint">추가혜택 ${won(d.amt)} + 증량 ${won(g.up)}</span></td></tr>
+   <tr><th>받는 혜택 합계 <span class="tg calc">계산</span></th><td><span class="ro">${won(d.total)}원</span> <span class="hint">세액공제 + 답례품 + 증량 + 추가혜택</span></td></tr>
+  </table>
+  <h3 class="st">집계 대상 프로모션 <span class="tg auto">자동</span> <span style="font-weight:400;color:#666;font-size:12.5px">이 지자체에 등록된 프로모션 ${d.all.length}건</span></h3>
+  <table class="lt"><tr><th>패널에 포함 <span class="tg new">신규</span></th><th>코드</th><th>프로모션명</th><th>채널</th><th>유입 코드</th><th>사용 경품</th><th>참여 그룹</th><th>상태</th><th></th></tr>
+  ${d.all.map(p=>{ const e=effStat(p), G=grpOf(p); return `<tr><td><input type="checkbox" data-act="excl" data-i="${i}" data-no="${p.no}" ${g.excl.includes(p.no)?'':'checked'}></td><td>${p.cd}</td><td class="l">${esc(p.nm)}</td><td>${p.disp==='1001'?'기본':'조건부'}</td><td>${p.inflow||'(비움)'}</td>
+   <td class="l">${p.gifts.filter(x=>x.on).map(x=>`${esc(x.nm)} ${won(x.amt)}`).join(' · ')||'-'}</td><td>${G?esc(G.nm):'-'}<br><small>${G?`${G.count} / ${G.endOn&&G.limit?G.limit:'-'}`:''}</small></td><td><span class="tg ${e==='1002'?(isFull(p)?'full':'on'):'end'}">${e==='1002'&&isFull(p)?'인원 마감':STAT[e]}</span></td><td><button class="btn sm" onclick="go('promo/${p.no}')">프로모션 보기</button></td></tr>`; }).join('')}</table>
+  <div class="hint" style="color:#666;margin-top:6px">기본은 전부 포함입니다. 특정 채널 전용 프로모션을 패널 금액에서 빼고 싶을 때만 체크를 풉니다(결제 화면 동작에는 영향 없음).</div>
+  <h3 class="st">버튼 링크</h3>
+  <table class="ft">
+   <tr><th>허브 <span class="tg auto">자동</span></th><td><span class="ro">/localGov/${g.hub}</span> <span class="hint">그 지자체 상세(답례품 탭)</span></td></tr>
+   <tr><th>독립몰 <span class="tg new">신규</span></th><td><input class="w" type="text" data-p="${P}.mallLink" value="${esc(g.mallLink)}" placeholder="/product/list?dispCatNo=…"> <div class="hint">독립몰의 답례품 목록 주소. 서구 개발서버는 <code>/product/list?dispCatNo=100100127</code>가 박혀 있습니다. 비우면 몰의 답례품 전체 목록.</div></td></tr>
+  </table>
+  <div class="bar"><span></span><div class="row"><button class="btn" onclick="go('benefit')">목록</button><button class="btn blue" onclick="save('저장했어요 · 오른쪽 미리보기와 FO 프로토타입에 반영됨')">저장</button></div></div>`; }
+
+/* ───────── 화면 3. 프로모션 설정 (기존 화면 축약 재현) ───────── */
+function vPromo(){ return `<h2 class="pt">프로모션 설정</h2> <span class="tg calc">기존 화면</span>
+  <p class="pdesc">개발 BO에 이미 있는 화면입니다(2026-11-18 실측 8건). 프로토타입에서는 <b>맨 오른쪽 「추가혜택 노출」 열만 새로 추가</b>했습니다 — 이 프로모션이 혜택 패널에 반영되고 있는지 바로 보이게 하는 읽기 전용 칸입니다.</p>
+  <table class="lt"><tr><th>우선</th><th>참여 그룹</th><th>코드</th><th>프로모션명</th><th>자치단체</th><th>채널</th><th>경품</th><th>조건</th><th>현황/제한</th><th>도달 시</th><th>기간</th><th>상태</th><th>추가혜택 노출 <span class="tg new">신규</span></th><th>관리</th></tr>
+  ${S.promos.map(p=>{ const G=grpOf(p), g=S.govs.find(x=>x.lgvr===p.lgvr), d=derive(g), e=effStat(p), inP=!g.excl.includes(p.no)&&e==='1002';
+   return `<tr><td>${p.prio}</td><td>${esc(G.nm)}</td><td>${p.cd}</td><td class="l">${esc(p.nm)}</td><td>${g.nm}</td><td>${p.disp==='1001'?'기본':'조건부'}${p.inflow?`<br><small>${p.inflow}</small>`:''}</td><td>${p.gifts.filter(x=>x.on).length}개</td><td>100000원 이상 · 1회</td><td>${G.count} / ${G.endOn&&G.limit?G.limit:'-'}</td><td>${G.endOn?'종료':'유지'}</td><td><small>${p.strt.replace('T',' ')} ~<br>${p.end.replace('T',' ')}</small></td><td>${STAT[e]}</td>
+   <td>${inP?stTag(d.state):'<span class="tg end">미반영</span>'}<br><a onclick="go('benefit/${g.lgvr}')" style="cursor:pointer;font-size:12px">${g.tab} 패널 ›</a></td><td><button class="btn sm" onclick="go('promo/${p.no}')">수정</button></td></tr>`; }).join('')}</table>`; }
+function vPromoDetail(id){ const i=S.promos.findIndex(p=>String(p.no)===String(id)); if(i<0) return vPromo(); const p=S.promos[i], g=S.govs.find(x=>x.lgvr===p.lgvr), d=derive(g), P=`promos.${i}`, G=grpOf(p);
+  PV.tab=g.lgvr; if(PV.mall!=='hub') PV.mall=g.lgvr;
+  return `<h2 class="pt">프로모션 등록 / 수정</h2> <span class="tg calc">기존 화면 · 축약</span>
+  <p class="pdesc">기존 화면에서 혜택 패널에 영향을 주는 칸만 남겼습니다(적용 채널·FO 문구·배너·팝업·발송 문구는 생략). 여기서 금액·사용·상태를 바꾸면 <b>오른쪽 미리보기가 바로 따라옵니다</b> — 운영자가 패널 문구를 따로 고칠 필요가 없다는 것을 확인하는 용도입니다.</p>
+  <h3 class="st">기본 정보</h3>
+  <table class="ft"><tr><th>프로모션명</th><td>${esc(p.nm)} <span style="color:#888">(${p.cd} · v${p.ver})</span></td></tr><tr><th>자치단체</th><td>${g.nm}</td></tr>
+   <tr><th>상태</th><td><select data-p="${P}.stat">${Object.keys(STAT).map(k=>`<option value="${k}" ${p.stat===k?'selected':''}>${STAT[k]}</option>`).join('')}</select> <span class="hint">종료·준비로 바꾸면 패널 집계에서 빠집니다.</span></td></tr>
+   <tr><th>기간</th><td><input type="datetime-local" data-p="${P}.strt" value="${p.strt}"> ~ <input type="datetime-local" data-p="${P}.end" value="${p.end}"></td></tr>
+   <tr><th>적용 채널</th><td>${p.disp==='1001'?'기본':'조건부'} · 유입 코드 ${p.inflow||'(비움)'}</td></tr>
+   <tr><th>참여 제한 그룹</th><td>${esc(G.nm)} (${G.count}명 참여 · ${G.endOn&&G.limit?'제한 '+G.limit+'명':'인원 제한 없음'}) <button class="btn sm" onclick="go('group')">그룹 설정</button></td></tr>
+   <tr><th>배너 헤드라인</th><td><span style="color:#555">${esc(p.headline)||'(비움)'}</span><div class="hint">자유 입력이라 금액을 바꿔도 안 따라옵니다. <b>혜택 패널은 이 문구를 쓰지 않고 아래 경품 금액으로 계산합니다.</b></div></td></tr></table>
+  <h3 class="st">연계 경품 <span style="font-weight:400;color:#666;font-size:12.5px">선택 방식 택1</span></h3>
+  <table class="lt"><tr><th>순서</th><th>유형</th><th>FO 표시명</th><th>금액</th><th>연계 ID</th><th>지급 방식</th><th>사용</th><th>패널 묶음 <span class="tg calc">계산</span></th></tr>
+  ${p.gifts.map((x,k)=>{ const kd=(TYPE[x.t]||TYPE['9999'])[1]; return `<tr><td>${k+1}</td><td>${TYPE[x.t][0]}</td><td>${esc(x.nm)}</td><td><input type="number" step="1000" data-p="${P}.gifts.${k}.amt" data-t="n" value="${x.amt}"></td><td>${esc(x.ext)}</td><td>${x.auto?'자동지급':'수동지급'}</td><td><input type="checkbox" data-p="${P}.gifts.${k}.on" data-t="b" ${x.on?'checked':''}></td><td><i class="dot" style="background:${KIND[kd][1]}"></i>${KIND[kd][0]}</td></tr>`; }).join('')}</table>
+  <h3 class="st">추가혜택 노출 반영 <span class="tg new">신규</span> <span class="tg auto">읽기 전용</span></h3>
+  <table class="ft"><tr><th>반영 상태</th><td>${g.excl.includes(p.no)?'<span class="tg end">패널 집계에서 제외됨</span>':stTag(d.state)} <button class="btn sm" onclick="go('benefit/${g.lgvr}')">${g.tab} 노출 설정으로</button></td></tr>
+   <tr><th>${g.tab} 패널 현재 값</th><td>추가혜택 <b>+${won(d.amt)}원</b> · ${meansHtml(d)} · 합계 <b>${won(d.total)}원</b>${d.cap?` · 선착순 ${d.cap}명`:''}<div class="hint">같은 지자체의 진행 중 프로모션 ${d.live.length}건을 합쳐 계산한 값입니다. (상품 상세의 「연결된 기부 프로모션」 표처럼, 편집은 노출 설정 화면에서만)</div></td></tr></table>
+  <div class="bar"><span></span><div class="row"><button class="btn" onclick="go('promo')">목록</button><button class="btn blue" onclick="save('저장했어요')">저장</button></div></div>`; }
+
+/* ───────── 화면 4. 프로모션 그룹 설정 (기존 화면 축약) ───────── */
+function vGroup(){ return `<h2 class="pt">프로모션 그룹 설정</h2> <span class="tg calc">기존 화면 · 축약</span>
+  <p class="pdesc">같은 그룹의 프로모션은 참여 인원을 합산합니다. <b>「도달 시 종료」를 켠 그룹만</b> 혜택 패널에 「선착순 N명」 칩이 나오고, 현재 참여가 제한 인원에 닿으면 그 지자체가 「인원 마감」으로 바뀝니다. 현재 참여 칸은 실제로는 주문에서 세는 값이며, 여기서는 마감 동작을 보려고 고칠 수 있게 했습니다.</p>
+  <table class="lt"><tr><th>그룹명</th><th>소속 프로모션</th><th>제한 인원</th><th>도달 시 종료</th><th>현재 참여 <small>(시연용)</small></th><th>패널 표시 <span class="tg calc">계산</span></th></tr>
+  ${S.groups.map((G,i)=>`<tr><td class="l">${esc(G.nm)}</td><td>${S.promos.filter(p=>p.grp===G.no).length}건</td><td><input type="number" min="0" data-p="groups.${i}.limit" data-t="n" value="${G.limit}"></td><td><input type="checkbox" data-p="groups.${i}.endOn" data-t="b" ${G.endOn?'checked':''}></td><td><input type="number" min="0" data-p="groups.${i}.count" data-t="n" value="${G.count}"></td>
+   <td>${G.endOn&&G.limit?(G.count>=G.limit?'<span class="tg full">인원 마감</span>':`선착순 ${won(G.limit)}명 칩`):'칩 없음'}</td></tr>`).join('')}</table>
+  <div class="note"><b>확인 필요</b> — 개발서버 FO에는 양주 패널에 「선착순 300명」이 박혀 있지만 개발 BO 그룹 값은 <b>4명</b>(테스트 값)입니다. BO 값을 읽게 바꾸면 개발서버에서는 「선착순 4명」으로 보입니다. 운영 값(300·400)은 3자 회의 결과가 나오면 그룹 설정에 넣으면 됩니다.</div>`; }
+
+/* ───────── 화면 5. 어디서 관리할까 ───────── */
+function vPlace(){ return `<h2 class="pt">① 혜택 강조 UI를 어디서 관리할까</h2>
+  <p class="pdesc">개발서버 FO에 들어간 혜택 강조 UI(카드 리본·플로팅·혜택 패널)는 지금 값이 화면 코드에 박혀 있습니다. BO 어느 메뉴에서 관리하는 게 맞는지 4가지 자리를 비교했습니다.</p>
+  <table class="lt cmp"><tr><th style="width:36px"></th><th style="width:230px">자리</th><th>좋은 점</th><th>문제</th><th style="width:70px">판정</th></tr>
+   <tr><td>A</td><td><b>프로모션 설정 상세</b> 안에 칸 추가</td><td>금액·수단과 같은 화면</td><td>프로모션은 지자체마다 채널별로 3건(기본·복지관·KT M)인데 패널은 지자체당 1장 → 대표 답례품·증량을 3번 넣어야 하고, 서로 다르면 어느 값을 쓸지 규칙이 또 필요</td><td>✗</td></tr>
+   <tr><td>B</td><td>쇼핑몰관리 > <b>팝업·배너(전시)</b></td><td>운영자에게 익숙한 메뉴</td><td>금액·수단을 손으로 다시 적게 됨 → 프로모션 금액을 바꿔도 안 따라옴(배너 헤드라인이 「145,000원」으로 남아 있는 것과 같은 문제). 인원 마감돼도 자동으로 안 내려감</td><td>✗</td></tr>
+   <tr><td>C</td><td><b>자치단체관리</b> > 자치단체 상세</td><td>대표 답례품·표기명은 지자체 속성이라 자연스러움</td><td>프로모션 상태·금액과 다른 메뉴 → 확인하려면 메뉴를 오가야 하고, 켜고 끄는 스위치가 두 군데로 갈림</td><td>△</td></tr>
+   <tr class="pick"><td>D</td><td>기부관리 > 프로모션 지급 관리 > <b>추가혜택 노출 설정</b> <span class="tg new">신규 메뉴</span><br><small>지자체당 1건</small></td><td>금액·수단·선착순·마감은 옆 메뉴(프로모션 설정·그룹 설정)에서 <b>자동</b>으로 가져오고, 손으로 넣는 건 프로모션에 없는 값뿐. 프로모션을 끄면 강조 UI도 같이 내려감</td><td>메뉴 1개 + 테이블 1개 신규</td><td><b>✓ 추천</b></td></tr></table>
+  <div class="info"><b>결론</b> — D안. 「프로모션 설정」「프로모션 그룹 설정」 아래 세 번째 메뉴로 둡니다. 기존 두 화면은 건드리지 않고, 프로모션 목록·상세에 읽기 전용 「추가혜택 노출」 칸과 바로가기만 붙입니다(상품 상세의 「연결된 기부 프로모션」 표와 같은 방식).</div>
+  <h3 class="st">지금 박혀 있는 값 → 어디서 관리하나 <span style="font-weight:400;color:#666;font-size:12.5px">개발서버 FO 실측 2026-11-26 (허브 gohyangon-dev · 서구 gohyangon-seogu)</span></h3>
+  <table class="lt cmp"><tr><th>화면 요소</th><th>지금 박혀 있는 값</th><th>관리 위치</th><th style="width:70px">구분</th></tr>
+   ${[['패널 탭 3개·순서','서구 · 양주 · 영주','노출 설정 목록 ▲▼ · 탭 표기명','new'],
+      ['패널 지자체명','전남광주통합특별시 서구 / 경기 양주 / 경북 영주','노출 설정 > 패널 표기명','new'],
+      ['대표 답례품 3개 (사진·이름)','서구 한우·김치·한돈 / 양주 쌀·한돈·기름 / 영주 사과·한우·인삼','노출 설정 > 대표 답례품','new'],
+      ['세액공제 · 답례품 금액','100,000원 · 30,000원','공통 설정 · 노출 설정 > 답례품 금액','new'],
+      ['답례품 증량','영주만 +10,000원','노출 설정 > 답례품 증량','new'],
+      ['고향ON 추가혜택 금액','서구 25,000 · 양주 15,000 · 영주 10,000','프로모션 설정 > 연계 경품 금액(사용 중 최댓값)','auto'],
+      ['수단별 금액','서구 복지 25,000·온누리 25,000·네이버페이 20,000 등','프로모션 설정 > 연계 경품(유형 코드로 묶음)','auto'],
+      ['선착순 칩','양주 「선착순 300명 · 마감 시 종료」','프로모션 그룹 설정 > 제한 인원·도달 시 종료 ⚠️ 개발 BO 값은 4명','auto'],
+      ['받는 혜택 합계','155,000 / 145,000 / 150,000','계산 (세액공제+답례품+증량+추가혜택)','calc'],
+      ['카드 리본 금액','서구 +25,000 · 양주 +15,000 · 영주 +20,000','계산 (추가혜택+증량)','calc'],
+      ['플로팅 문구','허브 「3곳에서 더 받기」 · 서구몰 「+25,000원 더 받기」','계산 (노출 중 지자체 수)','calc'],
+      ['버튼 링크','허브 /localGov/{번호} · 서구몰 /product/list?dispCatNo=100100127','허브 자동 · 독립몰은 노출 설정 > 버튼 링크','new'],
+      ['D-day 칩','12/31 기준','공통 설정 > D-day 기준일','new'],
+      ['첫 진입 자동 열림 · ✕ 하루 숨김','AUTO_OPEN = true · 자정까지','공통 설정','new'],
+      ['영수증 아래 안내 문구','세액공제는 연말정산… 1개 선택','공통 설정 > 안내 문구','new']
+     ].map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td style="text-align:center"><span class="tg ${r[3]}">${{new:'신규',auto:'자동',calc:'계산'}[r[3]]}</span></td></tr>`).join('')}</table>`; }
+
+/* ───────── 화면 6. 개발 전달 사양 ───────── */
+function vSpec(){ const api={common:(c=>({useYn:c.use,badgeYn:c.badge,fabYn:c.fab,autoOpenYn:c.autoOpen,autoOpenCycle:c.autoOnce,fabHideCycle:c.fabHide,ddayYn:c.dday,ddayDate:c.ddayDate,taxAmount:c.tax,fineText:c.fine,buttonLabel:c.btn,closedMessage:c.closedMsg}))(S.common),
+   localGovs:S.govs.map((g,i)=>{ const d=derive(g), c=CAT[g.lgvr]; return {lgvrNo:g.lgvr,foLgvrNo:g.hub,sortOrder:i+1,tabName:g.tab,panelName:g.panel,displayStatus:d.state.toUpperCase(),benefitAmount:d.amt,giftAmount:+g.gift,giftUpAmount:+g.up,badgeAmount:d.more,totalAmount:d.total,participantLimit:d.cap||null,
+     means:d.means.map(m=>({kind:m.k,label:m.nm,amount:m.amt})),products:g.prods.map((pi,s)=>({slot:s+1,prodNm:c[pi][0],imgUrl:c[pi][1],cutoutImgUrl:null})),linkHub:'/localGov/'+g.hub,linkMall:g.mallLink||null,sourcePrmtnNos:d.live.map(p=>p.no)}; })};
+  return `<h2 class="pt">② 개발 전달 사양</h2>
+  <p class="pdesc">이름은 모두 가칭입니다. 아래 JSON은 지금 프로토타입에 들어 있는 값으로 실시간 생성됩니다.</p>
+  <h3 class="st">새로 필요한 것</h3>
+  <table class="lt cmp"><tr><th style="width:190px">구분</th><th>내용</th></tr>
+   <tr><td><b>BO 메뉴 1개</b></td><td>기부관리 > 프로모션 지급 관리 > 추가혜택 노출 설정 (목록 = 공통 설정 + 지자체 목록 / 상세 = 지자체 1건)</td></tr>
+   <tr><td><b>공통 설정 1건</b></td><td>사용 · 카드 리본 · 플로팅 · D-day 칩 · 첫 진입 자동 열림(주기) · ✕ 숨김 기간 · D-day 기준일 · 세액공제 금액 · 안내 문구 · 버튼 이름 · 마감 안내 문구</td></tr>
+   <tr><td><b>지자체별 설정</b> (지자체당 1건)</td><td>사용 · 허브 탭 순서 · 탭 표기명 · 패널 표기명 · 답례품 금액 · 답례품 증량 · 대표 답례품 3개(상품번호 + 선택 누끼 PNG) · 독립몰 버튼 링크 · 패널 집계에서 뺄 프로모션 번호</td></tr>
+   <tr><td><b>기존 화면에 붙이는 것</b></td><td>프로모션 설정 목록·상세에 읽기 전용 「추가혜택 노출」 칸 + 노출 설정 바로가기. 기존 칸·저장 로직은 그대로</td></tr>
+   <tr><td><b>FO</b></td><td>지금 화면 코드에 박힌 패널 3장(<code>.prmtnPopPanel</code>)·탭·리본 금액·플로팅 문구·<code>AUTO_OPEN</code>을 아래 응답 값으로 그리기. 마크업·스타일은 그대로</td></tr></table>
+  <h3 class="st">계산 규칙</h3>
+  <table class="lt cmp"><tr><th style="width:190px">값</th><th>규칙</th></tr>
+   <tr><td><b>집계 대상 프로모션</b></td><td>그 지자체의 프로모션 중 ① 실제 상태 = 진행(상태 진행 + 기간 안) ② 노출 설정에서 빼지 않은 것. 채널(기본·COMMON·QAY)·회원 구분 없이 모두 합침 — 현재 개발서버 패널이 회원 구분 없이 전체 수단을 보여주는 방식 그대로</td></tr>
+   <tr><td><b>수단 묶음</b></td><td>사용 중인 경품을 유형 코드(DN008)로 묶음: 1003~1006 → 복지 적립금 / 1001 → 온누리 적립금 / 1002 → 네이버페이 / 9999 → 기타. 묶음 안에서는 가장 큰 금액 1줄. 표시 순서 = 복지 → 온누리 → 네이버페이(현재 화면 순서)</td></tr>
+   <tr><td><b>추가혜택 금액</b></td><td>수단 묶음 금액 중 최댓값. 배너 헤드라인(<code>headline</code>)은 쓰지 않음</td></tr>
+   <tr><td><b>선착순 칩</b></td><td>집계 대상 프로모션의 참여 그룹이 「도달 시 종료」일 때만 제한 인원 표시</td></tr>
+   <tr><td><b>FO 상태</b></td><td>공통·지자체 「사용」이 꺼짐 → 숨김 / 집계 대상 0건 → 숨김 / 집계 대상이 모두 인원 도달 → 인원 마감(리본·플로팅에서 빠지고 패널은 마감 안내) / 그 외 → 노출</td></tr>
+   <tr><td><b>카드 리본 · 합계</b></td><td>리본 = 추가혜택 + 증량 · 합계 = 세액공제 + 답례품 + 증량 + 추가혜택</td></tr>
+   <tr><td><b>플로팅</b></td><td>노출 중 지자체 0곳 → 숨김 / 1곳 → 「+리본금액 더 받기」 / 2곳 이상 → 「N곳에서 더 받기」. 독립몰은 자기 지자체만</td></tr></table>
+  <h3 class="st">FO가 받는 값 예시 <span style="font-weight:400;color:#666;font-size:12.5px">지금 설정 기준 · 실시간</span></h3>
+  <pre>${esc(JSON.stringify(api,null,2))}</pre>
+  <h3 class="st">개발 확인이 필요한 것</h3>
+  <table class="lt cmp"><tr><th style="width:36px">#</th><th>질문</th></tr>
+   ${['프로모션의 자치단체 코드(12240·41630·47210)와 FO 지자체 번호(100100543·100100393·100100463)를 잇는 값이 이미 있는지. 지자체 상세 화면은 두 값을 함께 쓰고 있음(<code>PAGE_LGVR_KEYS = ["47210","100100463"]</code>)',
+      '채널이 다른 프로모션을 합쳐 전체 수단을 보여주는 규칙을 그대로 둘지. 일반 회원에게도 「복지 적립금」이 보이는 점은 그대로 남음(결제 화면에서는 복지관 회원만 선택 가능)',
+      '「M마켓 적립금」(1006)을 「복지 적립금」 한 줄로 합쳐도 되는지, 따로 한 줄로 보여줄지',
+      '답례품 증량을 지자체 단위 금액 1칸으로 둘지, 상품 단위 값으로 둘지(지금 화면은 지자체 단위로 박혀 있음)',
+      '대표 답례품이 판매중지·품절일 때 처리(제안 = 그 자리만 빼고 표시)',
+      '카드 리본 금액을 목록 API에 함께 내려주는 방식과 캐시 주기(프로모션 금액을 바꾼 뒤 몇 분 안에 반영되는지)',
+      '이 메뉴의 권한 — 운영자(관리자)만 쓰는 것으로 가정. 지자체·협력사 계정에는 메뉴 미노출',
+      '개발서버 양주 그룹 제한 인원이 4명(테스트 값)이라, 연동하면 「선착순 4명」으로 보임'
+     ].map((q,i)=>`<tr><td style="text-align:center">${i+1}</td><td>${q}</td></tr>`).join('')}</table>`; }
+
+/* ───────── 오른쪽 FO 미리보기 (개발서버 v-1 구현과 같은 구성) ───────── */
+const ENV=`<svg viewBox="0 0 64 64"><rect x="11" y="15" width="15" height="24" rx="3" fill="#2F7CF6" transform="rotate(-14 18 27)"/><rect x="24.5" y="9" width="15" height="26" rx="3" fill="#FF7A00"/><rect x="38" y="15" width="15" height="24" rx="3" fill="#12B76A" transform="rotate(14 46 27)"/><path d="M6 31 Q6 28 9 28 H55 Q58 28 58 31 V55 Q58 58 55 58 H9 Q6 58 6 55 Z" fill="#F2E4DA"/><path d="M6 33 L32 48 L58 33 V55 Q58 58 55 58 H9 Q6 58 6 55 Z" fill="#FCF7EE"/></svg>`;
+function renderPv(){ const pv=$('pv'); const hub=PV.mall==='hub';
+  const pool=(hub?S.govs:S.govs.filter(g=>g.lgvr===PV.mall)).map(g=>({g,d:derive(g)}));
+  const shown=pool.filter(x=>x.d.state==='on'||x.d.state==='full'), live=pool.filter(x=>x.d.state==='on');
+  let cur=shown.find(x=>x.g.lgvr===PV.tab)||shown[0];
+  const c=S.common;
+  const cards=pool.map(x=>{ const it=CAT[x.g.lgvr][x.g.prods[0]], it2=CAT[x.g.lgvr][x.g.prods[1]];
+    return [it,it2].slice(0,hub?1:2).map(p=>`<div class="card"><div class="im"><img src="${p[1]}" alt="">${c.badge&&x.d.state==='on'?`<div class="prmtnBadge"><small>고향ON 추가혜택</small><b>+${won(x.d.more)}원</b></div>`:''}</div><div class="nm">${esc(p[0])}</div><div class="lo">${esc(x.g.tab)}</div></div>`).join(''); }).join('');
+  const fab=c.fab&&live.length?`<div class="fab" data-act="pvopen"><div class="ball">${ENV}${live.length>1?`<em>${live.length}곳</em>`:''}</div><div class="bub"><small>고향ON 추가혜택</small><b>${live.length>1?`<em>${live.length}곳</em>에서 더 받기`:`<em>+${won(live[0].d.more)}원</em> 더 받기`}</b></div></div>`:'';
+  let sheet='';
+  if(cur){ const g=cur.g, d=cur.d, cat=CAT[g.lgvr], [p1,p2,p3]=g.prods.map(i=>cat[i]);
+    sheet=`<button class="x" data-act="pvclose">✕</button><div class="hdr">${c.dday?`<span class="dday">2026 ${dday()<=10?'마지막 기회':'세액공제 마감'} <em>D-${dday()}</em></span>`:'<span></span>'}<span class="gov">${esc(g.panel||g.nm)}</span></div>
+    ${hub&&shown.length>1?`<div class="tabs">${shown.map(x=>`<button class="${x===cur?'on':''}" data-act="pvtab" data-g="${x.g.lgvr}">${esc(x.g.tab)}${x.d.state==='full'?'<small>마감</small>':''}</button>`).join('')}</div>`:''}
+    <div class="stage"><div class="halo"></div><div class="rib">🎁 기부하면 받는 혜택</div>
+     <figure class="l"><img src="${p2[1]}" alt=""><figcaption>${esc(p2[0])}</figcaption></figure><figure class="c"><img src="${p1[1]}" alt=""><figcaption>${esc(p1[0])}</figcaption></figure><figure class="r"><img src="${p3[1]}" alt=""><figcaption>${esc(p3[0])}</figcaption></figure></div>
+    ${d.state==='full'?`<div class="closed">${esc(c.closedMsg)}</div>`:`<div class="rcpt"><div class="r1"><span>세액공제 (10만원 기부 시)</span><span>${won(c.tax)}원</span></div><div class="r1"><span>답례품 (기부금의 30%)</span><span>${won(g.gift)}원</span></div>${+g.up?`<div class="r1"><span>답례품 증량</span><span>+${won(g.up)}원</span></div>`:''}
+     <div class="r1 plus"><span>고향ON 추가혜택<small class="t1">택1</small></span><b>+${won(d.amt)}원</b></div><div class="sub">${d.means.map(m=>`<div><span><i class="dot" style="background:${m.col}"></i>${m.nm}</span><span>${won(m.amt)}원</span></div>`).join('')}</div>
+     <div class="sum"><span>받는 혜택 합계</span><b>${won(d.total)}원</b></div><div class="fine">${esc(c.fine)}</div></div>${d.cap?`<div class="fcfs">⏱ 선착순 ${won(d.cap)}명 · 마감 시 종료</div>`:''}`}
+    <span class="cta" title="${hub?'/localGov/'+g.hub:(g.mallLink||'답례품 목록')}">${esc(c.btn)}</span>`; }
+  const open=PV.open&&!!cur&&c.use;
+  pv.innerHTML=`<h5>FO 미리보기 <span style="font-weight:400;font-size:11.5px;color:#666">MO · 개발서버와 같은 구성</span></h5><div class="psub">왼쪽 값을 바꾸면 바로 바뀝니다.</div>
+   <div class="seg"><button class="${hub?'on':''}" data-act="pvmall" data-m="hub">허브</button>${S.govs.map(g=>`<button class="${PV.mall===g.lgvr?'on':''}" data-act="pvmall" data-m="${g.lgvr}">독립몰 ${esc(g.tab)}</button>`).join('')}<button data-act="${open?'pvclose':'pvopen'}" style="margin-left:auto">${open?'패널 닫기':'패널 열기'}</button></div>
+   <div class="ph"><div class="scr"><div class="hd">${hub?'고향온':esc((pool[0]||{g:{tab:''}}).g.tab)+' 고향ON'}</div><div class="sec">${hub?'지금 많이 보는 답례품':'인기 답례품 BEST'}</div><div class="cards">${cards}</div></div>${fab}<div class="dimv ${open?'on':''}" data-act="pvclose"></div><div class="sheet ${open?'on':''}">${sheet}</div></div>
+   <div class="pvnote">${!c.use?'⚠️ 공통 「기능 사용」이 꺼져 있어 리본·플로팅·패널이 모두 사라진 상태입니다.':!shown.length?'노출 중인 지자체가 없어 리본·플로팅이 사라진 상태입니다.':`플로팅: ${live.length?(live.length>1?live.length+'곳에서 더 받기':'+'+won(live[0].d.more)+'원 더 받기'):'숨김(노출 중 0곳)'} · 버튼 이동: ${cur?(hub?'/localGov/'+cur.g.hub:(cur.g.mallLink||'답례품 전체 목록')):''}`}<br><a href="../index.html?v=-1" target="_blank">↗ 같은 값으로 FO 프로토타입(v-1) 열기</a></div>`; }
+
+/* ───────── 이벤트 ───────── */
+function setPath(path,v){ const k=path.split('.'); let o=S; for(let i=0;i<k.length-1;i++) o=o[k[i]]; o[k[k.length-1]]=v; }
+document.addEventListener('change',e=>{ const t=e.target, a=t.dataset.act;
+  if(t.dataset.p){ let v=t.dataset.t==='b'?t.checked:t.dataset.t==='n'?Math.max(0,+t.value||0):t.value; setPath(t.dataset.p,v); save(); render(); return; }
+  if(a==='excl'){ const g=S.govs[+t.dataset.i], no=+t.dataset.no; g.excl=t.checked?g.excl.filter(x=>x!==no):g.excl.concat(no); save(); render(); }
+  if(a==='prod'){ const g=S.govs[+t.dataset.i], s=+t.dataset.s, v=+t.value, o=g.prods.indexOf(v); if(o>=0&&o!==s) g.prods[o]=g.prods[s]; g.prods[s]=v; save(); render(); }
+});
+document.addEventListener('click',e=>{ const t=e.target.closest('[data-act]'); if(!t) return; const a=t.dataset.act;
+  if(a==='mv'){ const i=+t.dataset.i, j=i+(+t.dataset.d); if(j<0||j>=S.govs.length) return; const x=S.govs[i]; S.govs[i]=S.govs[j]; S.govs[j]=x; save(); render(); }
+  if(a==='pv'){ PV.mall='hub'; PV.tab=t.dataset.g; PV.open=true; render(); }
+  if(a==='pvmall'){ PV.mall=t.dataset.m; PV.open=true; if(PV.mall!=='hub') PV.tab=PV.mall; renderPv(); }
+  if(a==='pvtab'){ PV.tab=t.dataset.g; renderPv(); }
+  if(a==='pvopen'){ PV.open=true; renderPv(); }
+  if(a==='pvclose'){ PV.open=false; renderPv(); }
+});
+render(); /* 처음 열 때는 FO 프로토타입 값을 건드리지 않는다 — 값을 바꾸거나 저장을 눌렀을 때만 반영 */
+</script>
+</body>
+</html>
